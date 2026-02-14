@@ -217,7 +217,7 @@ export default function TimelinePage() {
     : false;
 
   const handleBubbleClick = (conversation: Conversation) => {
-    router.push(`/conversation/${conversation.id}`);
+    router.push(`/conversation/${conversation.id}?person=${encodeURIComponent(conversation.person)}`);
   };
 
   return (

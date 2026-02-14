@@ -348,7 +348,7 @@ export default function GlazePage() {
                 return (
                   <button
                     key={idx}
-                    onClick={() => router.push(`/conversation/${conv.date}`)}
+                    onClick={() => router.push(`/conversation/${conv.date}?person=${encodeURIComponent(glaze.name)}`)}
                     className="relative flex items-center gap-4 group w-full text-left"
                   >
                     <div
