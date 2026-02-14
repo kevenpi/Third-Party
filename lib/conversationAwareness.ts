@@ -19,9 +19,11 @@ import {
 } from "@/lib/awarenessStorage";
 import { saveTimelineBubbleFromSession } from "@/lib/timelineStorage";
 
-const LEGIBLE_AUDIO_THRESHOLD = 0.1;
+const LEGIBLE_AUDIO_THRESHOLD = 0.05;
 const LEGIBLE_HINT_THRESHOLD = 0.35;
 const CONVERSATION_PAUSE_SECONDS = 25;
+const END_SILENCE_THRESHOLD = 0.1;
+const START_MIN_SECONDS = 5;
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -180,10 +182,24 @@ function recentTranscriptWordSum(signals: AwarenessSignalEvent[], lookback = 10)
   return windowed.reduce((sum, s) => sum + (s.transcriptWords ?? 0), 0);
 }
 
+function sustainedAudioSeconds(signals: AwarenessSignalEvent[], threshold: number): number {
+  if (signals.length < 2) return 0;
+  let firstIdx = -1;
+  for (let i = signals.length - 1; i >= 0; i -= 1) {
+    if (signals[i].audioLevel >= threshold) firstIdx = i;
+    else break;
+  }
+  if (firstIdx < 0 || firstIdx >= signals.length - 1) return 0;
+  const start = Date.parse(signals[firstIdx].timestamp);
+  const end = Date.parse(signals[signals.length - 1].timestamp);
+  if (!Number.isFinite(start) || !Number.isFinite(end)) return 0;
+  return Math.max(0, (end - start) / 1000);
+}
+
 function shouldStartRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): boolean {
-  const recentSignals = clampArray([...state.recentSignals, incoming], 10);
+  const recentSignals = clampArray([...state.recentSignals, incoming], 24);
   const legibleFrames = recentSignals.filter(isLegibleSpeech).length;
-  const transcriptWords = recentTranscriptWordSum(recentSignals, 10);
+  const transcriptWords = recentTranscriptWordSum(recentSignals, 24);
   const transcriptConfidence =
     recentSignals.reduce((sum, s) => sum + (s.transcriptConfidence ?? 0), 0) /
     Math.max(1, recentSignals.filter((s) => s.transcriptConfidence !== undefined).length || 1);
@@ -195,19 +211,17 @@ function shouldStartRecording(state: ConversationAwarenessState, incoming: Aware
       .filter((hint) => hint.speakingScore >= LEGIBLE_HINT_THRESHOLD)
       .map((hint) => hint.personTag)
   );
-  const speechEvidenceScore =
-    Math.min(1, averageLevel / 0.35) * 0.35 +
-    Math.min(1, transcriptWords / 8) * 0.45 +
-    Math.min(1, distinctSpeakers.size / 2) * 0.2;
-
-  if (transcriptWords >= 3 && transcriptConfidence >= 0.3 && averageLevel >= LEGIBLE_AUDIO_THRESHOLD) return true;
-  if (legibleFrames >= 2 && speechEvidenceScore >= 0.45) return true;
-  return legibleFrames >= 1 && distinctSpeakers.size >= 2 && speechEvidenceScore >= 0.4;
+  const sustainedSeconds = sustainedAudioSeconds(recentSignals, LEGIBLE_AUDIO_THRESHOLD);
+  const coherentSpeech =
+    transcriptWords >= 8 ||
+    (legibleFrames >= 6 && transcriptConfidence >= 0.25) ||
+    (legibleFrames >= 6 && distinctSpeakers.size >= 2);
+  return sustainedSeconds >= START_MIN_SECONDS && coherentSpeech && averageLevel >= LEGIBLE_AUDIO_THRESHOLD;
 }
 
 function shouldStopRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): boolean {
   const recentSignals = clampArray([...state.recentSignals, incoming], 40);
-  const pauseSeconds = secondsSinceAudioAboveThreshold(recentSignals, LEGIBLE_AUDIO_THRESHOLD);
+  const pauseSeconds = secondsSinceAudioAboveThreshold(recentSignals, END_SILENCE_THRESHOLD);
   const transcriptPause = secondsSinceLastTranscriptWords(recentSignals);
   return pauseSeconds >= CONVERSATION_PAUSE_SECONDS && transcriptPause >= CONVERSATION_PAUSE_SECONDS;
 }

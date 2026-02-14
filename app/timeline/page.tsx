@@ -15,6 +15,21 @@ interface Conversation {
   date: string;
 }
 
+interface LiveAwarenessState {
+  listeningEnabled: boolean;
+  isRecording: boolean;
+  latestAction: string;
+  activeSessionId?: string;
+}
+
+interface LiveAwarenessEvent {
+  timestamp: string;
+  audioLevel: number;
+  transcriptWords?: number;
+  transcriptConfidence?: number;
+  transcriptText?: string;
+}
+
 const PEOPLE = ["Arthur", "Tane", "Kevin"] as const;
 const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"] as const;
 
@@ -107,6 +122,8 @@ export default function TimelinePage() {
   const [loading, setLoading] = useState(true);
   const [appOn, setAppOn] = useState(false);
   const [toggleBusy, setToggleBusy] = useState(false);
+  const [liveState, setLiveState] = useState<LiveAwarenessState | null>(null);
+  const [recentEvents, setRecentEvents] = useState<LiveAwarenessEvent[]>([]);
 
   const loadBubbles = useCallback(async (date: string) => {
     try {
@@ -152,10 +169,24 @@ export default function TimelinePage() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/conversationAwareness/state")
-      .then((r) => r.json())
-      .then((data) => setAppOn(data?.state?.listeningEnabled === true))
-      .catch(() => {});
+    let cancelled = false;
+    const poll = () => {
+      fetch("/api/conversationAwareness/state")
+        .then((r) => r.json())
+        .then((data) => {
+          if (cancelled) return;
+          setAppOn(data?.state?.listeningEnabled === true);
+          setLiveState(data?.state ?? null);
+          setRecentEvents((data?.recentEvents ?? []) as LiveAwarenessEvent[]);
+        })
+        .catch(() => {});
+    };
+    poll();
+    const id = setInterval(poll, 2000);
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
   }, []);
 
   const toggleApp = useCallback(async () => {
@@ -174,12 +205,16 @@ export default function TimelinePage() {
   }, [appOn]);
 
   const displayConversations =
-    conversations.length === 0
+    conversations.length === 0 && selectedDate !== today
       ? archiveConversationsForDate(selectedDate)
       : conversations;
   const orderedConversations = [...displayConversations].sort((a, b) => timeToMinutes(b.time) - timeToMinutes(a.time));
   const todayDisplay = formatDateDisplay(selectedDate);
   const isToday = selectedDate === today;
+  const latestEvent = recentEvents.length > 0 ? recentEvents[0] : null;
+  const liveCoherent = latestEvent
+    ? latestEvent.audioLevel >= 0.05 && ((latestEvent.transcriptWords ?? 0) >= 2)
+    : false;
 
   const handleBubbleClick = (conversation: Conversation) => {
     router.push(`/conversation/${conversation.id}`);
@@ -241,6 +276,29 @@ export default function TimelinePage() {
 
       {/* Timeline */}
       <div className="max-w-md mx-auto px-4 py-8 relative">
+        {isToday && (
+          <div className="mb-6 warm-card">
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <p className="text-xs uppercase tracking-wider text-[#8A7E72]">Live Parsing Engine</p>
+              <span className={`text-xs ${liveState?.isRecording ? "text-[#7AB89E]" : "text-[rgba(255,255,255,0.5)]"}`}>
+                {liveState?.isRecording ? "Recording" : "Not recording"}
+              </span>
+            </div>
+            <p className="text-sm text-[rgba(255,255,255,0.85)]">
+              {liveState?.listeningEnabled ? "Detecting" : "Idle"} | {liveState?.latestAction?.replaceAll("_", " ") ?? "awaiting conversation"}
+            </p>
+            <p className="text-xs text-[rgba(255,255,255,0.55)] mt-1">
+              Rule: start when coherent speech lasts 5s above 0.05; stop after 25s below 0.1.
+            </p>
+            {latestEvent && (
+              <div className="mt-3 text-xs text-[rgba(255,255,255,0.65)] space-y-1">
+                <p>Audio: {latestEvent.audioLevel.toFixed(2)} | Words: {latestEvent.transcriptWords ?? 0} | Confidence: {(latestEvent.transcriptConfidence ?? 0).toFixed(2)}</p>
+                <p className={liveCoherent ? "text-[#7AB89E]" : "text-[#D4B07A]"}>{liveCoherent ? "Coherent speech detected" : "Noise / low coherence"}</p>
+                {latestEvent.transcriptText ? <p className="text-[rgba(255,255,255,0.45)] line-clamp-2">"{latestEvent.transcriptText}"</p> : null}
+              </div>
+            )}
+          </div>
+        )}
         {loading ? (
           <div className="flex flex-col items-center justify-center min-h-[40vh]">
             <p className="text-[rgba(255,255,255,0.5)]">Loading…</p>
