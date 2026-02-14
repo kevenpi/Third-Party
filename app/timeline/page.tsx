@@ -123,7 +123,10 @@ export default function TimelinePage() {
             <h1 className="text-2xl font-normal" style={{ fontFamily: 'Fraunces, serif' }}>Today</h1>
             <p className="text-sm text-[rgba(255,255,255,0.5)] mt-0.5">{todayDisplay}</p>
           </div>
-          <button className="p-2 text-[rgba(255,255,255,0.7)] hover:text-[rgba(255,255,255,0.9)]">
+          <button
+            onClick={() => router.push("/settings")}
+            className="p-2 text-[rgba(255,255,255,0.7)] hover:text-[rgba(255,255,255,0.9)]"
+          >
             <Settings className="w-5 h-5" />
           </button>
         </div>

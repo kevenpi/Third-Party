@@ -99,3 +99,56 @@ export interface SharedSession {
   conversationScript: ConversationPrompt[];
   safetyNote: string;
 }
+
+export type AwarenessSource = "microphone" | "meta_glasses" | "phone_camera";
+
+export interface SpeakerHint {
+  personTag: string;
+  speakingScore: number;
+}
+
+export interface AwarenessSignalEvent {
+  source: AwarenessSource;
+  timestamp: string;
+  audioLevel: number;
+  presenceScore?: number;
+  speakerHints: SpeakerHint[];
+  deviceId?: string;
+}
+
+export interface SpeakerWindow {
+  personTag: string;
+  score: number;
+}
+
+export interface RecordingSession {
+  id: string;
+  startedAt: string;
+  endedAt?: string;
+  createdBy: "detector" | "manual";
+  speakerWindows: SpeakerWindow[];
+  clipPaths: string[];
+}
+
+export interface ConversationAwarenessState {
+  listeningEnabled: boolean;
+  isRecording: boolean;
+  lastUpdatedAt: string;
+  activeSessionId?: string;
+  activeSpeakers: SpeakerWindow[];
+  rollingAudioLevels: number[];
+  recentSignals: AwarenessSignalEvent[];
+  latestAction:
+    | "idle"
+    | "awaiting_conversation"
+    | "start_recording"
+    | "continue_recording"
+    | "stop_recording";
+}
+
+export interface MetaGlassesSignalPayload {
+  deviceId: string;
+  timestamp?: string;
+  audioLevel?: number;
+  speakerHints?: SpeakerHint[];
+}
