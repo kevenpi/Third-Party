@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, useParams, useSearchParams } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, MoreVertical, Play, Pause } from "lucide-react";
 
 interface KeyMoment {
@@ -108,8 +108,6 @@ const CONVERSATION_DATA: Record<string, {
 export default function ConversationDrillInPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const searchParams = useSearchParams();
-  const personOverride = searchParams.get("person");
   const [conversation, setConversation] = useState<typeof CONVERSATION_DATA[string] | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -120,9 +118,17 @@ export default function ConversationDrillInPage() {
 
   useEffect(() => {
     const id = params.id as string;
+
+    // Read person override stashed by the timeline / glaze page before navigation
+    let personOverride: string | null = null;
+    try { personOverride = sessionStorage.getItem(`conv-person-${id}`); } catch {}
+
+    const applyPerson = (data: typeof CONVERSATION_DATA[string]): typeof CONVERSATION_DATA[string] =>
+      personOverride ? { ...data, person: personOverride } : data;
+
     const local = CONVERSATION_DATA[id];
     if (local) {
-      const resolved = personOverride ? { ...local, person: personOverride } : local;
+      const resolved = applyPerson(local);
       setConversation(resolved);
       setLoading(false);
       setIsTagged(resolved.person !== "Untagged");
@@ -135,9 +141,7 @@ export default function ConversationDrillInPage() {
       .then((r) => r.json())
       .then((payload) => {
         if (payload?.conversation) {
-          const conv = personOverride
-            ? { ...payload.conversation, person: personOverride }
-            : payload.conversation;
+          const conv = applyPerson(payload.conversation);
           setConversation(conv);
           setIsTagged(conv.person !== "Untagged");
           const saved = localStorage.getItem(`reflection-${id}`);
@@ -151,7 +155,7 @@ export default function ConversationDrillInPage() {
         setConversation(null);
         setLoading(false);
       });
-  }, [params.id, personOverride]);
+  }, [params.id]);
 
   const formatTime = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
