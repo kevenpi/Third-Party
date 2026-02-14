@@ -112,6 +112,9 @@ export interface AwarenessSignalEvent {
   timestamp: string;
   audioLevel: number;
   presenceScore?: number;
+  transcriptText?: string;
+  transcriptWords?: number;
+  transcriptConfidence?: number;
   speakerHints: SpeakerHint[];
   deviceId?: string;
 }
@@ -128,6 +131,12 @@ export interface RecordingSession {
   createdBy: "detector" | "manual";
   speakerWindows: SpeakerWindow[];
   clipPaths: string[];
+  evidence?: {
+    samples: number;
+    legibleFrames: number;
+    transcriptWords: number;
+    transcriptConfidenceSum: number;
+  };
 }
 
 export interface ConversationAwarenessState {

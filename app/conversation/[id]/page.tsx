@@ -109,6 +109,7 @@ export default function ConversationDrillInPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const [conversation, setConversation] = useState<typeof CONVERSATION_DATA[string] | null>(null);
+  const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [isTagged, setIsTagged] = useState(true);
@@ -116,14 +117,34 @@ export default function ConversationDrillInPage() {
   const [showReflectionInput, setShowReflectionInput] = useState(false);
 
   useEffect(() => {
-    const data = CONVERSATION_DATA[params.id as string];
-    if (data) {
-      setConversation(data);
-      setIsTagged(data.person !== "Untagged");
-      // Load saved reflection
-      const saved = localStorage.getItem(`reflection-${params.id}`);
+    const id = params.id as string;
+    const local = CONVERSATION_DATA[id];
+    if (local) {
+      setConversation(local);
+      setLoading(false);
+      setIsTagged(local.person !== "Untagged");
+      const saved = localStorage.getItem(`reflection-${id}`);
       if (saved) setReflection(saved);
+      return;
     }
+
+    fetch(`/api/timeline/conversation?id=${encodeURIComponent(id)}`)
+      .then((r) => r.json())
+      .then((payload) => {
+        if (payload?.conversation) {
+          setConversation(payload.conversation);
+          setIsTagged(payload.conversation.person !== "Untagged");
+          const saved = localStorage.getItem(`reflection-${id}`);
+          if (saved) setReflection(saved);
+        } else {
+          setConversation(null);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setConversation(null);
+        setLoading(false);
+      });
   }, [params.id]);
 
   const formatTime = (seconds: number): string => {
@@ -166,6 +187,14 @@ export default function ConversationDrillInPage() {
     }
     return data;
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#12110F]">
+        <p className="text-[rgba(255,255,255,0.7)]">Loading conversation...</p>
+      </div>
+    );
+  }
 
   if (!conversation) {
     return (

@@ -19,8 +19,9 @@ import {
 } from "@/lib/awarenessStorage";
 import { saveTimelineBubbleFromSession } from "@/lib/timelineStorage";
 
-const START_AUDIO_THRESHOLD = 0.1;
-const STOP_AUDIO_THRESHOLD = 0.07;
+const LEGIBLE_AUDIO_THRESHOLD = 0.1;
+const LEGIBLE_HINT_THRESHOLD = 0.35;
+const CONVERSATION_PAUSE_SECONDS = 25;
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -92,47 +93,123 @@ function topSpeakersFromRecentSignals(signals: AwarenessSignalEvent[]): SpeakerW
     .slice(0, 4);
 }
 
-function shouldStartRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): boolean {
-  const levels = clampArray([...state.rollingAudioLevels, incoming.audioLevel], 6);
-  const voiceFrames = levels.filter((level) => level >= START_AUDIO_THRESHOLD).length;
+function isLegibleSpeech(signal: AwarenessSignalEvent): boolean {
+  if (signal.audioLevel < LEGIBLE_AUDIO_THRESHOLD) return false;
+  const transcriptWords = signal.transcriptWords ?? 0;
+  if (transcriptWords >= 1) return true;
+  if (!signal.speakerHints || signal.speakerHints.length === 0) return false;
+  const maxHint = Math.max(...signal.speakerHints.map((h) => h.speakingScore));
+  return maxHint >= LEGIBLE_HINT_THRESHOLD;
+}
 
-  const recentSignals = clampArray([...state.recentSignals, incoming], 8);
+function evidenceFromSignal(signal: AwarenessSignalEvent) {
+  return {
+    samples: 1,
+    legibleFrames: isLegibleSpeech(signal) ? 1 : 0,
+    transcriptWords: signal.transcriptWords ?? 0,
+    transcriptConfidenceSum: signal.transcriptConfidence ?? 0
+  };
+}
+
+function mergeEvidence(
+  existing: RecordingSession["evidence"] | undefined,
+  signal: AwarenessSignalEvent
+): RecordingSession["evidence"] {
+  const base = existing ?? {
+    samples: 0,
+    legibleFrames: 0,
+    transcriptWords: 0,
+    transcriptConfidenceSum: 0
+  };
+  const delta = evidenceFromSignal(signal);
+  return {
+    samples: base.samples + delta.samples,
+    legibleFrames: base.legibleFrames + delta.legibleFrames,
+    transcriptWords: base.transcriptWords + delta.transcriptWords,
+    transcriptConfidenceSum: base.transcriptConfidenceSum + delta.transcriptConfidenceSum
+  };
+}
+
+function secondsSinceLastLegibleSpeech(signals: AwarenessSignalEvent[]): number {
+  if (signals.length === 0) return Number.POSITIVE_INFINITY;
+  const latestTs = Date.parse(signals[signals.length - 1].timestamp);
+  for (let i = signals.length - 1; i >= 0; i -= 1) {
+    const s = signals[i];
+    if (isLegibleSpeech(s)) {
+      const ts = Date.parse(s.timestamp);
+      if (!Number.isFinite(ts) || !Number.isFinite(latestTs)) return Number.POSITIVE_INFINITY;
+      return Math.max(0, (latestTs - ts) / 1000);
+    }
+  }
+  return Number.POSITIVE_INFINITY;
+}
+
+function secondsSinceLastTranscriptWords(signals: AwarenessSignalEvent[]): number {
+  if (signals.length === 0) return Number.POSITIVE_INFINITY;
+  const latestTs = Date.parse(signals[signals.length - 1].timestamp);
+  for (let i = signals.length - 1; i >= 0; i -= 1) {
+    const s = signals[i];
+    if ((s.transcriptWords ?? 0) > 0) {
+      const ts = Date.parse(s.timestamp);
+      if (!Number.isFinite(ts) || !Number.isFinite(latestTs)) return Number.POSITIVE_INFINITY;
+      return Math.max(0, (latestTs - ts) / 1000);
+    }
+  }
+  return Number.POSITIVE_INFINITY;
+}
+
+function secondsSinceAudioAboveThreshold(
+  signals: AwarenessSignalEvent[],
+  threshold = LEGIBLE_AUDIO_THRESHOLD
+): number {
+  if (signals.length === 0) return Number.POSITIVE_INFINITY;
+  const latestTs = Date.parse(signals[signals.length - 1].timestamp);
+  for (let i = signals.length - 1; i >= 0; i -= 1) {
+    const s = signals[i];
+    if (s.audioLevel >= threshold) {
+      const ts = Date.parse(s.timestamp);
+      if (!Number.isFinite(ts) || !Number.isFinite(latestTs)) return Number.POSITIVE_INFINITY;
+      return Math.max(0, (latestTs - ts) / 1000);
+    }
+  }
+  return Number.POSITIVE_INFINITY;
+}
+
+function recentTranscriptWordSum(signals: AwarenessSignalEvent[], lookback = 10): number {
+  const windowed = signals.slice(-lookback);
+  return windowed.reduce((sum, s) => sum + (s.transcriptWords ?? 0), 0);
+}
+
+function shouldStartRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): boolean {
+  const recentSignals = clampArray([...state.recentSignals, incoming], 10);
+  const legibleFrames = recentSignals.filter(isLegibleSpeech).length;
+  const transcriptWords = recentTranscriptWordSum(recentSignals, 10);
+  const transcriptConfidence =
+    recentSignals.reduce((sum, s) => sum + (s.transcriptConfidence ?? 0), 0) /
+    Math.max(1, recentSignals.filter((s) => s.transcriptConfidence !== undefined).length || 1);
+  const averageLevel =
+    recentSignals.reduce((sum, s) => sum + s.audioLevel, 0) / Math.max(1, recentSignals.length);
   const distinctSpeakers = new Set(
     recentSignals
       .flatMap((signal) => signal.speakerHints)
-      .filter((hint) => hint.speakingScore >= 0.45)
+      .filter((hint) => hint.speakingScore >= LEGIBLE_HINT_THRESHOLD)
       .map((hint) => hint.personTag)
   );
+  const speechEvidenceScore =
+    Math.min(1, averageLevel / 0.35) * 0.35 +
+    Math.min(1, transcriptWords / 8) * 0.45 +
+    Math.min(1, distinctSpeakers.size / 2) * 0.2;
 
-  const averageLevel = levels.reduce((sum, value) => sum + value, 0) / Math.max(1, levels.length);
-  const presenceScores = recentSignals
-    .map((signal) => signal.presenceScore ?? 0)
-    .filter((score) => score > 0);
-  const averagePresence =
-    presenceScores.length === 0
-      ? 0
-      : presenceScores.reduce((sum, score) => sum + score, 0) / presenceScores.length;
-
-  if (voiceFrames >= 2 && (distinctSpeakers.size >= 2 || averageLevel >= 0.25)) {
-    return true;
-  }
-
-  return voiceFrames >= 2 && averagePresence >= 0.35 && averageLevel >= 0.12;
+  if (transcriptWords >= 3 && transcriptConfidence >= 0.3 && averageLevel >= LEGIBLE_AUDIO_THRESHOLD) return true;
+  if (legibleFrames >= 2 && speechEvidenceScore >= 0.45) return true;
+  return legibleFrames >= 1 && distinctSpeakers.size >= 2 && speechEvidenceScore >= 0.4;
 }
 
 function shouldStopRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): boolean {
-  const levels = clampArray([...state.rollingAudioLevels, incoming.audioLevel], 8);
-  const voiceFrames = levels.filter((level) => level >= STOP_AUDIO_THRESHOLD).length;
-  const recentSignals = clampArray([...state.recentSignals, incoming], 8);
-  const presenceScores = recentSignals
-    .map((signal) => signal.presenceScore ?? 0)
-    .filter((score) => score > 0);
-  const averagePresence =
-    presenceScores.length === 0
-      ? 0
-      : presenceScores.reduce((sum, score) => sum + score, 0) / presenceScores.length;
-
-  return levels.length >= 6 && voiceFrames <= 1 && averagePresence < 0.25;
+  const recentSignals = clampArray([...state.recentSignals, incoming], 40);
+  const pauseSeconds = secondsSinceAudioAboveThreshold(recentSignals, LEGIBLE_AUDIO_THRESHOLD);
+  const transcriptPause = secondsSinceLastTranscriptWords(recentSignals);
+  return pauseSeconds >= CONVERSATION_PAUSE_SECONDS && transcriptPause >= CONVERSATION_PAUSE_SECONDS;
 }
 
 function buildSessionId(): string {
@@ -155,6 +232,9 @@ function normalizeSignal(event: Partial<AwarenessSignalEvent> & { source: Awaren
     timestamp: event.timestamp ?? nowIso(),
     audioLevel: clamp01(event.audioLevel ?? fallbackAudioLevel),
     presenceScore,
+    transcriptText: event.transcriptText?.slice(0, 500),
+    transcriptWords: event.transcriptWords !== undefined ? Math.max(0, Math.min(200, Math.round(event.transcriptWords))) : undefined,
+    transcriptConfidence: event.transcriptConfidence !== undefined ? clamp01(event.transcriptConfidence) : undefined,
     speakerHints: hints,
     deviceId: event.deviceId
   };
@@ -227,7 +307,8 @@ export async function ingestAwarenessSignal(
         startedAt: nowIso(),
         createdBy: "detector",
         speakerWindows: state.activeSpeakers,
-        clipPaths: []
+        clipPaths: [],
+        evidence: evidenceFromSignal(signal)
       };
 
       await upsertRecordingSession(newSession);
@@ -248,7 +329,8 @@ export async function ingestAwarenessSignal(
     if (existing) {
       const updatedSession: RecordingSession = {
         ...existing,
-        speakerWindows: mergeSpeakerWindows(existing.speakerWindows, signal.speakerHints)
+        speakerWindows: mergeSpeakerWindows(existing.speakerWindows, signal.speakerHints),
+        evidence: mergeEvidence(existing.evidence, signal)
       };
       await upsertRecordingSession(updatedSession);
       activeSession = updatedSession;

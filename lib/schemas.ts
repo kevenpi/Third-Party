@@ -162,6 +162,9 @@ export const AwarenessSignalEventSchema = z.object({
   timestamp: z.string().datetime(),
   audioLevel: z.number().min(0).max(1),
   presenceScore: z.number().min(0).max(1).optional(),
+  transcriptText: z.string().max(500).optional(),
+  transcriptWords: z.number().int().min(0).max(200).optional(),
+  transcriptConfidence: z.number().min(0).max(1).optional(),
   speakerHints: z.array(SpeakerHintSchema).max(8),
   deviceId: z.string().optional()
 });
@@ -177,7 +180,15 @@ export const RecordingSessionSchema = z.object({
   endedAt: z.string().datetime().optional(),
   createdBy: z.enum(["detector", "manual"]),
   speakerWindows: z.array(SpeakerWindowSchema).max(24),
-  clipPaths: z.array(z.string().min(1)).max(24)
+  clipPaths: z.array(z.string().min(1)).max(24),
+  evidence: z
+    .object({
+      samples: z.number().int().min(0).max(100000),
+      legibleFrames: z.number().int().min(0).max(100000),
+      transcriptWords: z.number().int().min(0).max(100000),
+      transcriptConfidenceSum: z.number().min(0).max(100000)
+    })
+    .optional()
 });
 
 export const ConversationAwarenessStateSchema = z.object({
@@ -206,6 +217,9 @@ export const IngestSignalRequestSchema = z.object({
   timestamp: z.string().datetime().optional(),
   audioLevel: z.number().min(0).max(1).optional(),
   presenceScore: z.number().min(0).max(1).optional(),
+  transcriptText: z.string().max(500).optional(),
+  transcriptWords: z.number().int().min(0).max(200).optional(),
+  transcriptConfidence: z.number().min(0).max(1).optional(),
   speakerHints: z.array(SpeakerHintSchema).optional(),
   deviceId: z.string().optional()
 });

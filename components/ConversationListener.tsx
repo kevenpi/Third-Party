@@ -29,6 +29,10 @@ export function ConversationListener() {
   const chunksRef = useRef<BlobPart[]>([]);
   const sessionIdRef = useRef<string | null>(null);
   const mimeTypeRef = useRef<string>("audio/webm");
+  const transcriptTextRef = useRef<string>("");
+  const transcriptWordsRef = useRef<number>(0);
+  const transcriptConfidenceRef = useRef<number>(0);
+  const recognitionRef = useRef<any>(null);
 
   const uploadClip = useCallback(async (sessionId: string) => {
     if (chunksRef.current.length === 0) return;
@@ -45,6 +49,10 @@ export function ConversationListener() {
           mimeType: mimeTypeRef.current
         })
       });
+      // Near-live transcription on finalized clip.
+      const form = new FormData();
+      form.append("audio", blob, `clip_${sessionId}.webm`);
+      void fetch("/api/voice/processOpenAI", { method: "POST", body: form });
     } catch {
       /* ignore */
     }
@@ -110,7 +118,10 @@ export function ConversationListener() {
         body: JSON.stringify({
           source: "microphone",
           audioLevel,
-          speakerHints: [{ personTag: "Me", speakingScore: Math.min(1, audioLevel + 0.25) }]
+          transcriptText: transcriptTextRef.current || undefined,
+          transcriptWords: transcriptWordsRef.current || undefined,
+          transcriptConfidence: transcriptConfidenceRef.current || undefined,
+          speakerHints: [{ personTag: "Me", speakingScore: Math.min(1, audioLevel + 0.45) }]
         })
       });
       const payload = await response.json().catch(() => null);
@@ -166,6 +177,14 @@ export function ConversationListener() {
         audioContextRef.current = null;
       }
       analyserRef.current = null;
+      const rec = recognitionRef.current;
+      if (rec) {
+        try { rec.stop(); } catch { /* ignore */ }
+      }
+      recognitionRef.current = null;
+      transcriptTextRef.current = "";
+      transcriptWordsRef.current = 0;
+      transcriptConfidenceRef.current = 0;
       return;
     }
 
@@ -185,7 +204,41 @@ export function ConversationListener() {
         analyser.fftSize = 2048;
         source.connect(analyser);
         analyserRef.current = analyser;
-        intervalRef.current = window.setInterval(() => void ingestMic(), 1200);
+        intervalRef.current = window.setInterval(() => void ingestMic(), 800);
+
+        const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        if (SpeechRec) {
+          const recognition = new SpeechRec();
+          recognition.continuous = true;
+          recognition.interimResults = true;
+          recognition.lang = "en-US";
+          recognition.onresult = (event: any) => {
+            let transcript = "";
+            let bestConfidence = 0;
+            for (let i = event.resultIndex; i < event.results.length; i += 1) {
+              const result = event.results[i];
+              const alt = result?.[0];
+              if (!alt?.transcript) continue;
+              transcript += ` ${alt.transcript}`;
+              if (typeof alt.confidence === "number") {
+                bestConfidence = Math.max(bestConfidence, alt.confidence);
+              }
+            }
+            transcript = transcript.trim();
+            if (!transcript) return;
+            transcriptTextRef.current = transcript.slice(0, 500);
+            transcriptWordsRef.current = transcript.split(/\s+/).filter(Boolean).length;
+            transcriptConfidenceRef.current = bestConfidence > 0 ? Math.min(1, bestConfidence) : 0.5;
+          };
+          recognition.onerror = () => {};
+          recognition.onend = () => {
+            if (listening && recognitionRef.current === recognition) {
+              try { recognition.start(); } catch { /* ignore */ }
+            }
+          };
+          recognitionRef.current = recognition;
+          try { recognition.start(); } catch { /* ignore */ }
+        }
       })
       .catch(() => {});
 
@@ -205,6 +258,14 @@ export function ConversationListener() {
         audioContextRef.current = null;
       }
       analyserRef.current = null;
+      const rec = recognitionRef.current;
+      if (rec) {
+        try { rec.stop(); } catch { /* ignore */ }
+      }
+      recognitionRef.current = null;
+      transcriptTextRef.current = "";
+      transcriptWordsRef.current = 0;
+      transcriptConfidenceRef.current = 0;
     };
   }, [listening, ingestMic, stopBrowserRecording]);
 

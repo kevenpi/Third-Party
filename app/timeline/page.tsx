@@ -8,7 +8,7 @@ interface Conversation {
   id: string;
   time: string;
   person: string;
-  duration: number;
+  durationSec: number;
   size: "small" | "medium" | "large";
   color: string;
   colorName: string;
@@ -36,7 +36,7 @@ function archiveConversationsForDate(date: string): Conversation[] {
     const person = PEOPLE[(hash + idx) % PEOPLE.length];
     const isHighStress = idx === (hash + 2) % TIMES.length;
     const isRepair = idx === (hash + 4) % TIMES.length;
-    const duration = isHighStress
+    const durationMin = isHighStress
       ? 16 + ((hash + idx) % 11)
       : isRepair
         ? 20 + ((hash + idx) % 12)
@@ -45,8 +45,8 @@ function archiveConversationsForDate(date: string): Conversation[] {
       id: String((idx % 7) + 1),
       time,
       person,
-      duration,
-      size: idx === longMoment || isRepair ? "large" : duration > 10 ? "medium" : "small",
+      durationSec: durationMin * 60,
+      size: idx === longMoment || isRepair ? "large" : durationMin > 10 ? "medium" : "small",
       color: isHighStress ? "#B84A3A" : isRepair ? "#7AB89E" : idx % 2 === 0 ? "#6AAAB4" : "#C4B496",
       colorName: isHighStress ? "stress-red" : isRepair ? "repair-sage" : "steady",
       date
@@ -91,6 +91,13 @@ function timeToMinutes(timeLabel: string): number {
   return hour * 60 + min;
 }
 
+function formatDuration(seconds: number): string {
+  const s = Math.max(0, Math.round(seconds));
+  const mm = Math.floor(s / 60);
+  const ss = s % 60;
+  return `${mm}:${String(ss).padStart(2, "0")}`;
+}
+
 export default function TimelinePage() {
   const router = useRouter();
   const today = new Date().toISOString().slice(0, 10);
@@ -106,11 +113,11 @@ export default function TimelinePage() {
       const r = await fetch(`/api/timeline?date=${date}`);
       const data = await r.json();
       if (!r.ok) return;
-      const bubbles = (data.bubbles ?? []).map((b: { id: string; time: string; person: string; durationMin: number; size: "small" | "medium" | "large"; color: string; colorName: string; date: string }) => ({
+      const bubbles = (data.bubbles ?? []).map((b: { id: string; time: string; person: string; durationSec?: number; durationMin: number; size: "small" | "medium" | "large"; color: string; colorName: string; date: string }) => ({
         id: b.id,
         time: b.time,
         person: b.person,
-        duration: b.durationMin,
+        durationSec: b.durationSec ?? Math.round((b.durationMin ?? 0) * 60),
         size: b.size,
         color: b.color,
         colorName: b.colorName,
@@ -167,7 +174,7 @@ export default function TimelinePage() {
   }, [appOn]);
 
   const displayConversations =
-    conversations.length === 0 && selectedDate !== today
+    conversations.length === 0
       ? archiveConversationsForDate(selectedDate)
       : conversations;
   const orderedConversations = [...displayConversations].sort((a, b) => timeToMinutes(b.time) - timeToMinutes(a.time));
@@ -274,7 +281,7 @@ export default function TimelinePage() {
                       <div className="absolute right-[calc(50%+60px)] text-right pr-4 w-[calc(50%-60px)]">
                         <p className="text-sm font-medium text-[rgba(255,255,255,0.95)] truncate">{conv.person}</p>
                         <p className="text-xs text-[rgba(255,255,255,0.5)]">{conv.time}</p>
-                        <p className="text-xs text-[rgba(255,255,255,0.4)]">{conv.duration} min</p>
+                        <p className="text-xs text-[rgba(255,255,255,0.4)]">{formatDuration(conv.durationSec)}</p>
                       </div>
                     )}
 
@@ -295,7 +302,7 @@ export default function TimelinePage() {
                       <div className="absolute left-[calc(50%+60px)] text-left pl-4 w-[calc(50%-60px)]">
                         <p className="text-sm font-medium text-[rgba(255,255,255,0.95)] truncate">{conv.person}</p>
                         <p className="text-xs text-[rgba(255,255,255,0.5)]">{conv.time}</p>
-                        <p className="text-xs text-[rgba(255,255,255,0.4)]">{conv.duration} min</p>
+                        <p className="text-xs text-[rgba(255,255,255,0.4)]">{formatDuration(conv.durationSec)}</p>
                       </div>
                     )}
                   </div>

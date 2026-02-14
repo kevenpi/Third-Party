@@ -16,6 +16,7 @@ export interface TimelineBubble {
   sessionId: string;
   time: string;
   person: string;
+  durationSec: number;
   durationMin: number;
   size: "small" | "medium" | "large";
   color: string;
@@ -69,11 +70,27 @@ function scoreAndStyle(
   return { score, size, color, colorName };
 }
 
+function isValidConversationSession(session: RecordingSession, durationSec: number): boolean {
+  if (durationSec < 60) return false;
+  const ev = session.evidence;
+  if (!ev) {
+    // Backward compatibility: require a reasonable minimum length if evidence missing.
+    return durationSec >= 90;
+  }
+  const avgTranscriptConfidence =
+    ev.samples > 0 ? ev.transcriptConfidenceSum / ev.samples : 0;
+  const transcriptRichEnough = ev.transcriptWords >= 15 && avgTranscriptConfidence >= 0.35;
+  const speechRichEnough = ev.legibleFrames >= 12 && durationSec >= 90;
+  return transcriptRichEnough || speechRichEnough;
+}
+
 export async function saveTimelineBubbleFromSession(session: RecordingSession): Promise<TimelineBubble | null> {
   if (!session.endedAt) return null;
   const start = new Date(session.startedAt).getTime();
   const end = new Date(session.endedAt).getTime();
-  const durationMin = Math.max(0.5, (end - start) / (60 * 1000));
+  const durationSec = Math.max(1, Math.round((end - start) / 1000));
+  if (!isValidConversationSession(session, durationSec)) return null;
+  const durationMin = durationSec / 60;
   const date = session.startedAt.slice(0, 10);
   const time = new Date(session.startedAt).toLocaleTimeString("en-US", {
     hour: "numeric",
@@ -98,6 +115,7 @@ export async function saveTimelineBubbleFromSession(session: RecordingSession): 
     sessionId: session.id,
     time,
     person,
+    durationSec,
     durationMin: Math.round(durationMin * 10) / 10,
     size,
     color,
@@ -142,4 +160,14 @@ export async function listTimelineDates(): Promise<string[]> {
     .filter((f) => f.endsWith(".json"))
     .map((f) => f.replace(".json", ""))
     .sort((a, b) => b.localeCompare(a));
+}
+
+export async function getBubbleById(id: string): Promise<TimelineBubble | null> {
+  const dates = await listTimelineDates();
+  for (const date of dates) {
+    const bubbles = await getBubblesForDate(date);
+    const found = bubbles.find((b) => b.id === id);
+    if (found) return found;
+  }
+  return null;
 }
