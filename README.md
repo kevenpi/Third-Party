@@ -41,7 +41,7 @@ The app now includes a conversation-awareness detector and recording pipeline:
 - `GET /api/conversationAwareness/state`:
   - returns detector state, recent sessions, and recent events
 - `POST /api/conversationAwareness/ingestSignal`:
-  - body: `{ "source": "microphone" | "meta_glasses", "audioLevel": 0..1, "speakerHints": [{ personTag, speakingScore }] }`
+  - body: `{ "source": "microphone" | "meta_glasses" | "phone_camera", "audioLevel": 0..1, "presenceScore": 0..1, "speakerHints": [{ personTag, speakingScore }] }`
 - `POST /api/conversationAwareness/uploadClip`:
   - body: `{ "sessionId": "...", "audioBase64": "...", "mimeType": "audio/webm" }`
 - `POST /api/metaGlasses/ingest`:
@@ -52,10 +52,11 @@ The app now includes a conversation-awareness detector and recording pipeline:
 - Facial recognition is not implemented.
 - Identity is based on consented person tags and speaker hints only.
 - Raw captured audio is stored locally in `data/awareness/clips` and is not shared by the shared-session flow.
+- Phone camera mode computes co-presence and motion scores only. It does not identify people and does not persist video frames.
 
 ## UI flow
 
 - Go to `/timeline`
 - Tap the gear icon to open `/settings`
-- Start listening to activate microphone monitoring and detector-triggered recording
+- Start listening to activate microphone monitoring, optional phone camera co-presence monitoring, and detector-triggered recording
 - Use the Meta glasses signal panel to ingest device-side speaker hints
