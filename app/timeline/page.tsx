@@ -288,7 +288,7 @@ export default function TimelinePage() {
               {liveState?.listeningEnabled ? "Detecting" : "Idle"} | {liveState?.latestAction?.replaceAll("_", " ") ?? "awaiting conversation"}
             </p>
             <p className="text-xs text-[rgba(255,255,255,0.55)] mt-1">
-              Rule: start when coherent speech lasts 5s above 0.05; stop after 25s below 0.1.
+              Rule: start after ~3s above 0.03; if transcript is unreadable after 7s reset detection; stop after 25s below 0.1.
             </p>
             {latestEvent && (
               <div className="mt-3 text-xs text-[rgba(255,255,255,0.65)] space-y-1">

@@ -19,11 +19,12 @@ import {
 } from "@/lib/awarenessStorage";
 import { saveTimelineBubbleFromSession } from "@/lib/timelineStorage";
 
-const LEGIBLE_AUDIO_THRESHOLD = 0.05;
+const LEGIBLE_AUDIO_THRESHOLD = 0.03;
 const LEGIBLE_HINT_THRESHOLD = 0.35;
 const CONVERSATION_PAUSE_SECONDS = 25;
 const END_SILENCE_THRESHOLD = 0.1;
-const START_MIN_SECONDS = 5;
+const START_MIN_SECONDS = 3;
+const READABILITY_CHECK_SECONDS = 7;
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -196,27 +197,36 @@ function sustainedAudioSeconds(signals: AwarenessSignalEvent[], threshold: numbe
   return Math.max(0, (end - start) / 1000);
 }
 
+function transcriptReadabilityScore(signals: AwarenessSignalEvent[]): number {
+  const recent = signals.slice(-14);
+  const words = recent.reduce((sum, s) => sum + (s.transcriptWords ?? 0), 0);
+  const confidences = recent
+    .map((s) => s.transcriptConfidence)
+    .filter((v): v is number => typeof v === "number");
+  const avgConf =
+    confidences.length > 0
+      ? confidences.reduce((sum, v) => sum + v, 0) / confidences.length
+      : 0;
+  const texts = recent
+    .map((s) => s.transcriptText ?? "")
+    .join(" ")
+    .trim();
+  const letters = (texts.match(/[a-zA-Z]/g) ?? []).length;
+  const printable = (texts.match(/[a-zA-Z0-9\s.,!?'"-]/g) ?? []).length;
+  const alphaRatio = printable > 0 ? letters / printable : 0;
+  const hasSentenceLikeShape = /[a-zA-Z]{3,}\s+[a-zA-Z]{2,}/.test(texts);
+
+  const wordScore = Math.min(1, words / 20);
+  const confScore = Math.min(1, avgConf / 0.7);
+  const grammarShape = hasSentenceLikeShape ? 1 : 0;
+  const textHealth = Math.min(1, alphaRatio / 0.75);
+  return wordScore * 0.4 + confScore * 0.3 + grammarShape * 0.2 + textHealth * 0.1;
+}
+
 function shouldStartRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): boolean {
   const recentSignals = clampArray([...state.recentSignals, incoming], 24);
-  const legibleFrames = recentSignals.filter(isLegibleSpeech).length;
-  const transcriptWords = recentTranscriptWordSum(recentSignals, 24);
-  const transcriptConfidence =
-    recentSignals.reduce((sum, s) => sum + (s.transcriptConfidence ?? 0), 0) /
-    Math.max(1, recentSignals.filter((s) => s.transcriptConfidence !== undefined).length || 1);
-  const averageLevel =
-    recentSignals.reduce((sum, s) => sum + s.audioLevel, 0) / Math.max(1, recentSignals.length);
-  const distinctSpeakers = new Set(
-    recentSignals
-      .flatMap((signal) => signal.speakerHints)
-      .filter((hint) => hint.speakingScore >= LEGIBLE_HINT_THRESHOLD)
-      .map((hint) => hint.personTag)
-  );
   const sustainedSeconds = sustainedAudioSeconds(recentSignals, LEGIBLE_AUDIO_THRESHOLD);
-  const coherentSpeech =
-    transcriptWords >= 8 ||
-    (legibleFrames >= 6 && transcriptConfidence >= 0.25) ||
-    (legibleFrames >= 6 && distinctSpeakers.size >= 2);
-  return sustainedSeconds >= START_MIN_SECONDS && coherentSpeech && averageLevel >= LEGIBLE_AUDIO_THRESHOLD;
+  return sustainedSeconds >= START_MIN_SECONDS;
 }
 
 function shouldStopRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): boolean {
@@ -348,6 +358,27 @@ export async function ingestAwarenessSignal(
       };
       await upsertRecordingSession(updatedSession);
       activeSession = updatedSession;
+
+      // After 7s, if transcript is still unreadable/ungrammatical, reset detection and try again.
+      const startedMs = Date.parse(updatedSession.startedAt);
+      const nowMs = Date.parse(signal.timestamp);
+      const elapsedSec =
+        Number.isFinite(startedMs) && Number.isFinite(nowMs)
+          ? Math.max(0, (nowMs - startedMs) / 1000)
+          : 0;
+      if (elapsedSec >= READABILITY_CHECK_SECONDS) {
+        const readability = transcriptReadabilityScore(
+          clampArray([...state.recentSignals, signal], 30)
+        );
+        if (readability < 0.35) {
+          await stopActiveSession(state);
+          state.isRecording = false;
+          state.activeSessionId = undefined;
+          state.latestAction = "awaiting_conversation";
+          await saveAwarenessState(state);
+          return { state, session: null };
+        }
+      }
     }
   }
 
