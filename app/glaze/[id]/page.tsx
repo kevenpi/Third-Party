@@ -348,7 +348,10 @@ export default function GlazePage() {
                 return (
                   <button
                     key={idx}
-                    onClick={() => router.push(`/conversation/${conv.date}`)}
+                    onClick={() => {
+                      try { sessionStorage.setItem(`conv-person-${conv.date}`, glaze.name); } catch {}
+                      router.push(`/conversation/${conv.date}`);
+                    }}
                     className="relative flex items-center gap-4 group w-full text-left"
                   >
                     <div

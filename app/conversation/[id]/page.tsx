@@ -124,11 +124,20 @@ export default function ConversationDrillInPage() {
 
   useEffect(() => {
     const id = params.id as string;
+
+    // Read person override stashed by the timeline / glaze page before navigation
+    let personOverride: string | null = null;
+    try { personOverride = sessionStorage.getItem(`conv-person-${id}`); } catch {}
+
+    const applyPerson = (data: typeof CONVERSATION_DATA[string]): typeof CONVERSATION_DATA[string] =>
+      personOverride ? { ...data, person: personOverride } : data;
+
     const local = CONVERSATION_DATA[id];
     if (local) {
-      setConversation(local);
+      const resolved = applyPerson(local);
+      setConversation(resolved);
       setLoading(false);
-      setIsTagged(local.person !== "Untagged");
+      setIsTagged(resolved.person !== "Untagged");
       const saved = localStorage.getItem(`reflection-${id}`);
       if (saved) setReflection(saved);
       return;
@@ -138,8 +147,9 @@ export default function ConversationDrillInPage() {
       .then((r) => r.json())
       .then((payload) => {
         if (payload?.conversation) {
-          setConversation(payload.conversation);
-          setIsTagged(payload.conversation.person !== "Untagged");
+          const conv = applyPerson(payload.conversation);
+          setConversation(conv);
+          setIsTagged(conv.person !== "Untagged");
           const saved = localStorage.getItem(`reflection-${id}`);
           if (saved) setReflection(saved);
         } else {
