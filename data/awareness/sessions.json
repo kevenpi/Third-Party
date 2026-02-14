@@ -1,0 +1,40 @@
+[
+  {
+    "id": "rec_1771101823512_baa2c0c6",
+    "startedAt": "2026-02-14T20:43:43.512Z",
+    "endedAt": "2026-02-14T20:44:04.266Z",
+    "createdBy": "detector",
+    "speakerWindows": [
+      {
+        "personTag": "Partner",
+        "score": 0.5366544694044163
+      },
+      {
+        "personTag": "Me",
+        "score": 0.3455571692985512
+      }
+    ],
+    "clipPaths": [
+      "data/awareness/clips/rec_1771101823512_baa2c0c6_1771101844297.webm"
+    ]
+  },
+  {
+    "id": "rec_1771101801397_74b2fb73",
+    "startedAt": "2026-02-14T20:43:21.402Z",
+    "endedAt": "2026-02-14T20:43:29.197Z",
+    "createdBy": "detector",
+    "speakerWindows": [
+      {
+        "personTag": "Me",
+        "score": 0.36535003326292914
+      },
+      {
+        "personTag": "Partner",
+        "score": 0.2890156457994536
+      }
+    ],
+    "clipPaths": [
+      "data/awareness/clips/rec_1771101801397_74b2fb73_1771101809296.webm"
+    ]
+  }
+]
