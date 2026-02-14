@@ -151,3 +151,74 @@ export const PromptSummaryOutputSchema = z.object({
   promptSets: z.array(MomentPromptSetSchema).min(1),
   summary: DailySummarySchema
 });
+
+export const SpeakerHintSchema = z.object({
+  personTag: z.string().min(1),
+  speakingScore: z.number().min(0).max(1)
+});
+
+export const AwarenessSignalEventSchema = z.object({
+  source: z.enum(["microphone", "meta_glasses", "phone_camera"]),
+  timestamp: z.string().datetime(),
+  audioLevel: z.number().min(0).max(1),
+  presenceScore: z.number().min(0).max(1).optional(),
+  speakerHints: z.array(SpeakerHintSchema).max(8),
+  deviceId: z.string().optional()
+});
+
+export const SpeakerWindowSchema = z.object({
+  personTag: z.string().min(1),
+  score: z.number().min(0).max(1)
+});
+
+export const RecordingSessionSchema = z.object({
+  id: z.string().min(1),
+  startedAt: z.string().datetime(),
+  endedAt: z.string().datetime().optional(),
+  createdBy: z.enum(["detector", "manual"]),
+  speakerWindows: z.array(SpeakerWindowSchema).max(24),
+  clipPaths: z.array(z.string().min(1)).max(24)
+});
+
+export const ConversationAwarenessStateSchema = z.object({
+  listeningEnabled: z.boolean(),
+  isRecording: z.boolean(),
+  lastUpdatedAt: z.string().datetime(),
+  activeSessionId: z.string().optional(),
+  activeSpeakers: z.array(SpeakerWindowSchema).max(8),
+  rollingAudioLevels: z.array(z.number().min(0).max(1)).max(20),
+  recentSignals: z.array(AwarenessSignalEventSchema).max(20),
+  latestAction: z.enum([
+    "idle",
+    "awaiting_conversation",
+    "start_recording",
+    "continue_recording",
+    "stop_recording"
+  ])
+});
+
+export const AwarenessControlSchema = z.object({
+  listeningEnabled: z.boolean()
+});
+
+export const IngestSignalRequestSchema = z.object({
+  source: z.enum(["microphone", "meta_glasses", "phone_camera"]),
+  timestamp: z.string().datetime().optional(),
+  audioLevel: z.number().min(0).max(1).optional(),
+  presenceScore: z.number().min(0).max(1).optional(),
+  speakerHints: z.array(SpeakerHintSchema).optional(),
+  deviceId: z.string().optional()
+});
+
+export const MetaGlassesSignalPayloadSchema = z.object({
+  deviceId: z.string().min(1),
+  timestamp: z.string().datetime().optional(),
+  audioLevel: z.number().min(0).max(1).optional(),
+  speakerHints: z.array(SpeakerHintSchema).optional()
+});
+
+export const UploadRecordedClipSchema = z.object({
+  sessionId: z.string().min(1),
+  audioBase64: z.string().min(8),
+  mimeType: z.string().min(3).default("audio/webm")
+});
