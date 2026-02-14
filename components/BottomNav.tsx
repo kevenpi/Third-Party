@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Clock, Users, MessageSquare, Mic } from "lucide-react";
+import { Clock, Users, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/ui";
 
 export function BottomNav() {
@@ -12,7 +12,6 @@ export function BottomNav() {
     { href: "/timeline", icon: Clock, label: "Timeline", id: "timeline" },
     { href: "/people", icon: Users, label: "People", id: "people" },
     { href: "/agent", icon: MessageSquare, label: "Agent", id: "agent" },
-    { href: "/voice", icon: Mic, label: "Voice", id: "voice" },
   ];
 
   const isActive = (href: string) => {
@@ -21,9 +20,6 @@ export function BottomNav() {
     }
     if (href === "/people") {
       return pathname.startsWith("/people") || pathname.startsWith("/glaze");
-    }
-    if (href === "/voice") {
-      return pathname.startsWith("/voice");
     }
     return pathname.startsWith(href);
   };

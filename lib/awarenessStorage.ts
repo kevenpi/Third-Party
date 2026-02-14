@@ -194,3 +194,9 @@ export async function saveRecordedClip(
 
   return path.join("data", "awareness", "clips", filename);
 }
+
+/** Resolve persisted clip path to an absolute runtime path. */
+export function resolveRecordedClipPath(clipPath: string): string {
+  if (path.isAbsolute(clipPath)) return clipPath;
+  return path.join(CLIPS_DIR, path.basename(clipPath));
+}
