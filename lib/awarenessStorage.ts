@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { getDataRoot } from "@/lib/runtimePaths";
 import {
   AwarenessSignalEvent,
   ConversationAwarenessState,
@@ -11,7 +12,7 @@ import {
   RecordingSessionSchema
 } from "@/lib/schemas";
 
-const DATA_ROOT = path.join(process.cwd(), "data");
+const DATA_ROOT = getDataRoot();
 const AWARENESS_ROOT = path.join(DATA_ROOT, "awareness");
 const EVENTS_DIR = path.join(AWARENESS_ROOT, "events");
 const CLIPS_DIR = path.join(AWARENESS_ROOT, "clips");

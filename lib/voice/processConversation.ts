@@ -13,8 +13,6 @@ import * as storage from "./speakerStorage";
 import type { DiarizedSegment, TranscriptSegment } from "./types";
 
 const SPEAKER_MATCH_THRESHOLD = Number(process.env.SPEAKER_MATCH_THRESHOLD ?? "0.72");
-const DATA_ROOT = path.join(process.cwd(), "data", "voice");
-const CHUNKS_DIR = path.join(DATA_ROOT, "chunks");
 
 function getChunkAudioPath(storagePath: string): string {
   if (path.isAbsolute(storagePath)) return storagePath;

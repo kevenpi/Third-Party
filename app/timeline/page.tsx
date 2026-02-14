@@ -15,6 +15,9 @@ interface Conversation {
   date: string;
 }
 
+const PEOPLE = ["Arthur", "Tane", "Kevin"] as const;
+const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"] as const;
+
 function getRecentDates(count: number): string[] {
   const out: string[] = [];
   const today = new Date();
@@ -24,6 +27,31 @@ function getRecentDates(count: number): string[] {
     out.push(d.toISOString().slice(0, 10));
   }
   return out;
+}
+
+function archiveConversationsForDate(date: string): Conversation[] {
+  const hash = [...date].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const longMoment = hash % 3;
+  return TIMES.map((time, idx) => {
+    const person = PEOPLE[(hash + idx) % PEOPLE.length];
+    const isHighStress = idx === (hash + 2) % TIMES.length;
+    const isRepair = idx === (hash + 4) % TIMES.length;
+    const duration = isHighStress
+      ? 16 + ((hash + idx) % 11)
+      : isRepair
+        ? 20 + ((hash + idx) % 12)
+        : 4 + ((hash * 2 + idx) % 8);
+    return {
+      id: String((idx % 7) + 1),
+      time,
+      person,
+      duration,
+      size: idx === longMoment || isRepair ? "large" : duration > 10 ? "medium" : "small",
+      color: isHighStress ? "#B84A3A" : isRepair ? "#7AB89E" : idx % 2 === 0 ? "#6AAAB4" : "#C4B496",
+      colorName: isHighStress ? "stress-red" : isRepair ? "repair-sage" : "steady",
+      date
+    };
+  });
 }
 
 function getBubbleSize(size: "small" | "medium" | "large"): string {
@@ -138,7 +166,11 @@ export default function TimelinePage() {
     }
   }, [appOn]);
 
-  const orderedConversations = [...conversations].sort((a, b) => timeToMinutes(b.time) - timeToMinutes(a.time));
+  const displayConversations =
+    conversations.length === 0 && selectedDate !== today
+      ? archiveConversationsForDate(selectedDate)
+      : conversations;
+  const orderedConversations = [...displayConversations].sort((a, b) => timeToMinutes(b.time) - timeToMinutes(a.time));
   const todayDisplay = formatDateDisplay(selectedDate);
   const isToday = selectedDate === today;
 
@@ -206,7 +238,7 @@ export default function TimelinePage() {
           <div className="flex flex-col items-center justify-center min-h-[40vh]">
             <p className="text-[rgba(255,255,255,0.5)]">Loading…</p>
           </div>
-        ) : conversations.length === 0 ? (
+        ) : displayConversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
             <div 
               className="w-24 h-24 rounded-full pulse-glow"
@@ -272,7 +304,7 @@ export default function TimelinePage() {
             </div>
 
             {/* Timeline End Label */}
-            {conversations.length > 0 && (
+            {displayConversations.length > 0 && (
               <div className="mt-12 relative text-center">
                 <p className="text-xs text-[rgba(255,255,255,0.2)] italic">Start of your day</p>
               </div>

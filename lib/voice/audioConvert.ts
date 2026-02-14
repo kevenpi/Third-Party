@@ -7,6 +7,7 @@ import { execFile } from "child_process";
 import fs from "fs";
 import path from "path";
 import { promisify } from "util";
+import { getDataRoot } from "@/lib/runtimePaths";
 
 const execFileAsync = promisify(execFile);
 
@@ -36,7 +37,7 @@ function looksLikeWav(buffer: Buffer): boolean {
 export async function toWav16kMono(buffer: Buffer): Promise<Buffer | null> {
   if (buffer.length < 100) return null;
 
-  const tmpDir = path.join(process.cwd(), "data", "voice", "tmp");
+  const tmpDir = path.join(getDataRoot(), "voice", "tmp");
   if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
   const ext = looksLikeWav(buffer) ? ".wav" : ".webm";
   const inputPath = path.join(tmpDir, `in_${Date.now()}${ext}`);

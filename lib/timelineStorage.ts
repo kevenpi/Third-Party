@@ -6,8 +6,9 @@
 import { promises as fs } from "fs";
 import path from "path";
 import type { RecordingSession } from "@shared/types";
+import { getDataRoot } from "@/lib/runtimePaths";
 
-const DATA_ROOT = path.join(process.cwd(), "data");
+const DATA_ROOT = getDataRoot();
 const TIMELINE_DIR = path.join(DATA_ROOT, "timeline");
 
 export interface TimelineBubble {

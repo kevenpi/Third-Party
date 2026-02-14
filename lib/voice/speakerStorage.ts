@@ -7,8 +7,9 @@ import { randomUUID } from "crypto";
 import fs from "fs";
 import path from "path";
 import type { AudioChunk, Conversation, DiarizedSegment, Embedding, Speaker, TranscriptSegment } from "./types";
+import { getDataRoot } from "@/lib/runtimePaths";
 
-const DATA_ROOT = path.join(process.cwd(), "data", "voice");
+const DATA_ROOT = path.join(getDataRoot(), "voice");
 const CHUNKS_DIR = path.join(DATA_ROOT, "chunks");
 const CHUNKS_AUDIO_DIR = path.join(CHUNKS_DIR, "audio");
 const CONVOS_DIR = path.join(DATA_ROOT, "conversations");
