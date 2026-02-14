@@ -44,8 +44,9 @@ export async function POST(request: NextRequest) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const minSpeakers = Math.max(1, parseInt(String(formData.get("minSpeakerCount") || "1"), 10);
-    const maxSpeakers = Math.min(10, Math.max(1, parseInt(String(formData.get("maxSpeakerCount") || "6"), 10)));
+    const minSpeakers = Math.max(1, parseInt(String(formData.get("minSpeakerCount") || "1"), 10));
+    const maxSpeakerVal = parseInt(String(formData.get("maxSpeakerCount") || "6"), 10);
+    const maxSpeakers = Math.min(10, Math.max(1, maxSpeakerVal));
 
     const diarized = await transcribeWithDiarization(buffer, {
       languageCode: "en-US",

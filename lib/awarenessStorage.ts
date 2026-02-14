@@ -20,7 +20,7 @@ const SESSIONS_PATH = path.join(AWARENESS_ROOT, "sessions.json");
 
 export function createEmptyAwarenessState(): ConversationAwarenessState {
   return {
-    listeningEnabled: false,
+    listeningEnabled: true,
     isRecording: false,
     lastUpdatedAt: new Date().toISOString(),
     activeSessionId: undefined,

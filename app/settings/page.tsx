@@ -47,7 +47,7 @@ interface AwarenessSnapshot {
 
 const EMPTY_SNAPSHOT: AwarenessSnapshot = {
   state: {
-    listeningEnabled: false,
+    listeningEnabled: true,
     isRecording: false,
     lastUpdatedAt: new Date(0).toISOString(),
     activeSessionId: undefined,
@@ -155,6 +155,13 @@ export default function SettingsPage() {
       window.clearInterval(poll);
     };
   }, [loadSnapshot]);
+
+  // When app is on and listening is enabled (default), start detection so we're always detecting audio
+  useEffect(() => {
+    if (loading || !snapshot.state.listeningEnabled) return;
+    if (!monitorActive) void startMicMonitoring();
+    if (!cameraMonitorActive) void startCameraMonitoring();
+  }, [loading, snapshot.state.listeningEnabled, monitorActive, cameraMonitorActive, startMicMonitoring, startCameraMonitoring]);
 
   const stopBrowserRecording = useCallback(() => {
     const recorder = recorderRef.current;
@@ -548,10 +555,10 @@ export default function SettingsPage() {
         if (!cameraMonitorActive) {
           await startCameraMonitoring();
         }
-        setNotice("Conversation awareness listening is enabled.");
+        setNotice("Audio detection resumed. Microphone is always detecting while the app is on.");
       } else {
         stopMonitoring();
-        setNotice("Conversation awareness listening is disabled.");
+        setNotice("Audio detection paused.");
       }
     } catch (toggleError) {
       const message = toggleError instanceof Error ? toggleError.message : "Could not update listening state.";
@@ -634,10 +641,10 @@ export default function SettingsPage() {
       <div className="max-w-3xl mx-auto space-y-6">
         <header className="space-y-2">
           <h1 className="text-3xl text-[rgba(255,255,255,0.95)]" style={{ fontFamily: "Fraunces, serif" }}>
-            Conversation Awareness
+            Settings
           </h1>
           <p className="text-[rgba(255,255,255,0.65)]">
-            Detect live conversation, start recording automatically, and ingest Meta glasses speaker hints.
+            When the app is on, the microphone is always detecting conversation. Pause detection below if needed.
           </p>
           <p className="text-[rgba(255,255,255,0.5)] text-sm">
             Safety note: facial recognition is disabled. Speaker identity is based on consented person tags and speaking hints.
@@ -656,11 +663,17 @@ export default function SettingsPage() {
         ) : null}
 
         <section className="rounded-3xl border border-[rgba(255,255,255,0.08)] bg-[#1E1B18] p-6 space-y-4">
+          <h2 className="text-xl text-[rgba(255,255,255,0.92)]" style={{ fontFamily: "Fraunces, serif" }}>
+            Always-on audio detection
+          </h2>
+          <p className="text-[rgba(255,255,255,0.6)] text-sm">
+            Primary feature: while the app is on, the microphone is always detecting conversation and can start recording automatically. Use the button below to pause detection.
+          </p>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.2em] text-[rgba(255,255,255,0.5)]">Detector state</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-[rgba(255,255,255,0.5)]">Detection state</p>
               <p className="text-[rgba(255,255,255,0.9)] text-lg">
-                {snapshot.state.listeningEnabled ? "Listening" : "Idle"} | {snapshot.state.isRecording ? "Recording" : "Not recording"}
+                {snapshot.state.listeningEnabled ? "Detecting" : "Paused"} | {snapshot.state.isRecording ? "Recording" : "Not recording"}
               </p>
               <p className="text-[rgba(255,255,255,0.5)] text-sm">
                 Latest action: {snapshot.state.latestAction.replaceAll("_", " ")}
@@ -671,7 +684,7 @@ export default function SettingsPage() {
               disabled={busy || loading}
               className="px-5 py-3 rounded-full bg-gradient-to-r from-[#D4B07A] to-[#E8C97A] text-[#12110F] font-medium disabled:opacity-60"
             >
-              {snapshot.state.listeningEnabled ? "Stop listening" : "Start listening"}
+              {snapshot.state.listeningEnabled ? "Pause detection" : "Resume detection"}
             </button>
           </div>
 

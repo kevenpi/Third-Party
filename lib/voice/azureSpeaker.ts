@@ -61,7 +61,7 @@ export async function addEnrollment(
     {
       method: "POST",
       headers: getHeadersAudio(),
-      body: audioBuffer,
+      body: audioBuffer as unknown as BodyInit,
     }
   );
   if (!res.ok) {
@@ -106,7 +106,7 @@ export async function identifySpeaker(
     {
       method: "POST",
       headers: getHeadersAudio(),
-      body: audioBuffer,
+      body: audioBuffer as unknown as BodyInit,
     }
   );
   if (!res.ok) {

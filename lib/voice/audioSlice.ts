@@ -42,3 +42,33 @@ export function extractSpeakerAudioBuffers(
   }
   return out;
 }
+
+/** Segment with start/end in ms and string speaker (OpenAI diarization). */
+export type SegmentMs = { speaker: string; start_ms: number; end_ms: number };
+
+/**
+ * Extract per-speaker audio from buffer using segments with start_ms/end_ms.
+ * Returns one concatenated buffer per local speaker label.
+ */
+export function extractSpeakerBuffersBySegmentMs(
+  buffer: Buffer,
+  segments: SegmentMs[],
+  sampleRateHz: number = 16000
+): Map<string, Buffer> {
+  const bySpeaker = new Map<string, Buffer[]>();
+  for (const seg of segments) {
+    const startSec = seg.start_ms / 1000;
+    const endSec = seg.end_ms / 1000;
+    if (endSec <= startSec) continue;
+    const chunk = sliceAudioByTimeRange(buffer, startSec, endSec, sampleRateHz);
+    if (chunk.length < 1600) continue; // <0.05s
+    const list = bySpeaker.get(seg.speaker) ?? [];
+    list.push(chunk);
+    bySpeaker.set(seg.speaker, list);
+  }
+  const out = new Map<string, Buffer>();
+  for (const [speaker, chunks] of bySpeaker) {
+    out.set(speaker, Buffer.concat(chunks));
+  }
+  return out;
+}

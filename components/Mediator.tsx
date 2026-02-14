@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Sparkles, Heart, Compass, Flower2 } from 'lucide-react';
-import { mediateConflict } from '../services/geminiService';
+import { mediateConflict } from '../services/claudeService';
 
 const MOCK_MOMENT = [
   { speaker: 'Jordan', text: 'I feel like my perspective got lost in that discussion.', tone: 'Gentle Concern' },

@@ -1,11 +1,92 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Mic, Upload, ArrowLeft, Loader2, User } from "lucide-react";
+import { Mic, Upload, ArrowLeft, Loader2, User, Users, Edit2, Check, X } from "lucide-react";
 import { BottomNav } from "@/components/BottomNav";
 
 const VOICE_STORAGE_KEY = "thirdparty_enrolled_speakers";
+
+function SpeakerRow({
+  speaker,
+  editingSpeakerId,
+  editingName,
+  setEditingSpeakerId,
+  setEditingName,
+  onSave,
+}: {
+  speaker: { id: string; display_name: string | null };
+  editingSpeakerId: string | null;
+  editingName: string;
+  setEditingSpeakerId: (id: string | null) => void;
+  setEditingName: (n: string) => void;
+  onSave: (id: string, name: string) => Promise<void>;
+}) {
+  const [convoIds, setConvoIds] = useState<string[] | null>(null);
+  const isEditing = editingSpeakerId === speaker.id;
+  const display = speaker.display_name || `Speaker ${speaker.id.slice(0, 8)}`;
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const r = await fetch(`/api/voice/conversations/by-speaker?speakerId=${encodeURIComponent(speaker.id)}`);
+        const d = await r.json();
+        if (!cancelled && r.ok && Array.isArray(d.conversationIds)) setConvoIds(d.conversationIds);
+      } catch {
+        if (!cancelled) setConvoIds([]);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [speaker.id]);
+
+  return (
+    <li className="flex flex-col gap-2 p-3 rounded-lg bg-[#1E1B18] border border-[rgba(255,255,255,0.06)]">
+      <div className="flex items-center justify-between gap-2">
+        {isEditing ? (
+          <>
+            <input
+              type="text"
+              value={editingName}
+              onChange={(e) => setEditingName(e.target.value)}
+              placeholder="Name"
+              className="flex-1 px-2 py-1 rounded bg-[#12110F] text-[rgba(255,255,255,0.9)] text-sm border border-[rgba(255,255,255,0.2)]"
+              autoFocus
+            />
+            <button
+              onClick={() => onSave(speaker.id, editingName)}
+              className="p-1.5 rounded text-[#7AB89E] hover:bg-[#7AB89E]/20"
+            >
+              <Check className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => { setEditingSpeakerId(null); setEditingName(""); }}
+              className="p-1.5 rounded text-[rgba(255,255,255,0.5)] hover:bg-white/10"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </>
+        ) : (
+          <>
+            <span className="text-sm font-medium text-[#D4B07A]">{display}</span>
+            <button
+              onClick={() => { setEditingSpeakerId(speaker.id); setEditingName(speaker.display_name || ""); }}
+              className="p-1.5 rounded text-[rgba(255,255,255,0.5)] hover:bg-white/10"
+              title="Edit name"
+            >
+              <Edit2 className="w-3.5 h-3.5" />
+            </button>
+          </>
+        )}
+      </div>
+      {convoIds !== null && (
+        <p className="text-xs text-[rgba(255,255,255,0.5)]">
+          {convoIds.length} conversation{convoIds.length !== 1 ? "s" : ""}
+        </p>
+      )}
+    </li>
+  );
+}
 
 function getEnrolledSpeakers(): { profileId: string; personId: string; name?: string }[] {
   if (typeof window === "undefined") return [];
@@ -35,9 +116,55 @@ export default function VoicePage() {
     error?: string;
   } | null>(null);
   const [identifySpeakers, setIdentifySpeakers] = useState(true);
+  const [useOpenAIPipeline, setUseOpenAIPipeline] = useState(true); // OpenAI diarize + speaker clustering
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 
+  const [speakers, setSpeakers] = useState<{ id: string; display_name: string | null; last_seen_at?: string }[]>([]);
+  const [embedderStatus, setEmbedderStatus] = useState<{ configured: boolean; ok: boolean; model?: string } | null>(null);
+  const [editingSpeakerId, setEditingSpeakerId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState("");
+
   const enrolled = getEnrolledSpeakers();
+
+  const loadSpeakers = async () => {
+    try {
+      const r = await fetch("/api/voice/speakers");
+      const d = await r.json();
+      if (r.ok && Array.isArray(d.speakers)) setSpeakers(d.speakers);
+    } catch {
+      /* ignore */
+    }
+  };
+  const loadEmbedderStatus = async () => {
+    try {
+      const r = await fetch("/api/voice/embedder-status");
+      const d = await r.json();
+      setEmbedderStatus(d);
+    } catch {
+      setEmbedderStatus({ configured: false, ok: false });
+    }
+  };
+  useEffect(() => {
+    loadSpeakers();
+    loadEmbedderStatus();
+  }, []);
+
+  const saveSpeakerName = async (speakerId: string, display_name: string) => {
+    try {
+      const r = await fetch("/api/voice/speakers", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ speakerId, display_name: display_name.trim() || "" }),
+      });
+      if (r.ok) {
+        setEditingSpeakerId(null);
+        setEditingName("");
+        await loadSpeakers();
+      }
+    } catch {
+      /* ignore */
+    }
+  };
 
   const startRecording = async () => {
     try {
@@ -80,6 +207,30 @@ export default function VoicePage() {
     setResult(null);
 
     try {
+      if (useOpenAIPipeline) {
+        const form = new FormData();
+        form.append("audio", audio, file?.name || "recording.webm");
+        const res = await fetch("/api/voice/processOpenAI", { method: "POST", body: form });
+        const data = await res.json();
+        if (!res.ok) {
+          setResult({ segments: [], error: data.error || "Request failed" });
+          return;
+        }
+        const segs = (data.segments ?? []).map((s: { text: string; speaker_display_name?: string | null; speaker_global_id?: string | null }) => ({
+          speakerTag: 0,
+          text: s.text,
+          identifiedPersonId: s.speaker_display_name ?? s.speaker_global_id ?? null,
+          confidence: null,
+        }));
+        setResult({
+          segments: segs,
+          fullTranscript: segs.map((s: { text: string }) => s.text).join(" "),
+          speakerCount: data.speakers?.length ?? 0,
+        });
+        await loadSpeakers();
+        return;
+      }
+
       const form = new FormData();
       form.append("audio", audio, file?.name || "recording.webm");
       form.append("minSpeakerCount", "1");
@@ -139,9 +290,20 @@ export default function VoicePage() {
 
       <div className="max-w-md mx-auto px-4 py-6 space-y-6">
         <p className="text-sm text-[rgba(255,255,255,0.6)]">
-          Upload or record a conversation. We transcribe with speaker diarization (Google) and optionally identify
-          speakers by voice (Azure) if you&apos;ve enrolled people.
+          Upload or record. Use OpenAI for diarization + speaker memory (clustering), or Google + Azure for enrolled-only identification.
         </p>
+
+        <label className="flex items-center gap-3 warm-card cursor-pointer">
+          <input
+            type="checkbox"
+            checked={useOpenAIPipeline}
+            onChange={(e) => setUseOpenAIPipeline(e.target.checked)}
+            className="rounded border-[rgba(255,255,255,0.3)]"
+          />
+          <span className="text-sm text-[rgba(255,255,255,0.9)]">
+            OpenAI + speaker memory (diarize then cluster voices across sessions)
+          </span>
+        </label>
 
         {/* Mode toggle */}
         <div className="flex rounded-xl bg-[#1E1B18] border border-[rgba(255,255,255,0.06)] p-1">
@@ -215,7 +377,7 @@ export default function VoicePage() {
           </div>
         )}
 
-        {enrolled.length > 0 && (
+        {!useOpenAIPipeline && enrolled.length > 0 && (
           <label className="flex items-center gap-3 warm-card cursor-pointer">
             <input
               type="checkbox"
@@ -270,6 +432,38 @@ export default function VoicePage() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {useOpenAIPipeline && (speakers.length > 0 || embedderStatus) && (
+          <div className="warm-card space-y-4">
+            <p className="text-xs uppercase tracking-wider text-[#8A7E72] flex items-center gap-2">
+              <Users className="w-4 h-4" /> Speakers &amp; conversations
+            </p>
+            {embedderStatus && (
+              <p className="text-xs text-[rgba(255,255,255,0.5)]">
+                Voice ID: {embedderStatus.configured && embedderStatus.ok
+                  ? `ECAPA-TDNN (${embedderStatus.model ?? "active"})`
+                  : embedderStatus.configured
+                    ? "Service unreachable (using placeholder)"
+                    : "Placeholder (set SPEAKER_EMBEDDER_URL for real IDs)"}
+              </p>
+            )}
+            {speakers.length > 0 && (
+              <ul className="space-y-3">
+                {speakers.map((s) => (
+                  <SpeakerRow
+                    key={s.id}
+                    speaker={s}
+                    editingSpeakerId={editingSpeakerId}
+                    editingName={editingName}
+                    setEditingSpeakerId={setEditingSpeakerId}
+                    setEditingName={setEditingName}
+                    onSave={saveSpeakerName}
+                  />
+                ))}
+              </ul>
+            )}
           </div>
         )}
 
