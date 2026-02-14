@@ -156,13 +156,6 @@ export default function SettingsPage() {
     };
   }, [loadSnapshot]);
 
-  // When app is on and listening is enabled (default), start detection so we're always detecting audio
-  useEffect(() => {
-    if (loading || !snapshot.state.listeningEnabled) return;
-    if (!monitorActive) void startMicMonitoring();
-    if (!cameraMonitorActive) void startCameraMonitoring();
-  }, [loading, snapshot.state.listeningEnabled, monitorActive, cameraMonitorActive, startMicMonitoring, startCameraMonitoring]);
-
   const stopBrowserRecording = useCallback(() => {
     const recorder = recorderRef.current;
     if (!recorder) {
@@ -526,6 +519,13 @@ export default function SettingsPage() {
       setError(message);
     }
   }, [ingestCameraSignal]);
+
+  // When app is on and listening is enabled (default), start detection so we're always detecting audio
+  useEffect(() => {
+    if (loading || !snapshot.state.listeningEnabled) return;
+    if (!monitorActive) void startMicMonitoring();
+    if (!cameraMonitorActive) void startCameraMonitoring();
+  }, [loading, snapshot.state.listeningEnabled, monitorActive, cameraMonitorActive, startMicMonitoring, startCameraMonitoring]);
 
   const toggleListening = useCallback(async () => {
     setBusy(true);
