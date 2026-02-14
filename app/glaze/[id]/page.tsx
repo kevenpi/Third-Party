@@ -23,50 +23,61 @@ const GLAZE_DATA: Record<string, {
   insights: Insight[];
   conversations: Conversation[];
 }> = {
-  alex: {
-    name: "Alex",
-    description: "Alex is your partner. 847 conversations over 4 months. Your dynamic ranges from deeply connected to intensely passionate. You talk most mornings and evenings. Lately you've been navigating a recurring topic around weekend planning that surfaces about once a week.",
-    stats: "4 months · 847 conversations · talked today",
-    colorBand: [
-      "#7AB89E", "#6AAAB4", "#C4B496", "#D4B07A", "#7AB89E",
-      "#6AAAB4", "#D4806A", "#C4684A", "#B84A3A", "#7AB89E",
-      "#6AAAB4", "#C4B496", "#D4B07A", "#D4806A", "#B84A3A",
-      "#7AB89E", "#6AAAB4", "#7AB89E", "#C4B496", "#D4B07A",
-    ],
+  arthur: {
+    name: "Arthur",
+    description: "Arthur has become one of your closest daily anchors. Conversations are direct and emotionally honest, with strong follow-through after conflict.",
+    stats: "2 weeks · 46 conversations · talked today",
+    colorBand: ["#6AAAB4", "#C4B496", "#B84A3A", "#7AB89E", "#6AAAB4", "#7AB89E", "#D4B07A"],
     insights: [
-      {
-        text: "You tend to lead conversations — you speak about 60% of the time. This has been shifting. Alex is speaking more this month.",
-        color: "#7AB89E",
-      },
-      {
-        text: "A topic around finances has come up 3 times recently. Each time, stress rises at the same point.",
-        color: "#D4806A",
-      },
-      {
-        text: "Your repair rate is strong. When things get tense, one of you reaches out within hours.",
-        color: "#7AB89E",
-      },
-      {
-        text: "Morning conversations are consistently your warmest.",
-        color: "#6AAAB4",
-      },
+      { text: "You and Arthur recover quickly after tense moments when either of you names one concrete need.", color: "#7AB89E" },
+      { text: "Midday conversations tend to carry the most stress load across the past week.", color: "#B84A3A" },
+      { text: "Evening check-ins have become a consistent repair ritual.", color: "#6AAAB4" },
     ],
     conversations: [
-      { date: "2026-02-14", color: "#7AB89E", size: "small" },
-      { date: "2026-02-14", color: "#B84A3A", size: "large" },
       { date: "2026-02-14", color: "#7AB89E", size: "large" },
       { date: "2026-02-13", color: "#6AAAB4", size: "medium" },
-      { date: "2026-02-13", color: "#C4B496", size: "small" },
-      { date: "2026-02-12", color: "#D4B07A", size: "medium" },
-      { date: "2026-02-12", color: "#D4806A", size: "medium" },
-      { date: "2026-02-11", color: "#7AB89E", size: "large" },
-      { date: "2026-02-10", color: "#6AAAB4", size: "medium" },
-      { date: "2026-02-09", color: "#B84A3A", size: "large" },
-      { date: "2026-02-08", color: "#7AB89E", size: "small" },
-      { date: "2026-02-07", color: "#C4B496", size: "medium" },
-      { date: "2026-02-06", color: "#D4B07A", size: "small" },
-      { date: "2026-02-05", color: "#7AB89E", size: "large" },
+      { date: "2026-02-11", color: "#B84A3A", size: "large" },
+      { date: "2026-02-08", color: "#D4B07A", size: "small" },
+      { date: "2026-02-05", color: "#7AB89E", size: "medium" },
+      { date: "2026-02-01", color: "#6AAAB4", size: "small" },
+    ],
+  },
+  tane: {
+    name: "Tane",
+    description: "Tane is a steady friend connection with mostly calm emotional tone and occasional friction when schedules change suddenly.",
+    stats: "2 weeks · 39 conversations · talked today",
+    colorBand: ["#C4B496", "#6AAAB4", "#7AB89E", "#C4B496", "#B84A3A", "#7AB89E", "#6AAAB4"],
+    insights: [
+      { text: "Tane conversations are shortest in the morning and longest after work.", color: "#6AAAB4" },
+      { text: "Scheduling mix-ups trigger stress spikes, but repair language appears within minutes.", color: "#B84A3A" },
+      { text: "Shared humor is your most reliable de-escalation pattern with Tane.", color: "#7AB89E" },
+    ],
+    conversations: [
+      { date: "2026-02-14", color: "#6AAAB4", size: "medium" },
+      { date: "2026-02-12", color: "#7AB89E", size: "large" },
+      { date: "2026-02-10", color: "#B84A3A", size: "medium" },
+      { date: "2026-02-07", color: "#C4B496", size: "small" },
       { date: "2026-02-04", color: "#6AAAB4", size: "medium" },
+      { date: "2026-02-02", color: "#7AB89E", size: "small" },
+    ],
+  },
+  kevin: {
+    name: "Kevin",
+    description: "Kevin brings practical conversations that stay grounded; stress appears around unresolved logistics and clears with explicit next steps.",
+    stats: "2 weeks · 33 conversations · talked yesterday",
+    colorBand: ["#D4B07A", "#C4B496", "#B84A3A", "#D4B07A", "#7AB89E", "#6AAAB4", "#C4B496"],
+    insights: [
+      { text: "Kevin interactions are most productive when you summarize action items before ending.", color: "#D4B07A" },
+      { text: "Late-afternoon conversations show the highest chance of defensive tone.", color: "#B84A3A" },
+      { text: "When you reflect back his point first, the conversation stays collaborative.", color: "#7AB89E" },
+    ],
+    conversations: [
+      { date: "2026-02-13", color: "#D4B07A", size: "large" },
+      { date: "2026-02-11", color: "#C4B496", size: "small" },
+      { date: "2026-02-09", color: "#B84A3A", size: "medium" },
+      { date: "2026-02-06", color: "#7AB89E", size: "medium" },
+      { date: "2026-02-03", color: "#6AAAB4", size: "small" },
+      { date: "2026-02-01", color: "#D4B07A", size: "small" },
     ],
   },
 };

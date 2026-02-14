@@ -16,7 +16,7 @@ const Mediator: React.FC = () => {
     setAnalyzing(true);
     try {
       const result = await mediateConflict(MOCK_MOMENT);
-      setResolution(result);
+      setResolution(result ?? null);
     } catch (err) {
       console.error(err);
     } finally {

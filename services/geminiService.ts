@@ -23,7 +23,7 @@ export const analyzeInteractionVibes = async (transcript: string) => {
       }
     }
   });
-  return JSON.parse(response.text);
+  return JSON.parse(response.text ?? "{}");
 };
 
 export const mediateConflict = async (transcript: any[]) => {
@@ -35,7 +35,7 @@ export const mediateConflict = async (transcript: any[]) => {
       thinkingConfig: { thinkingBudget: 2000 }
     }
   });
-  return response.text;
+  return response.text ?? "";
 };
 
 export const generateDailyReflection = async (daySummary: string) => {
@@ -43,5 +43,5 @@ export const generateDailyReflection = async (daySummary: string) => {
     model: 'gemini-3-flash-preview',
     contents: `Based on today's relational data, generate a reflective evening check-in question for the user. Data: ${daySummary}`,
   });
-  return response.text;
+  return response.text ?? "";
 };

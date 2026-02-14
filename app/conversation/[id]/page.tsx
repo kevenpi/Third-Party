@@ -22,7 +22,7 @@ const CONVERSATION_DATA: Record<string, {
   keyMoments: KeyMoment[];
 }> = {
   "1": {
-    person: "Alex",
+    person: "Arthur",
     date: "2026-02-14",
     time: "7:08 AM",
     duration: 180,
@@ -33,7 +33,7 @@ const CONVERSATION_DATA: Record<string, {
     ],
   },
   "2": {
-    person: "Sam",
+    person: "Kevin",
     date: "2026-02-14",
     time: "9:12 AM",
     duration: 480,
@@ -44,7 +44,7 @@ const CONVERSATION_DATA: Record<string, {
     ],
   },
   "3": {
-    person: "Jordan",
+    person: "Tane",
     date: "2026-02-14",
     time: "10:30 AM",
     duration: 1320,
@@ -56,12 +56,12 @@ const CONVERSATION_DATA: Record<string, {
     ],
   },
   "4": {
-    person: "Alex",
+    person: "Arthur",
     date: "2026-02-14",
     time: "12:45 PM",
     duration: 1080, // 18 minutes
     color: "#B84A3A",
-    aiNarrative: "This started warmly — you were both laughing about something from yesterday. Around the 4-minute mark, the topic shifted to weekend plans and the energy changed. You spoke with a lot of conviction and held most of the conversation from that point. Alex got quieter, their responses shorter. By the end, something was left unfinished. There was a brief repair attempt around 15 minutes, but it felt incomplete.",
+    aiNarrative: "This started warmly — you were both laughing about something from yesterday. Around the 4-minute mark, the topic shifted to weekend plans and the energy changed. You spoke with a lot of conviction and held most of the conversation from that point. Arthur got quieter, responses shorter. By the end, something was left unfinished. There was a brief repair attempt around 15 minutes, but it felt incomplete.",
     keyMoments: [
       { id: "1", timestamp: 30, timeDisplay: "0:30", description: "Warm start", color: "#D4B07A" },
       { id: "2", timestamp: 225, timeDisplay: "3:45", description: "Topic shifted to weekend plans", color: "#D4806A" },
@@ -71,7 +71,7 @@ const CONVERSATION_DATA: Record<string, {
     ],
   },
   "5": {
-    person: "Sam",
+    person: "Kevin",
     date: "2026-02-14",
     time: "2:15 PM",
     duration: 120,
@@ -80,19 +80,19 @@ const CONVERSATION_DATA: Record<string, {
     keyMoments: [],
   },
   "6": {
-    person: "Mom",
+    person: "Kevin",
     date: "2026-02-14",
     time: "4:30 PM",
     duration: 840,
     color: "#D4B07A",
-    aiNarrative: "A warm call with your mother. She asked about your day, shared news from home. There was a moment where she expressed worry about you — that's her way of showing love. You reassured her. Mostly warm, with that familiar maternal concern woven through.",
+    aiNarrative: "A practical call with Kevin. You both reviewed updates and checked assumptions. There was a moment where concern showed up about timeline risk. You reassured each other and ended with clear next steps.",
     keyMoments: [
       { id: "1", timestamp: 300, timeDisplay: "5:00", description: "She expressed worry", color: "#D4B07A" },
       { id: "2", timestamp: 480, timeDisplay: "8:00", description: "You reassured her", color: "#7AB89E" },
     ],
   },
   "7": {
-    person: "Alex",
+    person: "Arthur",
     date: "2026-02-14",
     time: "8:00 PM",
     duration: 2100,

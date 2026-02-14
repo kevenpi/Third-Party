@@ -15,78 +15,55 @@ interface Conversation {
   date: string;
 }
 
-const SAMPLE_CONVERSATIONS: Conversation[] = [
-  {
-    id: "1",
-    time: "7:08 AM",
-    person: "Alex",
-    duration: 3,
-    size: "small",
-    color: "#7AB89E",
-    colorName: "calm-sage",
-    date: "2026-02-14",
-  },
-  {
-    id: "2",
-    time: "9:12 AM",
-    person: "Sam",
-    duration: 8,
-    size: "medium",
-    color: "#C4B496",
-    colorName: "neutral-sand",
-    date: "2026-02-14",
-  },
-  {
-    id: "3",
-    time: "10:30 AM",
-    person: "Jordan",
-    duration: 22,
-    size: "large",
-    color: "#6AAAB4",
-    colorName: "calm-teal",
-    date: "2026-02-14",
-  },
-  {
-    id: "4",
-    time: "12:45 PM",
-    person: "Alex",
-    duration: 18,
-    size: "large",
-    color: "#B84A3A",
-    colorName: "stress-red",
-    date: "2026-02-14",
-  },
-  {
-    id: "5",
-    time: "2:15 PM",
-    person: "Sam",
-    duration: 2,
-    size: "small",
-    color: "#C4B496",
-    colorName: "neutral-sand",
-    date: "2026-02-14",
-  },
-  {
-    id: "6",
-    time: "4:30 PM",
-    person: "Mom",
-    duration: 14,
-    size: "medium",
-    color: "#D4B07A",
-    colorName: "warm-amber",
-    date: "2026-02-14",
-  },
-  {
-    id: "7",
-    time: "8:00 PM",
-    person: "Alex",
-    duration: 35,
-    size: "large",
-    color: "#7AB89E",
-    colorName: "peaceful-sage",
-    date: "2026-02-14",
-  },
+const DATES = [
+  "2026-02-14",
+  "2026-02-13",
+  "2026-02-12",
+  "2026-02-11",
+  "2026-02-10",
+  "2026-02-09",
+  "2026-02-08",
+  "2026-02-07",
+  "2026-02-06",
+  "2026-02-05",
+  "2026-02-04",
+  "2026-02-03",
+  "2026-02-02",
+  "2026-02-01",
 ];
+
+const PEOPLE = ["Arthur", "Tane", "Kevin"] as const;
+const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"] as const;
+
+function buildDayConversations(date: string, dayIndex: number): Conversation[] {
+  const longMoment = dayIndex % 3;
+  return TIMES.map((time, idx) => {
+    const person = PEOPLE[(dayIndex + idx) % PEOPLE.length];
+    const isHighStress = idx === (dayIndex + 2) % TIMES.length;
+    const isRepair = idx === (dayIndex + 4) % TIMES.length;
+
+    const duration = isHighStress
+      ? 16 + ((dayIndex + idx) % 11)
+      : isRepair
+        ? 20 + ((dayIndex + idx) % 12)
+        : 4 + ((dayIndex * 2 + idx) % 8);
+
+    return {
+      id: String((idx % 7) + 1),
+      time,
+      person,
+      duration,
+      size: idx === longMoment || isRepair ? "large" : duration > 10 ? "medium" : "small",
+      color: isHighStress ? "#B84A3A" : isRepair ? "#7AB89E" : idx % 2 === 0 ? "#6AAAB4" : "#C4B496",
+      colorName: isHighStress ? "stress-red" : isRepair ? "repair-sage" : "steady",
+      date,
+    };
+  });
+}
+
+const CONVERSATIONS_BY_DATE: Record<string, Conversation[]> = Object.fromEntries(
+  DATES.map((date, idx) => [date, buildDayConversations(date, idx)])
+);
 
 function getBubbleSize(size: "small" | "medium" | "large"): string {
   switch (size) {
@@ -114,27 +91,24 @@ function formatDateShort(dateStr: string): string {
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-function getDatePills(): string[] {
-  const pills: string[] = [];
-  const today = new Date();
-  for (let i = 0; i < 14; i++) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    pills.push(date.toISOString().slice(0, 10));
-  }
-  return pills;
+function timeToMinutes(timeLabel: string): number {
+  const [clock, period] = timeLabel.split(" ");
+  const [rawHour, rawMinute] = clock.split(":").map(Number);
+  const hour12 = rawHour % 12;
+  const hour24 = period === "PM" ? hour12 + 12 : hour12;
+  return hour24 * 60 + rawMinute;
 }
 
 export default function TimelinePage() {
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState<string>(() => {
-    return new Date().toISOString().slice(0, 10);
-  });
-  const [conversations, setConversations] = useState<Conversation[]>(SAMPLE_CONVERSATIONS);
-  const [dates] = useState<string[]>(getDatePills());
+  const [selectedDate, setSelectedDate] = useState<string>(DATES[0]);
+  const [dates] = useState<string[]>(DATES);
+
+  const conversations = CONVERSATIONS_BY_DATE[selectedDate] ?? [];
+  const orderedConversations = [...conversations].sort((a, b) => timeToMinutes(b.time) - timeToMinutes(a.time));
 
   const todayDisplay = formatDateDisplay(selectedDate);
-  const isToday = selectedDate === new Date().toISOString().slice(0, 10);
+  const isToday = selectedDate === DATES[0];
 
   const handleBubbleClick = (conversation: Conversation) => {
     router.push(`/conversation/${conversation.id}`);
@@ -196,17 +170,17 @@ export default function TimelinePage() {
             {/* Thread Line */}
             <div className="thread-line" />
 
-            {/* Start of Day Label */}
+            {/* Timeline Start Label */}
             <div className="relative mb-8 text-center">
-              <p className="text-xs text-[rgba(255,255,255,0.3)] italic">Start of your day</p>
+              <p className="text-xs text-[rgba(255,255,255,0.3)] italic">Most recent</p>
             </div>
 
             {/* Conversation Bubbles */}
             <div className="space-y-16">
-              {conversations.map((conv, index) => {
+              {orderedConversations.map((conv, index) => {
                 const sizeClass = getBubbleSize(conv.size);
                 const isLeft = index % 2 === 0;
-                const isLast = index === conversations.length - 1;
+                const isMostRecent = index === 0;
 
                 return (
                   <div key={conv.id} className="relative flex items-center min-h-[80px]">
@@ -223,7 +197,7 @@ export default function TimelinePage() {
                     <div className="absolute left-1/2 -translate-x-1/2 z-10">
                       <button
                         onClick={() => handleBubbleClick(conv)}
-                        className={`bubble ${sizeClass} cursor-pointer ${isLast && isToday ? "pulse-glow" : ""}`}
+                        className={`bubble ${sizeClass} cursor-pointer ${isMostRecent && isToday ? "pulse-glow" : ""}`}
                         style={{
                           backgroundColor: conv.color,
                           color: conv.color,
@@ -244,18 +218,10 @@ export default function TimelinePage() {
               })}
             </div>
 
-            {/* Time Anchors */}
+            {/* Timeline End Label */}
             {conversations.length > 0 && (
-              <div className="mt-16 space-y-12">
-                <div className="relative text-center">
-                  <p className="text-xs text-[rgba(255,255,255,0.2)]">Morning</p>
-                </div>
-                <div className="relative text-center">
-                  <p className="text-xs text-[rgba(255,255,255,0.2)]">Afternoon</p>
-                </div>
-                <div className="relative text-center">
-                  <p className="text-xs text-[rgba(255,255,255,0.2)]">Evening</p>
-                </div>
+              <div className="mt-12 relative text-center">
+                <p className="text-xs text-[rgba(255,255,255,0.2)] italic">Start of your day</p>
               </div>
             )}
           </div>
