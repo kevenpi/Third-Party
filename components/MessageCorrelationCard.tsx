@@ -177,7 +177,7 @@ export default function MessageCorrelationCard({
           fontFamily: "Plus Jakarta Sans, sans-serif",
         }}
       >
-        — {c.sender}
+        - {c.sender}
       </p>
 
       {/* Progress bars */}
