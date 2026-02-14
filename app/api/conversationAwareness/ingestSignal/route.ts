@@ -17,6 +17,9 @@ export async function POST(request: Request) {
       timestamp: body.data.timestamp,
       audioLevel: body.data.audioLevel,
       presenceScore: body.data.presenceScore,
+      transcriptText: body.data.transcriptText,
+      transcriptWords: body.data.transcriptWords,
+      transcriptConfidence: body.data.transcriptConfidence,
       speakerHints: body.data.speakerHints,
       deviceId: body.data.deviceId
     });

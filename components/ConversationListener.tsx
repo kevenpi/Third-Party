@@ -26,18 +26,17 @@ export function ConversationListener() {
   const analyserRef = useRef<AnalyserNode | null>(null);
   const intervalRef = useRef<number | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
-  const chunksRef = useRef<BlobPart[]>([]);
-  const sessionIdRef = useRef<string | null>(null);
+  const detectorSessionIdRef = useRef<string | null>(null);
+  const detectorRecordingRef = useRef<boolean>(false);
   const mimeTypeRef = useRef<string>("audio/webm");
   const transcriptTextRef = useRef<string>("");
   const transcriptWordsRef = useRef<number>(0);
   const transcriptConfidenceRef = useRef<number>(0);
   const recognitionRef = useRef<any>(null);
+  const noiseFloorRef = useRef<number>(0.01);
 
-  const uploadClip = useCallback(async (sessionId: string) => {
-    if (chunksRef.current.length === 0) return;
-    const blob = new Blob(chunksRef.current, { type: mimeTypeRef.current });
-    chunksRef.current = [];
+  const uploadClip = useCallback(async (sessionId: string, blob: Blob) => {
+    if (blob.size === 0) return;
     try {
       const audioBase64 = await blobToBase64(blob);
       await fetch("/api/conversationAwareness/uploadClip", {
@@ -58,37 +57,32 @@ export function ConversationListener() {
     }
   }, []);
 
-  const startBrowserRecording = useCallback(
-    (sessionId: string) => {
-      const stream = streamRef.current;
-      if (!stream) return;
-      const existing = recorderRef.current;
-      if (existing && existing.state === "recording") return;
+  const startContinuousRecording = useCallback(() => {
+    const stream = streamRef.current;
+    if (!stream) return;
+    const existing = recorderRef.current;
+    if (existing && existing.state === "recording") return;
 
-      chunksRef.current = [];
-      sessionIdRef.current = sessionId;
-
-      let recorder: MediaRecorder;
-      try {
-        recorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
-      } catch {
-        recorder = new MediaRecorder(stream);
-      }
-      mimeTypeRef.current = recorder.mimeType || "audio/webm";
-      recorder.ondataavailable = (event: BlobEvent) => {
-        if (event.data.size > 0) chunksRef.current.push(event.data);
-      };
-      recorder.onstop = () => {
-        const sid = sessionIdRef.current;
-        recorderRef.current = null;
-        sessionIdRef.current = null;
-        if (sid) void uploadClip(sid);
-      };
-      recorder.start(1000);
-      recorderRef.current = recorder;
-    },
-    [uploadClip]
-  );
+    let recorder: MediaRecorder;
+    try {
+      recorder = new MediaRecorder(stream, { mimeType: "audio/webm" });
+    } catch {
+      recorder = new MediaRecorder(stream);
+    }
+    mimeTypeRef.current = recorder.mimeType || "audio/webm";
+    recorder.ondataavailable = (event: BlobEvent) => {
+      if (!event.data || event.data.size === 0) return;
+      const sid = detectorSessionIdRef.current;
+      if (!detectorRecordingRef.current || !sid) return;
+      void uploadClip(sid, event.data);
+    };
+    recorder.onstop = () => {
+      recorderRef.current = null;
+    };
+    // 5-second chunks: keep conversation chunks, discard non-conversation chunks.
+    recorder.start(5000);
+    recorderRef.current = recorder;
+  }, [uploadClip]);
 
   const stopBrowserRecording = useCallback(() => {
     const recorder = recorderRef.current;
@@ -103,6 +97,14 @@ export function ConversationListener() {
   const ingestMic = useCallback(async () => {
     const analyser = analyserRef.current;
     if (!analyser) return;
+    const ctx = audioContextRef.current;
+    if (ctx?.state === "suspended") {
+      try {
+        await ctx.resume();
+      } catch {
+        /* ignore */
+      }
+    }
     const buffer = new Uint8Array(analyser.fftSize);
     analyser.getByteTimeDomainData(buffer);
     let sum = 0;
@@ -110,7 +112,12 @@ export function ConversationListener() {
       const n = (buffer[i] - 128) / 128;
       sum += n * n;
     }
-    const audioLevel = Math.min(1, Math.sqrt(sum / buffer.length) * 2.6);
+    const rms = Math.sqrt(sum / buffer.length);
+    const floor = noiseFloorRef.current;
+    const nextFloor = floor * 0.97 + rms * 0.03;
+    noiseFloorRef.current = Math.min(0.08, Math.max(0.003, nextFloor));
+    const normalized = Math.max(0, rms - noiseFloorRef.current);
+    const audioLevel = Math.min(1, normalized * 6.5);
     try {
       const response = await fetch("/api/conversationAwareness/ingestSignal", {
         method: "POST",
@@ -127,18 +134,13 @@ export function ConversationListener() {
       const payload = await response.json().catch(() => null);
       if (!response.ok || !payload?.state) return;
       const state = payload.state as { isRecording?: boolean; activeSessionId?: string };
-      const resolvedSessionId =
+      detectorRecordingRef.current = state.isRecording === true;
+      detectorSessionIdRef.current =
         state.activeSessionId ?? (payload?.session?.id as string | undefined) ?? null;
-
-      if (state.isRecording && resolvedSessionId) {
-        startBrowserRecording(resolvedSessionId);
-      } else {
-        stopBrowserRecording();
-      }
     } catch {
       /* ignore */
     }
-  }, [startBrowserRecording, stopBrowserRecording]);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -204,6 +206,9 @@ export function ConversationListener() {
         analyser.fftSize = 2048;
         source.connect(analyser);
         analyserRef.current = analyser;
+        noiseFloorRef.current = 0.01;
+        startContinuousRecording();
+        void ingestMic();
         intervalRef.current = window.setInterval(() => void ingestMic(), 800);
 
         const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -240,7 +245,9 @@ export function ConversationListener() {
           try { recognition.start(); } catch { /* ignore */ }
         }
       })
-      .catch(() => {});
+      .catch((error) => {
+        console.error("[ConversationListener] microphone start failed", error);
+      });
 
     return () => {
       cancelled = true;
@@ -267,7 +274,7 @@ export function ConversationListener() {
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
     };
-  }, [listening, ingestMic, stopBrowserRecording]);
+  }, [ingestMic, listening, startContinuousRecording, stopBrowserRecording]);
 
   return null;
 }
