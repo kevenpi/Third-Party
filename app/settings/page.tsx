@@ -127,8 +127,6 @@ export default function SettingsPage() {
   const recorderMimeTypeRef = useRef<string>("audio/webm");
   const activeSessionIdRef = useRef<string | null>(null);
 
-  const isRecording = snapshot.state.isRecording;
-
   const loadSnapshot = useCallback(async () => {
     try {
       const response = await fetch("/api/conversationAwareness/state");
