@@ -17,9 +17,10 @@ import {
   saveRecordedClip,
   upsertRecordingSession
 } from "@/lib/awarenessStorage";
+import { saveTimelineBubbleFromSession } from "@/lib/timelineStorage";
 
-const START_AUDIO_THRESHOLD = 0.16;
-const STOP_AUDIO_THRESHOLD = 0.1;
+const START_AUDIO_THRESHOLD = 0.1;
+const STOP_AUDIO_THRESHOLD = 0.07;
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -112,11 +113,11 @@ function shouldStartRecording(state: ConversationAwarenessState, incoming: Aware
       ? 0
       : presenceScores.reduce((sum, score) => sum + score, 0) / presenceScores.length;
 
-  if (voiceFrames >= 3 && (distinctSpeakers.size >= 2 || averageLevel >= 0.3)) {
+  if (voiceFrames >= 2 && (distinctSpeakers.size >= 2 || averageLevel >= 0.25)) {
     return true;
   }
 
-  return voiceFrames >= 2 && averagePresence >= 0.4 && averageLevel >= 0.18;
+  return voiceFrames >= 2 && averagePresence >= 0.35 && averageLevel >= 0.12;
 }
 
 function shouldStopRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): boolean {
@@ -255,11 +256,16 @@ export async function ingestAwarenessSignal(
   }
 
   if (shouldStopRecording(state, signal)) {
+    const endedSessionId = state.activeSessionId;
     await stopActiveSession(state);
     state.isRecording = false;
     state.activeSessionId = undefined;
     state.latestAction = "stop_recording";
     await saveAwarenessState(state);
+    if (endedSessionId) {
+      const endedSession = await getRecordingSession(endedSessionId);
+      if (endedSession?.endedAt) void saveTimelineBubbleFromSession(endedSession).catch(() => {});
+    }
     return { state, session: activeSession };
   }
 

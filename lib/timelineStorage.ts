@@ -1,0 +1,144 @@
+/**
+ * Timeline bubbles: one per conversation session end.
+ * Formula: score from cortisol, heart rate, length, meaningfulness → size & color.
+ */
+
+import { promises as fs } from "fs";
+import path from "path";
+import type { RecordingSession } from "@shared/types";
+
+const DATA_ROOT = path.join(process.cwd(), "data");
+const TIMELINE_DIR = path.join(DATA_ROOT, "timeline");
+
+export interface TimelineBubble {
+  id: string;
+  sessionId: string;
+  time: string;
+  person: string;
+  durationMin: number;
+  size: "small" | "medium" | "large";
+  color: string;
+  colorName: string;
+  date: string;
+  score: number;
+  cortisol?: number;
+  heartRate?: number;
+  meaningfulness?: number;
+}
+
+async function ensureTimelineDir() {
+  await fs.mkdir(TIMELINE_DIR, { recursive: true });
+}
+
+function bubblePath(date: string): string {
+  return path.join(TIMELINE_DIR, `${date}.json`);
+}
+
+/** Placeholder until we have real biometrics: 0–1 */
+const DEFAULT_CORTISOL = 0.5;
+const DEFAULT_HEART_RATE = 0.5;
+const DEFAULT_MEANINGFULNESS = 0.5;
+
+/**
+ * Score from formula: length (weight 0.3) + cortisol (0.2) + heart rate (0.2) + meaningfulness (0.3).
+ * Higher score → larger bubble. Stress (high cortisol/HR) → red; repair/meaningful → green; else neutral.
+ */
+function scoreAndStyle(
+  durationMin: number,
+  cortisol: number = DEFAULT_CORTISOL,
+  heartRate: number = DEFAULT_HEART_RATE,
+  meaningfulness: number = DEFAULT_MEANINGFULNESS
+): { score: number; size: "small" | "medium" | "large"; color: string; colorName: string } {
+  const lengthNorm = Math.min(1, durationMin / 30);
+  const score =
+    lengthNorm * 0.3 +
+    cortisol * 0.2 +
+    heartRate * 0.2 +
+    meaningfulness * 0.3;
+
+  let size: "small" | "medium" | "large" = "small";
+  if (score >= 0.6) size = "large";
+  else if (score >= 0.35) size = "medium";
+
+  const isHighStress = cortisol >= 0.7 || heartRate >= 0.7;
+  const isRepair = meaningfulness >= 0.7 && !isHighStress;
+  const color = isHighStress ? "#B84A3A" : isRepair ? "#7AB89E" : score >= 0.5 ? "#6AAAB4" : "#C4B496";
+  const colorName = isHighStress ? "stress-red" : isRepair ? "repair-sage" : "steady";
+
+  return { score, size, color, colorName };
+}
+
+export async function saveTimelineBubbleFromSession(session: RecordingSession): Promise<TimelineBubble | null> {
+  if (!session.endedAt) return null;
+  const start = new Date(session.startedAt).getTime();
+  const end = new Date(session.endedAt).getTime();
+  const durationMin = Math.max(0.5, (end - start) / (60 * 1000));
+  const date = session.startedAt.slice(0, 10);
+  const time = new Date(session.startedAt).toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  });
+
+  const { score, size, color, colorName } = scoreAndStyle(
+    durationMin,
+    DEFAULT_CORTISOL,
+    DEFAULT_HEART_RATE,
+    DEFAULT_MEANINGFULNESS
+  );
+
+  const person =
+    session.speakerWindows?.length > 0
+      ? session.speakerWindows.map((w) => w.personTag).join(", ")
+      : "Conversation";
+
+  const bubble: TimelineBubble = {
+    id: `bubble_${session.id}`,
+    sessionId: session.id,
+    time,
+    person,
+    durationMin: Math.round(durationMin * 10) / 10,
+    size,
+    color,
+    colorName,
+    date,
+    score,
+    cortisol: DEFAULT_CORTISOL,
+    heartRate: DEFAULT_HEART_RATE,
+    meaningfulness: DEFAULT_MEANINGFULNESS
+  };
+
+  await ensureTimelineDir();
+  const filePath = bubblePath(date);
+  let existing: TimelineBubble[] = [];
+  try {
+    const raw = await fs.readFile(filePath, "utf8");
+    existing = JSON.parse(raw);
+  } catch {
+    /* new file */
+  }
+  const next = [bubble, ...existing.filter((b) => b.sessionId !== session.id)].slice(0, 50);
+  await fs.writeFile(filePath, JSON.stringify(next, null, 2), "utf8");
+  return bubble;
+}
+
+export async function getBubblesForDate(date: string): Promise<TimelineBubble[]> {
+  await ensureTimelineDir();
+  const filePath = bubblePath(date);
+  try {
+    const raw = await fs.readFile(filePath, "utf8");
+    const list = JSON.parse(raw);
+    return Array.isArray(list) ? list : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function listTimelineDates(): Promise<string[]> {
+  await ensureTimelineDir();
+  const files = await fs.readdir(TIMELINE_DIR);
+  return files
+    .filter((f) => f.endsWith(".json"))
+    .map((f) => f.replace(".json", ""))
+    .sort((a, b) => b.localeCompare(a));
+}

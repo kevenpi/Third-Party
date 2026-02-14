@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Settings } from "lucide-react";
+import { Settings, Power } from "lucide-react";
 
 interface Conversation {
   id: string;
@@ -15,55 +15,16 @@ interface Conversation {
   date: string;
 }
 
-const DATES = [
-  "2026-02-14",
-  "2026-02-13",
-  "2026-02-12",
-  "2026-02-11",
-  "2026-02-10",
-  "2026-02-09",
-  "2026-02-08",
-  "2026-02-07",
-  "2026-02-06",
-  "2026-02-05",
-  "2026-02-04",
-  "2026-02-03",
-  "2026-02-02",
-  "2026-02-01",
-];
-
-const PEOPLE = ["Arthur", "Tane", "Kevin"] as const;
-const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"] as const;
-
-function buildDayConversations(date: string, dayIndex: number): Conversation[] {
-  const longMoment = dayIndex % 3;
-  return TIMES.map((time, idx) => {
-    const person = PEOPLE[(dayIndex + idx) % PEOPLE.length];
-    const isHighStress = idx === (dayIndex + 2) % TIMES.length;
-    const isRepair = idx === (dayIndex + 4) % TIMES.length;
-
-    const duration = isHighStress
-      ? 16 + ((dayIndex + idx) % 11)
-      : isRepair
-        ? 20 + ((dayIndex + idx) % 12)
-        : 4 + ((dayIndex * 2 + idx) % 8);
-
-    return {
-      id: String((idx % 7) + 1),
-      time,
-      person,
-      duration,
-      size: idx === longMoment || isRepair ? "large" : duration > 10 ? "medium" : "small",
-      color: isHighStress ? "#B84A3A" : isRepair ? "#7AB89E" : idx % 2 === 0 ? "#6AAAB4" : "#C4B496",
-      colorName: isHighStress ? "stress-red" : isRepair ? "repair-sage" : "steady",
-      date,
-    };
-  });
+function getRecentDates(count: number): string[] {
+  const out: string[] = [];
+  const today = new Date();
+  for (let i = 0; i < count; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    out.push(d.toISOString().slice(0, 10));
+  }
+  return out;
 }
-
-const CONVERSATIONS_BY_DATE: Record<string, Conversation[]> = Object.fromEntries(
-  DATES.map((date, idx) => [date, buildDayConversations(date, idx)])
-);
 
 function getBubbleSize(size: "small" | "medium" | "large"): string {
   switch (size) {
@@ -92,23 +53,94 @@ function formatDateShort(dateStr: string): string {
 }
 
 function timeToMinutes(timeLabel: string): number {
-  const [clock, period] = timeLabel.split(" ");
-  const [rawHour, rawMinute] = clock.split(":").map(Number);
-  const hour12 = rawHour % 12;
-  const hour24 = period === "PM" ? hour12 + 12 : hour12;
-  return hour24 * 60 + rawMinute;
+  const parts = timeLabel.match(/(\d+):?(\d*)\s*(AM|PM)?/i);
+  if (!parts) return 0;
+  let hour = parseInt(parts[1], 10) || 0;
+  const min = parseInt(parts[2], 10) || 0;
+  const period = (parts[3] || "").toUpperCase();
+  if (period === "PM" && hour < 12) hour += 12;
+  if (period === "AM" && hour === 12) hour = 0;
+  return hour * 60 + min;
 }
 
 export default function TimelinePage() {
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState<string>(DATES[0]);
-  const [dates] = useState<string[]>(DATES);
+  const today = new Date().toISOString().slice(0, 10);
+  const [selectedDate, setSelectedDate] = useState<string>(today);
+  const [dates, setDates] = useState<string[]>(() => getRecentDates(14));
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [appOn, setAppOn] = useState(false);
+  const [toggleBusy, setToggleBusy] = useState(false);
 
-  const conversations = CONVERSATIONS_BY_DATE[selectedDate] ?? [];
+  const loadBubbles = useCallback(async (date: string) => {
+    try {
+      const r = await fetch(`/api/timeline?date=${date}`);
+      const data = await r.json();
+      if (!r.ok) return;
+      const bubbles = (data.bubbles ?? []).map((b: { id: string; time: string; person: string; durationMin: number; size: "small" | "medium" | "large"; color: string; colorName: string; date: string }) => ({
+        id: b.id,
+        time: b.time,
+        person: b.person,
+        duration: b.durationMin,
+        size: b.size,
+        color: b.color,
+        colorName: b.colorName,
+        date: b.date,
+      }));
+      setConversations(bubbles);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadBubbles(selectedDate);
+  }, [selectedDate, loadBubbles]);
+
+  useEffect(() => {
+    if (selectedDate !== today) return;
+    const id = setInterval(() => loadBubbles(today), 8000);
+    return () => clearInterval(id);
+  }, [selectedDate, today, loadBubbles]);
+
+  useEffect(() => {
+    fetch("/api/timeline?list=1")
+      .then((r) => r.json())
+      .then((data) => {
+        const fromApi = (data.dates ?? []) as string[];
+        const recent = getRecentDates(14);
+        const merged = [...new Set([...recent, ...fromApi])].sort((a, b) => b.localeCompare(a));
+        setDates(merged.slice(0, 14));
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/conversationAwareness/state")
+      .then((r) => r.json())
+      .then((data) => setAppOn(data?.state?.listeningEnabled === true))
+      .catch(() => {});
+  }, []);
+
+  const toggleApp = useCallback(async () => {
+    setToggleBusy(true);
+    try {
+      const next = !appOn;
+      const r = await fetch("/api/conversationAwareness/listen", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ listeningEnabled: next }),
+      });
+      if (r.ok) setAppOn(next);
+    } finally {
+      setToggleBusy(false);
+    }
+  }, [appOn]);
+
   const orderedConversations = [...conversations].sort((a, b) => timeToMinutes(b.time) - timeToMinutes(a.time));
-
   const todayDisplay = formatDateDisplay(selectedDate);
-  const isToday = selectedDate === DATES[0];
+  const isToday = selectedDate === today;
 
   const handleBubbleClick = (conversation: Conversation) => {
     router.push(`/conversation/${conversation.id}`);
@@ -120,15 +152,29 @@ export default function TimelinePage() {
       <div className="sticky top-0 z-40 bg-[#12110F]/80 backdrop-blur-md border-b border-[rgba(255,255,255,0.06)]">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-normal" style={{ fontFamily: 'Fraunces, serif' }}>Today</h1>
+            <h1 className="text-2xl font-normal" style={{ fontFamily: "Fraunces, serif" }}>Today</h1>
             <p className="text-sm text-[rgba(255,255,255,0.5)] mt-0.5">{todayDisplay}</p>
           </div>
-          <button
-            onClick={() => router.push("/settings")}
-            className="p-2 text-[rgba(255,255,255,0.7)] hover:text-[rgba(255,255,255,0.9)]"
-          >
-            <Settings className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleApp}
+              disabled={toggleBusy}
+              className={`flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition-all ${
+                appOn
+                  ? "bg-[#7AB89E]/30 text-[#7AB89E] border border-[#7AB89E]/50"
+                  : "bg-[#1E1B18] text-[rgba(255,255,255,0.5)] border border-[rgba(255,255,255,0.1)]"
+              }`}
+            >
+              <Power className="w-4 h-4" />
+              {appOn ? "On" : "Off"}
+            </button>
+            <button
+              onClick={() => router.push("/settings")}
+              className="p-2 text-[rgba(255,255,255,0.7)] hover:text-[rgba(255,255,255,0.9)]"
+            >
+              <Settings className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Date Selector */}
@@ -156,7 +202,11 @@ export default function TimelinePage() {
 
       {/* Timeline */}
       <div className="max-w-md mx-auto px-4 py-8 relative">
-        {conversations.length === 0 ? (
+        {loading ? (
+          <div className="flex flex-col items-center justify-center min-h-[40vh]">
+            <p className="text-[rgba(255,255,255,0.5)]">Loading…</p>
+          </div>
+        ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
             <div 
               className="w-24 h-24 rounded-full pulse-glow"
