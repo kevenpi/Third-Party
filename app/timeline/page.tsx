@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Settings, Power } from "lucide-react";
+import { getDailySummary, getConversationPeakStress, getStressColor } from "@/lib/biometrics";
 
 interface Conversation {
   id: string;
@@ -274,6 +275,49 @@ export default function TimelinePage() {
         </div>
       </div>
 
+      {/* Daily Biometric Summary */}
+      {(() => {
+        const summary = getDailySummary();
+        return (
+          <div className="max-w-md mx-auto px-4 pt-4">
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.06)',
+                borderRadius: 16,
+                padding: '14px 18px',
+                position: 'relative',
+                zIndex: 1,
+              }}
+            >
+              <p
+                style={{
+                  fontSize: 13,
+                  fontWeight: 500,
+                  color: 'rgba(255,255,255,0.7)',
+                  marginBottom: 4,
+                  fontFamily: 'Fraunces, serif',
+                }}
+              >
+                Your Day
+              </p>
+              <p
+                style={{
+                  fontSize: 12,
+                  color: 'rgba(255,255,255,0.4)',
+                  fontFamily: 'Plus Jakarta Sans, sans-serif',
+                  lineHeight: 1.5,
+                }}
+              >
+                Avg HR {summary.avgHr} · {summary.stressMomentCount} stress moment{summary.stressMomentCount !== 1 ? 's' : ''} · Peak stress:{' '}
+                <span style={{ color: '#D4B07A', fontWeight: 500 }}>{summary.peakStress}</span>{' '}
+                ({summary.peakPerson}, {summary.peakTime})
+              </p>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* Timeline */}
       <div className="max-w-md mx-auto px-4 py-8 relative">
         {isToday && (
@@ -345,14 +389,28 @@ export default function TimelinePage() {
 
                     {/* Bubble */}
                     <div className="absolute left-1/2 -translate-x-1/2 z-10">
-                      <button
-                        onClick={() => handleBubbleClick(conv)}
-                        className={`bubble ${sizeClass} cursor-pointer ${isMostRecent && isToday ? "pulse-glow" : ""}`}
-                        style={{
-                          backgroundColor: conv.color,
-                          color: conv.color,
-                        }}
-                      />
+                      {(() => {
+                        const peakStress = getConversationPeakStress(conv.id);
+                        const stressGlowColor = peakStress > 70
+                          ? "#D4806A"
+                          : peakStress < 30
+                          ? "#7AB89E"
+                          : conv.color;
+                        const stressRing = peakStress > 70
+                          ? `0 0 20px ${stressGlowColor}, 0 0 40px ${stressGlowColor}, 0 0 8px rgba(212,128,106,0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)`
+                          : undefined;
+                        return (
+                          <button
+                            onClick={() => handleBubbleClick(conv)}
+                            className={`bubble ${sizeClass} cursor-pointer ${isMostRecent && isToday ? "pulse-glow" : ""}`}
+                            style={{
+                              backgroundColor: conv.color,
+                              color: conv.color,
+                              ...(stressRing ? { boxShadow: stressRing } : {}),
+                            }}
+                          />
+                        );
+                      })()}
                     </div>
 
                     {/* Right Label */}

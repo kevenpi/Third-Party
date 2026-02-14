@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, MoreVertical, Play, Pause } from "lucide-react";
+import BiometricChart from "@/components/BiometricChart";
+import MessageCorrelationCard from "@/components/MessageCorrelationCard";
+import { getBiometricData, getStressColor, interpolateHR, formatBiometricChange, formatElapsed } from "@/lib/biometrics";
+import type { BiometricData } from "@/lib/biometrics";
 
 interface KeyMoment {
   id: string;
@@ -115,6 +119,8 @@ export default function ConversationDrillInPage() {
   const [isTagged, setIsTagged] = useState(true);
   const [reflection, setReflection] = useState("");
   const [showReflectionInput, setShowReflectionInput] = useState(false);
+
+  const bioData = useMemo(() => getBiometricData(params.id as string), [params.id]);
 
   useEffect(() => {
     const id = params.id as string;
@@ -315,12 +321,52 @@ export default function ConversationDrillInPage() {
           </div>
         </div>
 
+        {/* Biometric Response Section */}
+        {bioData && (
+          <div className="space-y-4 fade-up">
+            <p className="text-xs uppercase tracking-wider text-[#8A7E72] font-light">Biometric Response</p>
+
+            {/* Summary Stats */}
+            <div className="flex items-center gap-3 flex-wrap" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              {[
+                { label: "Peak HR", value: `${bioData.peak.hr}`, color: getStressColor(bioData.peak.stress) },
+                { label: "HRV drop", value: formatBiometricChange(bioData.baseline.hrv, bioData.peak.hrv), color: "#7AB89E" },
+                { label: "Peak stress", value: `${bioData.peak.stress}`, color: "#D4B07A" },
+                ...(bioData.recovery.minutes > 0 ? [{ label: "Recovery", value: `${bioData.recovery.minutes} min`, color: "rgba(255,255,255,0.5)" }] : []),
+              ].map((stat) => (
+                <span key={stat.label} className="text-xs text-[rgba(255,255,255,0.3)]">
+                  {stat.label}{" "}
+                  <span style={{ color: stat.color, fontWeight: 500 }}>{stat.value}</span>
+                </span>
+              ))}
+            </div>
+
+            {/* Charts Card */}
+            <div className="warm-card" style={{ padding: 16 }}>
+              <BiometricChart
+                data={bioData.hrTimeline}
+                messageCorrelations={bioData.messageCorrelations}
+                baseline={bioData.baseline}
+              />
+            </div>
+
+            {/* Message Correlation Cards */}
+            {bioData.messageCorrelations.length > 0 && (
+              <div className="space-y-3">
+                {bioData.messageCorrelations.map((corr, idx) => (
+                  <MessageCorrelationCard key={idx} correlation={corr} />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* AI Narrative */}
         <div className="space-y-4">
           <p className="text-xs uppercase tracking-wider text-[#8A7E72] font-light">What I noticed</p>
           <div className="warm-card">
             <p className="text-[rgba(255,255,255,0.8)] leading-relaxed italic" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
-              {conversation.aiNarrative}
+              {bioData?.overallInsight || conversation.aiNarrative}
             </p>
           </div>
         </div>
@@ -331,32 +377,41 @@ export default function ConversationDrillInPage() {
           <div className="relative pl-6">
             <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-[rgba(255,255,255,0.06)]"></div>
             <div className="space-y-6">
-              {conversation.keyMoments.map((moment) => (
-                <button
-                  key={moment.id}
-                  onClick={() => handleMomentClick(moment)}
-                  className="relative flex items-start gap-4 group w-full text-left"
-                >
-                  <div
-                    className="w-6 h-6 rounded-full -ml-8 transition-all group-hover:scale-125 z-10"
-                    style={{ 
-                      backgroundColor: moment.color,
-                      color: moment.color,
-                      boxShadow: `0 0 12px ${moment.color}, inset 0 0 8px rgba(255, 255, 255, 0.1)`
-                    }}
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs text-[rgba(255,255,255,0.5)]">
-                        {moment.timeDisplay}
-                      </span>
+              {conversation.keyMoments.map((moment) => {
+                const bio = bioData ? interpolateHR(bioData.hrTimeline, moment.timestamp) : null;
+                const dotColor = bio ? getStressColor(bio.stress) : moment.color;
+                return (
+                  <button
+                    key={moment.id}
+                    onClick={() => handleMomentClick(moment)}
+                    className="relative flex items-start gap-4 group w-full text-left"
+                  >
+                    <div
+                      className="w-6 h-6 rounded-full -ml-8 transition-all group-hover:scale-125 z-10"
+                      style={{
+                        backgroundColor: dotColor,
+                        color: dotColor,
+                        boxShadow: `0 0 12px ${dotColor}, inset 0 0 8px rgba(255, 255, 255, 0.1)`
+                      }}
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs text-[rgba(255,255,255,0.5)]">
+                          {moment.timeDisplay}
+                        </span>
+                        {bio && (
+                          <span className="text-[10px]" style={{ color: dotColor, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                            HR {bio.hr} · Stress {bio.stress}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm text-[rgba(255,255,255,0.8)] leading-relaxed">
+                        {moment.description}
+                      </p>
                     </div>
-                    <p className="text-sm text-[rgba(255,255,255,0.8)] leading-relaxed">
-                      {moment.description}
-                    </p>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
