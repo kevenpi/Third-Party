@@ -1,0 +1,328 @@
+{
+  "participant": "Tane",
+  "startTime": "2026-02-14T10:30:00",
+  "duration": "22 min",
+  "hrTimeline": [
+    {
+      "elapsed": 0,
+      "hr": 66,
+      "hrv": 52,
+      "stress": 15
+    },
+    {
+      "elapsed": 30,
+      "hr": 68,
+      "hrv": 50,
+      "stress": 18
+    },
+    {
+      "elapsed": 60,
+      "hr": 70,
+      "hrv": 48,
+      "stress": 22
+    },
+    {
+      "elapsed": 90,
+      "hr": 72,
+      "hrv": 50,
+      "stress": 21
+    },
+    {
+      "elapsed": 120,
+      "hr": 74,
+      "hrv": 52,
+      "stress": 19
+    },
+    {
+      "elapsed": 150,
+      "hr": 76,
+      "hrv": 50,
+      "stress": 22
+    },
+    {
+      "elapsed": 180,
+      "hr": 78,
+      "hrv": 51,
+      "stress": 22
+    },
+    {
+      "elapsed": 210,
+      "hr": 76,
+      "hrv": 52,
+      "stress": 19
+    },
+    {
+      "elapsed": 240,
+      "hr": 74,
+      "hrv": 54,
+      "stress": 16
+    },
+    {
+      "elapsed": 270,
+      "hr": 72,
+      "hrv": 55,
+      "stress": 14
+    },
+    {
+      "elapsed": 300,
+      "hr": 73,
+      "hrv": 54,
+      "stress": 16
+    },
+    {
+      "elapsed": 330,
+      "hr": 74,
+      "hrv": 53,
+      "stress": 17
+    },
+    {
+      "elapsed": 360,
+      "hr": 76,
+      "hrv": 52,
+      "stress": 19
+    },
+    {
+      "elapsed": 390,
+      "hr": 75,
+      "hrv": 53,
+      "stress": 18
+    },
+    {
+      "elapsed": 420,
+      "hr": 74,
+      "hrv": 54,
+      "stress": 16
+    },
+    {
+      "elapsed": 450,
+      "hr": 73,
+      "hrv": 55,
+      "stress": 14
+    },
+    {
+      "elapsed": 480,
+      "hr": 72,
+      "hrv": 56,
+      "stress": 12
+    },
+    {
+      "elapsed": 510,
+      "hr": 74,
+      "hrv": 54,
+      "stress": 16
+    },
+    {
+      "elapsed": 540,
+      "hr": 76,
+      "hrv": 52,
+      "stress": 19
+    },
+    {
+      "elapsed": 570,
+      "hr": 78,
+      "hrv": 53,
+      "stress": 20
+    },
+    {
+      "elapsed": 600,
+      "hr": 80,
+      "hrv": 54,
+      "stress": 19
+    },
+    {
+      "elapsed": 630,
+      "hr": 78,
+      "hrv": 55,
+      "stress": 17
+    },
+    {
+      "elapsed": 660,
+      "hr": 76,
+      "hrv": 56,
+      "stress": 14
+    },
+    {
+      "elapsed": 690,
+      "hr": 74,
+      "hrv": 57,
+      "stress": 12
+    },
+    {
+      "elapsed": 720,
+      "hr": 72,
+      "hrv": 58,
+      "stress": 10
+    },
+    {
+      "elapsed": 750,
+      "hr": 70,
+      "hrv": 58,
+      "stress": 10
+    },
+    {
+      "elapsed": 780,
+      "hr": 68,
+      "hrv": 59,
+      "stress": 8
+    },
+    {
+      "elapsed": 810,
+      "hr": 66,
+      "hrv": 60,
+      "stress": 7
+    },
+    {
+      "elapsed": 840,
+      "hr": 64,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 870,
+      "hr": 63,
+      "hrv": 61,
+      "stress": 5
+    },
+    {
+      "elapsed": 900,
+      "hr": 64,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 930,
+      "hr": 66,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 960,
+      "hr": 68,
+      "hrv": 56,
+      "stress": 12
+    },
+    {
+      "elapsed": 990,
+      "hr": 70,
+      "hrv": 55,
+      "stress": 14
+    },
+    {
+      "elapsed": 1020,
+      "hr": 72,
+      "hrv": 54,
+      "stress": 16
+    },
+    {
+      "elapsed": 1050,
+      "hr": 74,
+      "hrv": 53,
+      "stress": 17
+    },
+    {
+      "elapsed": 1080,
+      "hr": 73,
+      "hrv": 54,
+      "stress": 16
+    },
+    {
+      "elapsed": 1110,
+      "hr": 72,
+      "hrv": 55,
+      "stress": 14
+    },
+    {
+      "elapsed": 1140,
+      "hr": 70,
+      "hrv": 56,
+      "stress": 12
+    },
+    {
+      "elapsed": 1170,
+      "hr": 68,
+      "hrv": 57,
+      "stress": 10
+    },
+    {
+      "elapsed": 1200,
+      "hr": 66,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 1230,
+      "hr": 65,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 1260,
+      "hr": 64,
+      "hrv": 59,
+      "stress": 7
+    },
+    {
+      "elapsed": 1290,
+      "hr": 63,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 1320,
+      "hr": 62,
+      "hrv": 60,
+      "stress": 6
+    }
+  ],
+  "baseline": {
+    "hr": 66,
+    "hrv": 52,
+    "stress": 15
+  },
+  "peak": {
+    "hr": 80,
+    "hrv": 50,
+    "elapsedAt": 600,
+    "stress": 22
+  },
+  "recovery": {
+    "minutes": 0
+  },
+  "messageCorrelations": [
+    {
+      "elapsed": 180,
+      "messagePreview": "Dude, remember when we tried to build that trebuchet?",
+      "sender": "Tane",
+      "hrBefore": 72,
+      "hrAfter": 78,
+      "hrvBefore": 50,
+      "hrvAfter": 51,
+      "stressBefore": 21,
+      "stressAfter": 22,
+      "annotation": {
+        "type": "positive",
+        "label": "Joyful activation",
+        "text": "Your HR rose 6 bpm but your HRV actually stayed stable at 51ms  - this is positive arousal, not stress. Your body was energized by the memory. When HR rises without HRV dropping, it's engagement, not anxiety.",
+        "icon": "+"
+      }
+    },
+    {
+      "elapsed": 600,
+      "messagePreview": "I've been thinking a lot about where I want to be in five years...",
+      "sender": "Tane",
+      "hrBefore": 76,
+      "hrAfter": 80,
+      "hrvBefore": 52,
+      "hrvAfter": 54,
+      "stressBefore": 19,
+      "stressAfter": 19,
+      "annotation": {
+        "type": "positive",
+        "label": "Deep connection",
+        "text": "Peak HR of 80 bpm during Tane's personal reflection, but your HRV rose from 52 to 54ms. This is the signature of empathic engagement  - your body was activated by the emotional depth while maintaining safety. You feel safe being present with Tane.",
+        "icon": "+"
+      }
+    }
+  ],
+  "overallInsight": "This was physiologically the most restorative conversation of your day. Your HR fluctuated naturally between 62-80 bpm, and your HRV steadily climbed from 52ms to 60ms by the end  - your nervous system was being actively regulated by this connection. Peak HR of 80 during Tane's personal story was positive arousal (HRV held steady), not stress. By minute 14, your resting HR dropped below your morning baseline. Tane is a co-regulating presence for you."
+}

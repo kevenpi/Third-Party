@@ -1,0 +1,626 @@
+{
+  "participant": "Arthur",
+  "startTime": "2026-02-14T12:45:00",
+  "duration": "18 min",
+  "hrTimeline": [
+    {
+      "elapsed": 0,
+      "hr": 68,
+      "hrv": 48,
+      "stress": 22
+    },
+    {
+      "elapsed": 10,
+      "hr": 70,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 20,
+      "hr": 72,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 30,
+      "hr": 70,
+      "hrv": 48,
+      "stress": 22
+    },
+    {
+      "elapsed": 40,
+      "hr": 68,
+      "hrv": 50,
+      "stress": 18
+    },
+    {
+      "elapsed": 50,
+      "hr": 66,
+      "hrv": 52,
+      "stress": 15
+    },
+    {
+      "elapsed": 60,
+      "hr": 68,
+      "hrv": 50,
+      "stress": 18
+    },
+    {
+      "elapsed": 70,
+      "hr": 70,
+      "hrv": 48,
+      "stress": 22
+    },
+    {
+      "elapsed": 80,
+      "hr": 72,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 90,
+      "hr": 74,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 100,
+      "hr": 76,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 110,
+      "hr": 78,
+      "hrv": 42,
+      "stress": 35
+    },
+    {
+      "elapsed": 120,
+      "hr": 80,
+      "hrv": 40,
+      "stress": 38
+    },
+    {
+      "elapsed": 130,
+      "hr": 82,
+      "hrv": 38,
+      "stress": 42
+    },
+    {
+      "elapsed": 140,
+      "hr": 84,
+      "hrv": 36,
+      "stress": 47
+    },
+    {
+      "elapsed": 150,
+      "hr": 86,
+      "hrv": 35,
+      "stress": 49
+    },
+    {
+      "elapsed": 160,
+      "hr": 88,
+      "hrv": 34,
+      "stress": 51
+    },
+    {
+      "elapsed": 170,
+      "hr": 90,
+      "hrv": 33,
+      "stress": 53
+    },
+    {
+      "elapsed": 180,
+      "hr": 91,
+      "hrv": 32,
+      "stress": 55
+    },
+    {
+      "elapsed": 190,
+      "hr": 92,
+      "hrv": 31,
+      "stress": 58
+    },
+    {
+      "elapsed": 200,
+      "hr": 93,
+      "hrv": 30,
+      "stress": 60
+    },
+    {
+      "elapsed": 210,
+      "hr": 94,
+      "hrv": 30,
+      "stress": 60
+    },
+    {
+      "elapsed": 220,
+      "hr": 95,
+      "hrv": 29,
+      "stress": 62
+    },
+    {
+      "elapsed": 225,
+      "hr": 96,
+      "hrv": 28,
+      "stress": 65
+    },
+    {
+      "elapsed": 230,
+      "hr": 97,
+      "hrv": 28,
+      "stress": 65
+    },
+    {
+      "elapsed": 240,
+      "hr": 98,
+      "hrv": 27,
+      "stress": 67
+    },
+    {
+      "elapsed": 250,
+      "hr": 99,
+      "hrv": 26,
+      "stress": 70
+    },
+    {
+      "elapsed": 260,
+      "hr": 100,
+      "hrv": 26,
+      "stress": 70
+    },
+    {
+      "elapsed": 270,
+      "hr": 101,
+      "hrv": 25,
+      "stress": 73
+    },
+    {
+      "elapsed": 280,
+      "hr": 100,
+      "hrv": 26,
+      "stress": 70
+    },
+    {
+      "elapsed": 290,
+      "hr": 99,
+      "hrv": 26,
+      "stress": 70
+    },
+    {
+      "elapsed": 300,
+      "hr": 98,
+      "hrv": 27,
+      "stress": 67
+    },
+    {
+      "elapsed": 310,
+      "hr": 97,
+      "hrv": 28,
+      "stress": 65
+    },
+    {
+      "elapsed": 320,
+      "hr": 96,
+      "hrv": 28,
+      "stress": 65
+    },
+    {
+      "elapsed": 330,
+      "hr": 95,
+      "hrv": 29,
+      "stress": 62
+    },
+    {
+      "elapsed": 340,
+      "hr": 94,
+      "hrv": 30,
+      "stress": 60
+    },
+    {
+      "elapsed": 350,
+      "hr": 93,
+      "hrv": 30,
+      "stress": 60
+    },
+    {
+      "elapsed": 360,
+      "hr": 92,
+      "hrv": 31,
+      "stress": 58
+    },
+    {
+      "elapsed": 370,
+      "hr": 91,
+      "hrv": 32,
+      "stress": 55
+    },
+    {
+      "elapsed": 380,
+      "hr": 90,
+      "hrv": 33,
+      "stress": 53
+    },
+    {
+      "elapsed": 390,
+      "hr": 89,
+      "hrv": 34,
+      "stress": 51
+    },
+    {
+      "elapsed": 400,
+      "hr": 88,
+      "hrv": 34,
+      "stress": 51
+    },
+    {
+      "elapsed": 410,
+      "hr": 87,
+      "hrv": 35,
+      "stress": 49
+    },
+    {
+      "elapsed": 420,
+      "hr": 86,
+      "hrv": 36,
+      "stress": 47
+    },
+    {
+      "elapsed": 430,
+      "hr": 85,
+      "hrv": 36,
+      "stress": 47
+    },
+    {
+      "elapsed": 440,
+      "hr": 90,
+      "hrv": 32,
+      "stress": 55
+    },
+    {
+      "elapsed": 450,
+      "hr": 93,
+      "hrv": 30,
+      "stress": 60
+    },
+    {
+      "elapsed": 460,
+      "hr": 95,
+      "hrv": 28,
+      "stress": 65
+    },
+    {
+      "elapsed": 470,
+      "hr": 97,
+      "hrv": 27,
+      "stress": 67
+    },
+    {
+      "elapsed": 480,
+      "hr": 99,
+      "hrv": 26,
+      "stress": 70
+    },
+    {
+      "elapsed": 490,
+      "hr": 100,
+      "hrv": 25,
+      "stress": 73
+    },
+    {
+      "elapsed": 500,
+      "hr": 101,
+      "hrv": 25,
+      "stress": 73
+    },
+    {
+      "elapsed": 510,
+      "hr": 102,
+      "hrv": 24,
+      "stress": 77
+    },
+    {
+      "elapsed": 520,
+      "hr": 103,
+      "hrv": 24,
+      "stress": 77
+    },
+    {
+      "elapsed": 530,
+      "hr": 104,
+      "hrv": 23,
+      "stress": 79
+    },
+    {
+      "elapsed": 540,
+      "hr": 105,
+      "hrv": 23,
+      "stress": 79
+    },
+    {
+      "elapsed": 550,
+      "hr": 104,
+      "hrv": 23,
+      "stress": 79
+    },
+    {
+      "elapsed": 560,
+      "hr": 102,
+      "hrv": 24,
+      "stress": 77
+    },
+    {
+      "elapsed": 570,
+      "hr": 100,
+      "hrv": 25,
+      "stress": 73
+    },
+    {
+      "elapsed": 580,
+      "hr": 98,
+      "hrv": 26,
+      "stress": 70
+    },
+    {
+      "elapsed": 590,
+      "hr": 96,
+      "hrv": 27,
+      "stress": 67
+    },
+    {
+      "elapsed": 600,
+      "hr": 95,
+      "hrv": 28,
+      "stress": 65
+    },
+    {
+      "elapsed": 620,
+      "hr": 93,
+      "hrv": 29,
+      "stress": 62
+    },
+    {
+      "elapsed": 640,
+      "hr": 91,
+      "hrv": 31,
+      "stress": 58
+    },
+    {
+      "elapsed": 660,
+      "hr": 89,
+      "hrv": 33,
+      "stress": 53
+    },
+    {
+      "elapsed": 680,
+      "hr": 87,
+      "hrv": 34,
+      "stress": 51
+    },
+    {
+      "elapsed": 700,
+      "hr": 85,
+      "hrv": 36,
+      "stress": 47
+    },
+    {
+      "elapsed": 720,
+      "hr": 83,
+      "hrv": 37,
+      "stress": 45
+    },
+    {
+      "elapsed": 740,
+      "hr": 82,
+      "hrv": 38,
+      "stress": 42
+    },
+    {
+      "elapsed": 760,
+      "hr": 81,
+      "hrv": 39,
+      "stress": 40
+    },
+    {
+      "elapsed": 780,
+      "hr": 80,
+      "hrv": 40,
+      "stress": 38
+    },
+    {
+      "elapsed": 800,
+      "hr": 79,
+      "hrv": 40,
+      "stress": 38
+    },
+    {
+      "elapsed": 820,
+      "hr": 78,
+      "hrv": 41,
+      "stress": 36
+    },
+    {
+      "elapsed": 840,
+      "hr": 77,
+      "hrv": 42,
+      "stress": 35
+    },
+    {
+      "elapsed": 860,
+      "hr": 76,
+      "hrv": 42,
+      "stress": 35
+    },
+    {
+      "elapsed": 880,
+      "hr": 75,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 900,
+      "hr": 74,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 920,
+      "hr": 73,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 940,
+      "hr": 80,
+      "hrv": 40,
+      "stress": 38
+    },
+    {
+      "elapsed": 950,
+      "hr": 78,
+      "hrv": 41,
+      "stress": 36
+    },
+    {
+      "elapsed": 960,
+      "hr": 76,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 970,
+      "hr": 74,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 980,
+      "hr": 73,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 990,
+      "hr": 72,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 1000,
+      "hr": 72,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 1020,
+      "hr": 73,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 1040,
+      "hr": 74,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 1060,
+      "hr": 75,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 1080,
+      "hr": 74,
+      "hrv": 44,
+      "stress": 31
+    }
+  ],
+  "baseline": {
+    "hr": 68,
+    "hrv": 48,
+    "stress": 22
+  },
+  "peak": {
+    "hr": 105,
+    "hrv": 23,
+    "elapsedAt": 540,
+    "stress": 79
+  },
+  "recovery": {
+    "minutes": 14
+  },
+  "messageCorrelations": [
+    {
+      "elapsed": 225,
+      "messagePreview": "I just think we need to actually decide about this weekend instead of leaving it",
+      "sender": "Arthur",
+      "hrBefore": 86,
+      "hrAfter": 96,
+      "hrvBefore": 35,
+      "hrvAfter": 28,
+      "stressBefore": 49,
+      "stressAfter": 65,
+      "annotation": {
+        "type": "observation",
+        "label": "Defensive escalation",
+        "text": "Your HR spiked 10 bpm in under 15 seconds when Arthur pushed for a decision. Your HRV dropped from 35 to 28ms  - crossing into fight-or-flight territory. Your body interpreted a request for clarity as pressure, activating a defensive response.",
+        "icon": "!"
+      }
+    },
+    {
+      "elapsed": 440,
+      "messagePreview": "You raised your voice slightly",
+      "sender": "You",
+      "hrBefore": 85,
+      "hrAfter": 95,
+      "hrvBefore": 36,
+      "hrvAfter": 28,
+      "stressBefore": 47,
+      "stressAfter": 65,
+      "annotation": {
+        "type": "pattern",
+        "label": "Second escalation wave",
+        "text": "After a partial recovery (HR dropped to 85), the conversation re-escalated. Your HR jumped 10 bpm again  - this second wave hit harder because your nervous system hadn't fully recovered from the first spike. Your HRV was already depleted, leaving less buffer.",
+        "icon": "~"
+      }
+    },
+    {
+      "elapsed": 550,
+      "messagePreview": "Arthur went quiet",
+      "sender": "Arthur",
+      "hrBefore": 104,
+      "hrAfter": 105,
+      "hrvBefore": 23,
+      "hrvAfter": 23,
+      "stressBefore": 79,
+      "stressAfter": 79,
+      "annotation": {
+        "type": "missed_bid",
+        "label": "Silence as shutdown",
+        "text": "When Arthur went quiet, your HR peaked at 105 and your HRV bottomed at 23ms  - a 52% drop from baseline. Silence during conflict often increases stress because your brain fills the void with threat. Your body was at peak activation even though no words were being exchanged.",
+        "icon": "x"
+      }
+    },
+    {
+      "elapsed": 940,
+      "messagePreview": "Brief repair attempt",
+      "sender": "You",
+      "hrBefore": 73,
+      "hrAfter": 80,
+      "hrvBefore": 44,
+      "hrvAfter": 40,
+      "stressBefore": 31,
+      "stressAfter": 38,
+      "annotation": {
+        "type": "observation",
+        "label": "Repair activation",
+        "text": "Your HR rose 7 bpm during the repair attempt  - repair takes courage, and your body registered it as mild stress. But your HRV stayed at 40ms, meaning you were activated but not in threat mode. The repair was genuine, even if it felt incomplete.",
+        "icon": "*"
+      }
+    }
+  ],
+  "overallInsight": "This was your highest-stress conversation today. Your HR increased 54% from baseline (68 \u2192 105 bpm) and your HRV dropped 52% (48 \u2192 23ms). The conversation had two distinct escalation waves  - the first around the 3:45 mark when weekend plans came up, and the second at 7:20 when voices were raised. Arthur's silence at 9:10 coincided with your biometric peak, suggesting unresolved tension is more stressful to your body than active disagreement. The repair attempt at 15:40 was physiologically genuine  - your HR briefly spiked (effort) then began a slow descent. But your body took 14 minutes after the conversation ended to return to baseline. Something was left unfinished."
+}

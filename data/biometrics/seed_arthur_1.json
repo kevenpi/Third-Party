@@ -1,0 +1,155 @@
+{
+  "participant": "Arthur",
+  "startTime": "2026-02-14T07:08:00",
+  "duration": "3 min",
+  "hrTimeline": [
+    {
+      "elapsed": 0,
+      "hr": 64,
+      "hrv": 52,
+      "stress": 14
+    },
+    {
+      "elapsed": 10,
+      "hr": 65,
+      "hrv": 51,
+      "stress": 15
+    },
+    {
+      "elapsed": 20,
+      "hr": 66,
+      "hrv": 50,
+      "stress": 17
+    },
+    {
+      "elapsed": 30,
+      "hr": 68,
+      "hrv": 53,
+      "stress": 14
+    },
+    {
+      "elapsed": 40,
+      "hr": 67,
+      "hrv": 54,
+      "stress": 13
+    },
+    {
+      "elapsed": 50,
+      "hr": 66,
+      "hrv": 55,
+      "stress": 12
+    },
+    {
+      "elapsed": 60,
+      "hr": 65,
+      "hrv": 53,
+      "stress": 14
+    },
+    {
+      "elapsed": 70,
+      "hr": 66,
+      "hrv": 52,
+      "stress": 15
+    },
+    {
+      "elapsed": 80,
+      "hr": 67,
+      "hrv": 51,
+      "stress": 16
+    },
+    {
+      "elapsed": 90,
+      "hr": 65,
+      "hrv": 54,
+      "stress": 13
+    },
+    {
+      "elapsed": 100,
+      "hr": 64,
+      "hrv": 55,
+      "stress": 11
+    },
+    {
+      "elapsed": 110,
+      "hr": 63,
+      "hrv": 56,
+      "stress": 10
+    },
+    {
+      "elapsed": 120,
+      "hr": 64,
+      "hrv": 55,
+      "stress": 11
+    },
+    {
+      "elapsed": 130,
+      "hr": 65,
+      "hrv": 53,
+      "stress": 14
+    },
+    {
+      "elapsed": 140,
+      "hr": 66,
+      "hrv": 52,
+      "stress": 15
+    },
+    {
+      "elapsed": 150,
+      "hr": 64,
+      "hrv": 54,
+      "stress": 12
+    },
+    {
+      "elapsed": 160,
+      "hr": 63,
+      "hrv": 55,
+      "stress": 11
+    },
+    {
+      "elapsed": 170,
+      "hr": 62,
+      "hrv": 56,
+      "stress": 9
+    },
+    {
+      "elapsed": 180,
+      "hr": 63,
+      "hrv": 55,
+      "stress": 11
+    }
+  ],
+  "baseline": {
+    "hr": 64,
+    "hrv": 53,
+    "stress": 14
+  },
+  "peak": {
+    "hr": 68,
+    "hrv": 50,
+    "elapsedAt": 30,
+    "stress": 17
+  },
+  "recovery": {
+    "minutes": 0
+  },
+  "messageCorrelations": [
+    {
+      "elapsed": 30,
+      "messagePreview": "We both reached for the same cup",
+      "sender": "Arthur",
+      "hrBefore": 66,
+      "hrAfter": 68,
+      "hrvBefore": 50,
+      "hrvAfter": 53,
+      "stressBefore": 17,
+      "stressAfter": 14,
+      "annotation": {
+        "type": "positive",
+        "label": "Shared moment of warmth",
+        "text": "Your HR rose 2 bpm briefly and then settled below baseline  - this is what genuine amusement looks like biometrically. A micro-moment of connection that your body rewarded with relaxation.",
+        "icon": "+"
+      }
+    }
+  ],
+  "overallInsight": "A calm, grounding start to your day. Your HR stayed within 4 bpm of baseline the entire time and your HRV averaged 53ms  - indicating a parasympathetic-dominant (relaxed) state. The brief laugh at 0:30 produced a healthy HR micro-spike followed by deepened calm. These small moments of ease with Arthur are physiologically restorative."
+}

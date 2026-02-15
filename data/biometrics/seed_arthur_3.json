@@ -1,0 +1,484 @@
+{
+  "participant": "Arthur",
+  "startTime": "2026-02-14T20:00:00",
+  "duration": "35 min",
+  "hrTimeline": [
+    {
+      "elapsed": 0,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 30,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 60,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 90,
+      "hr": 69,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 120,
+      "hr": 68,
+      "hrv": 48,
+      "stress": 22
+    },
+    {
+      "elapsed": 150,
+      "hr": 67,
+      "hrv": 49,
+      "stress": 20
+    },
+    {
+      "elapsed": 180,
+      "hr": 66,
+      "hrv": 50,
+      "stress": 18
+    },
+    {
+      "elapsed": 210,
+      "hr": 66,
+      "hrv": 50,
+      "stress": 18
+    },
+    {
+      "elapsed": 240,
+      "hr": 65,
+      "hrv": 51,
+      "stress": 16
+    },
+    {
+      "elapsed": 270,
+      "hr": 64,
+      "hrv": 52,
+      "stress": 15
+    },
+    {
+      "elapsed": 300,
+      "hr": 64,
+      "hrv": 52,
+      "stress": 15
+    },
+    {
+      "elapsed": 330,
+      "hr": 63,
+      "hrv": 53,
+      "stress": 13
+    },
+    {
+      "elapsed": 360,
+      "hr": 62,
+      "hrv": 54,
+      "stress": 12
+    },
+    {
+      "elapsed": 390,
+      "hr": 62,
+      "hrv": 54,
+      "stress": 12
+    },
+    {
+      "elapsed": 420,
+      "hr": 63,
+      "hrv": 53,
+      "stress": 13
+    },
+    {
+      "elapsed": 450,
+      "hr": 64,
+      "hrv": 52,
+      "stress": 15
+    },
+    {
+      "elapsed": 480,
+      "hr": 65,
+      "hrv": 52,
+      "stress": 15
+    },
+    {
+      "elapsed": 510,
+      "hr": 66,
+      "hrv": 53,
+      "stress": 14
+    },
+    {
+      "elapsed": 540,
+      "hr": 67,
+      "hrv": 54,
+      "stress": 12
+    },
+    {
+      "elapsed": 570,
+      "hr": 68,
+      "hrv": 55,
+      "stress": 11
+    },
+    {
+      "elapsed": 600,
+      "hr": 70,
+      "hrv": 54,
+      "stress": 13
+    },
+    {
+      "elapsed": 630,
+      "hr": 72,
+      "hrv": 53,
+      "stress": 16
+    },
+    {
+      "elapsed": 660,
+      "hr": 74,
+      "hrv": 54,
+      "stress": 16
+    },
+    {
+      "elapsed": 690,
+      "hr": 72,
+      "hrv": 55,
+      "stress": 14
+    },
+    {
+      "elapsed": 720,
+      "hr": 70,
+      "hrv": 56,
+      "stress": 12
+    },
+    {
+      "elapsed": 750,
+      "hr": 68,
+      "hrv": 56,
+      "stress": 12
+    },
+    {
+      "elapsed": 780,
+      "hr": 66,
+      "hrv": 57,
+      "stress": 10
+    },
+    {
+      "elapsed": 810,
+      "hr": 65,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 840,
+      "hr": 64,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 870,
+      "hr": 63,
+      "hrv": 59,
+      "stress": 7
+    },
+    {
+      "elapsed": 900,
+      "hr": 62,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 930,
+      "hr": 62,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 960,
+      "hr": 63,
+      "hrv": 59,
+      "stress": 7
+    },
+    {
+      "elapsed": 990,
+      "hr": 64,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 1020,
+      "hr": 65,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 1050,
+      "hr": 66,
+      "hrv": 57,
+      "stress": 10
+    },
+    {
+      "elapsed": 1080,
+      "hr": 67,
+      "hrv": 56,
+      "stress": 12
+    },
+    {
+      "elapsed": 1110,
+      "hr": 68,
+      "hrv": 56,
+      "stress": 12
+    },
+    {
+      "elapsed": 1140,
+      "hr": 67,
+      "hrv": 57,
+      "stress": 10
+    },
+    {
+      "elapsed": 1170,
+      "hr": 66,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 1200,
+      "hr": 64,
+      "hrv": 58,
+      "stress": 9
+    },
+    {
+      "elapsed": 1230,
+      "hr": 63,
+      "hrv": 59,
+      "stress": 7
+    },
+    {
+      "elapsed": 1260,
+      "hr": 62,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 1290,
+      "hr": 61,
+      "hrv": 61,
+      "stress": 5
+    },
+    {
+      "elapsed": 1320,
+      "hr": 60,
+      "hrv": 62,
+      "stress": 3
+    },
+    {
+      "elapsed": 1350,
+      "hr": 60,
+      "hrv": 62,
+      "stress": 3
+    },
+    {
+      "elapsed": 1380,
+      "hr": 61,
+      "hrv": 61,
+      "stress": 5
+    },
+    {
+      "elapsed": 1410,
+      "hr": 62,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 1440,
+      "hr": 63,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 1470,
+      "hr": 64,
+      "hrv": 59,
+      "stress": 7
+    },
+    {
+      "elapsed": 1500,
+      "hr": 64,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 1530,
+      "hr": 63,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 1560,
+      "hr": 62,
+      "hrv": 61,
+      "stress": 5
+    },
+    {
+      "elapsed": 1590,
+      "hr": 61,
+      "hrv": 62,
+      "stress": 3
+    },
+    {
+      "elapsed": 1620,
+      "hr": 60,
+      "hrv": 62,
+      "stress": 3
+    },
+    {
+      "elapsed": 1650,
+      "hr": 60,
+      "hrv": 63,
+      "stress": 2
+    },
+    {
+      "elapsed": 1680,
+      "hr": 60,
+      "hrv": 63,
+      "stress": 2
+    },
+    {
+      "elapsed": 1710,
+      "hr": 61,
+      "hrv": 62,
+      "stress": 3
+    },
+    {
+      "elapsed": 1740,
+      "hr": 62,
+      "hrv": 61,
+      "stress": 5
+    },
+    {
+      "elapsed": 1770,
+      "hr": 63,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 1800,
+      "hr": 64,
+      "hrv": 60,
+      "stress": 6
+    },
+    {
+      "elapsed": 1830,
+      "hr": 63,
+      "hrv": 61,
+      "stress": 5
+    },
+    {
+      "elapsed": 1860,
+      "hr": 62,
+      "hrv": 62,
+      "stress": 3
+    },
+    {
+      "elapsed": 1890,
+      "hr": 61,
+      "hrv": 62,
+      "stress": 3
+    },
+    {
+      "elapsed": 1920,
+      "hr": 60,
+      "hrv": 63,
+      "stress": 2
+    },
+    {
+      "elapsed": 1950,
+      "hr": 60,
+      "hrv": 63,
+      "stress": 2
+    },
+    {
+      "elapsed": 1980,
+      "hr": 59,
+      "hrv": 64,
+      "stress": 1
+    },
+    {
+      "elapsed": 2010,
+      "hr": 59,
+      "hrv": 64,
+      "stress": 1
+    },
+    {
+      "elapsed": 2040,
+      "hr": 60,
+      "hrv": 63,
+      "stress": 2
+    },
+    {
+      "elapsed": 2070,
+      "hr": 60,
+      "hrv": 63,
+      "stress": 2
+    },
+    {
+      "elapsed": 2100,
+      "hr": 59,
+      "hrv": 64,
+      "stress": 1
+    }
+  ],
+  "baseline": {
+    "hr": 72,
+    "hrv": 44,
+    "stress": 30
+  },
+  "peak": {
+    "hr": 74,
+    "hrv": 53,
+    "elapsedAt": 660,
+    "stress": 16
+  },
+  "recovery": {
+    "minutes": 0
+  },
+  "messageCorrelations": [
+    {
+      "elapsed": 600,
+      "messagePreview": "I had the weirdest dream last night about our old apartment",
+      "sender": "Arthur",
+      "hrBefore": 68,
+      "hrAfter": 74,
+      "hrvBefore": 55,
+      "hrvAfter": 54,
+      "stressBefore": 11,
+      "stressAfter": 16,
+      "annotation": {
+        "type": "positive",
+        "label": "Nostalgic warmth",
+        "text": "Your HR rose 6 bpm when Arthur shared a dream  - but your HRV held at 54ms. This is warm activation, not stress. Your body responded to shared history with gentle engagement. The micro-spike resolved within 3 minutes as you both leaned into the memory.",
+        "icon": "+"
+      }
+    },
+    {
+      "elapsed": 1200,
+      "messagePreview": "This is nice. I missed this.",
+      "sender": "You",
+      "hrBefore": 64,
+      "hrAfter": 62,
+      "hrvBefore": 58,
+      "hrvAfter": 60,
+      "stressBefore": 9,
+      "stressAfter": 6,
+      "annotation": {
+        "type": "positive",
+        "label": "Moment of connection",
+        "text": "When you said 'I missed this,' your HR dropped to 62 and HRV rose to 60ms  - the calmest point of your entire day. Vulnerability with Arthur doesn't always mean stress. This moment was physiologically the opposite of the 12:45 conversation. Your body trusts this version of your connection.",
+        "icon": "+"
+      }
+    }
+  ],
+  "overallInsight": "This conversation was the physiological mirror of the 12:45 PM conflict. Your HR started elevated at 72 (residual tension from earlier) but steadily dropped to 59 bpm  - 9% below your morning baseline. Your HRV climbed from 44ms to 64ms over 35 minutes, the highest reading of your day. This is active co-regulation: Arthur's calm presence literally brought your nervous system back to rest. By the end, your stress score hit 1  - the closest your body came to full parasympathetic dominance all day. This is what repair looks like in the body."
+}

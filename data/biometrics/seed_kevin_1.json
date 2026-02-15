@@ -1,0 +1,352 @@
+{
+  "participant": "Kevin",
+  "startTime": "2026-02-14T09:12:00",
+  "duration": "8 min",
+  "hrTimeline": [
+    {
+      "elapsed": 0,
+      "hr": 68,
+      "hrv": 48,
+      "stress": 22
+    },
+    {
+      "elapsed": 10,
+      "hr": 69,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 20,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 30,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 40,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 50,
+      "hr": 73,
+      "hrv": 43,
+      "stress": 32
+    },
+    {
+      "elapsed": 60,
+      "hr": 74,
+      "hrv": 42,
+      "stress": 34
+    },
+    {
+      "elapsed": 70,
+      "hr": 73,
+      "hrv": 43,
+      "stress": 32
+    },
+    {
+      "elapsed": 80,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 90,
+      "hr": 74,
+      "hrv": 42,
+      "stress": 34
+    },
+    {
+      "elapsed": 100,
+      "hr": 76,
+      "hrv": 40,
+      "stress": 38
+    },
+    {
+      "elapsed": 110,
+      "hr": 78,
+      "hrv": 39,
+      "stress": 40
+    },
+    {
+      "elapsed": 120,
+      "hr": 80,
+      "hrv": 38,
+      "stress": 43
+    },
+    {
+      "elapsed": 130,
+      "hr": 78,
+      "hrv": 39,
+      "stress": 40
+    },
+    {
+      "elapsed": 140,
+      "hr": 76,
+      "hrv": 40,
+      "stress": 38
+    },
+    {
+      "elapsed": 150,
+      "hr": 74,
+      "hrv": 42,
+      "stress": 34
+    },
+    {
+      "elapsed": 160,
+      "hr": 73,
+      "hrv": 43,
+      "stress": 32
+    },
+    {
+      "elapsed": 170,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 180,
+      "hr": 73,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 190,
+      "hr": 74,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 200,
+      "hr": 73,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 210,
+      "hr": 72,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 220,
+      "hr": 71,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 230,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 240,
+      "hr": 70,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 250,
+      "hr": 69,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 260,
+      "hr": 69,
+      "hrv": 48,
+      "stress": 22
+    },
+    {
+      "elapsed": 270,
+      "hr": 70,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 280,
+      "hr": 71,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 290,
+      "hr": 72,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 300,
+      "hr": 73,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 310,
+      "hr": 74,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 320,
+      "hr": 74,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 330,
+      "hr": 73,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 340,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 350,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 360,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 370,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 380,
+      "hr": 69,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 390,
+      "hr": 69,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 400,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 410,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 420,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 430,
+      "hr": 73,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 440,
+      "hr": 73,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 450,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 460,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 470,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 480,
+      "hr": 69,
+      "hrv": 47,
+      "stress": 24
+    }
+  ],
+  "baseline": {
+    "hr": 68,
+    "hrv": 48,
+    "stress": 22
+  },
+  "peak": {
+    "hr": 80,
+    "hrv": 38,
+    "elapsedAt": 120,
+    "stress": 43
+  },
+  "recovery": {
+    "minutes": 3
+  },
+  "messageCorrelations": [
+    {
+      "elapsed": 100,
+      "messagePreview": "The deadline got moved up to Friday",
+      "sender": "Kevin",
+      "hrBefore": 74,
+      "hrAfter": 80,
+      "hrvBefore": 42,
+      "hrvAfter": 38,
+      "stressBefore": 34,
+      "stressAfter": 43,
+      "annotation": {
+        "type": "observation",
+        "label": "Mild stress activation",
+        "text": "Your HR climbed 6 bpm when the deadline shift was mentioned. A moderate response  - enough to show this matters to you, but your HRV only dropped to 38ms, which means you stayed in problem-solving mode rather than threat mode.",
+        "icon": "!"
+      }
+    },
+    {
+      "elapsed": 300,
+      "messagePreview": "I think we can make it work if we split the sections",
+      "sender": "You",
+      "hrBefore": 73,
+      "hrAfter": 70,
+      "hrvBefore": 44,
+      "hrvAfter": 46,
+      "stressBefore": 30,
+      "stressAfter": 26,
+      "annotation": {
+        "type": "positive",
+        "label": "Problem-solving calms you",
+        "text": "When you shifted to proposing a solution, your HR dropped 3 bpm and HRV rose  - taking action on a problem literally calms your nervous system. This is a strength: you regulate through competence.",
+        "icon": "+"
+      }
+    }
+  ],
+  "overallInsight": "A professional conversation that stayed in the moderate stress zone (peak stress 43). Your HR reached 80 bpm when the deadline shifted  - a 18% increase from baseline  - but returned quickly once you moved into problem-solving mode. Your HRV never dropped below 38ms, suggesting you maintained cognitive flexibility throughout. Work conversations tend to activate your sympathetic nervous system less than personal ones."
+}

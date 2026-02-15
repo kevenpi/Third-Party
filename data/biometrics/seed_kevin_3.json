@@ -1,0 +1,256 @@
+{
+  "participant": "Kevin",
+  "startTime": "2026-02-14T16:30:00",
+  "duration": "14 min",
+  "hrTimeline": [
+    {
+      "elapsed": 0,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 30,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 60,
+      "hr": 74,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 90,
+      "hr": 76,
+      "hrv": 42,
+      "stress": 35
+    },
+    {
+      "elapsed": 120,
+      "hr": 78,
+      "hrv": 40,
+      "stress": 38
+    },
+    {
+      "elapsed": 150,
+      "hr": 80,
+      "hrv": 39,
+      "stress": 40
+    },
+    {
+      "elapsed": 180,
+      "hr": 82,
+      "hrv": 38,
+      "stress": 42
+    },
+    {
+      "elapsed": 210,
+      "hr": 84,
+      "hrv": 36,
+      "stress": 47
+    },
+    {
+      "elapsed": 240,
+      "hr": 86,
+      "hrv": 35,
+      "stress": 49
+    },
+    {
+      "elapsed": 270,
+      "hr": 88,
+      "hrv": 34,
+      "stress": 51
+    },
+    {
+      "elapsed": 300,
+      "hr": 90,
+      "hrv": 33,
+      "stress": 53
+    },
+    {
+      "elapsed": 310,
+      "hr": 89,
+      "hrv": 34,
+      "stress": 51
+    },
+    {
+      "elapsed": 320,
+      "hr": 87,
+      "hrv": 35,
+      "stress": 49
+    },
+    {
+      "elapsed": 330,
+      "hr": 86,
+      "hrv": 36,
+      "stress": 47
+    },
+    {
+      "elapsed": 340,
+      "hr": 84,
+      "hrv": 37,
+      "stress": 45
+    },
+    {
+      "elapsed": 350,
+      "hr": 82,
+      "hrv": 38,
+      "stress": 42
+    },
+    {
+      "elapsed": 360,
+      "hr": 80,
+      "hrv": 39,
+      "stress": 40
+    },
+    {
+      "elapsed": 390,
+      "hr": 78,
+      "hrv": 40,
+      "stress": 38
+    },
+    {
+      "elapsed": 420,
+      "hr": 76,
+      "hrv": 42,
+      "stress": 35
+    },
+    {
+      "elapsed": 450,
+      "hr": 74,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 480,
+      "hr": 73,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 510,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 540,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 570,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 600,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 630,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 660,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 690,
+      "hr": 74,
+      "hrv": 43,
+      "stress": 33
+    },
+    {
+      "elapsed": 720,
+      "hr": 75,
+      "hrv": 42,
+      "stress": 35
+    },
+    {
+      "elapsed": 750,
+      "hr": 76,
+      "hrv": 42,
+      "stress": 35
+    },
+    {
+      "elapsed": 780,
+      "hr": 74,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 810,
+      "hr": 72,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 840,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    }
+  ],
+  "baseline": {
+    "hr": 70,
+    "hrv": 46,
+    "stress": 26
+  },
+  "peak": {
+    "hr": 90,
+    "hrv": 33,
+    "elapsedAt": 300,
+    "stress": 53
+  },
+  "recovery": {
+    "minutes": 5
+  },
+  "messageCorrelations": [
+    {
+      "elapsed": 270,
+      "messagePreview": "I'm worried we might not hit the milestone",
+      "sender": "Kevin",
+      "hrBefore": 86,
+      "hrAfter": 90,
+      "hrvBefore": 35,
+      "hrvAfter": 33,
+      "stressBefore": 49,
+      "stressAfter": 53,
+      "annotation": {
+        "type": "observation",
+        "label": "Empathic concern",
+        "text": "Your HR hit 90 bpm when Kevin expressed worry  - a 29% increase from baseline. Your HRV dropped to 33ms, putting you at the edge of the stress zone. You absorbed Kevin's anxiety here  - your body mirrored her concern.",
+        "icon": "!"
+      }
+    },
+    {
+      "elapsed": 480,
+      "messagePreview": "I think if we're honest about scope, we'll be fine",
+      "sender": "You",
+      "hrBefore": 82,
+      "hrAfter": 73,
+      "hrvBefore": 38,
+      "hrvAfter": 44,
+      "stressBefore": 42,
+      "stressAfter": 31,
+      "annotation": {
+        "type": "positive",
+        "label": "Reassurance calms both of you",
+        "text": "When you offered reassurance, your own HR dropped 9 bpm and HRV recovered 6ms. Helping others regulate their stress literally regulates yours. Your body rewards you for being the stabilizing force.",
+        "icon": "+"
+      }
+    }
+  ],
+  "overallInsight": "A moderately stressful work conversation (peak stress 53) that followed a predictable arc: slow build as Kevin shared concerns, peak at minute 5, then steady recovery as you shifted to problem-solving. Your HR rose 29% to 90 bpm and HRV dropped to 33ms  - genuine concern, not threat. The most notable moment was at 8:00 when you reassured Kevin: your own HR dropped 9 bpm in under a minute. You co-regulate through competence and reassurance."
+}

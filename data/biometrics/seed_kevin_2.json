@@ -1,0 +1,101 @@
+{
+  "participant": "Kevin",
+  "startTime": "2026-02-14T14:15:00",
+  "duration": "2 min",
+  "hrTimeline": [
+    {
+      "elapsed": 0,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 10,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 20,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 30,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 40,
+      "hr": 73,
+      "hrv": 44,
+      "stress": 31
+    },
+    {
+      "elapsed": 50,
+      "hr": 72,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 60,
+      "hr": 71,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 70,
+      "hr": 70,
+      "hrv": 47,
+      "stress": 24
+    },
+    {
+      "elapsed": 80,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    },
+    {
+      "elapsed": 90,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 100,
+      "hr": 72,
+      "hrv": 44,
+      "stress": 30
+    },
+    {
+      "elapsed": 110,
+      "hr": 71,
+      "hrv": 45,
+      "stress": 28
+    },
+    {
+      "elapsed": 120,
+      "hr": 70,
+      "hrv": 46,
+      "stress": 26
+    }
+  ],
+  "baseline": {
+    "hr": 70,
+    "hrv": 46,
+    "stress": 26
+  },
+  "peak": {
+    "hr": 73,
+    "hrv": 44,
+    "elapsedAt": 40,
+    "stress": 31
+  },
+  "recovery": {
+    "minutes": 0
+  },
+  "messageCorrelations": [],
+  "overallInsight": "A brief, neutral check-in. Your biometrics barely moved  - HR stayed within 3 bpm of baseline, HRV held steady. This is what a low-stakes interaction looks like physiologically: your body didn't register any threat or excitement. Efficient and forgettable in the best sense."
+}
