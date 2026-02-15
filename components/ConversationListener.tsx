@@ -106,6 +106,8 @@ export function ConversationListener() {
   const identifiedPersonRef = useRef<FaceIdentification | null>(null);
   const faceCheckIntervalRef = useRef<number | null>(null);
   const uncertainDismissUntilRef = useRef<number>(0);
+  const faceScanPausedUntilRef = useRef<number>(0);
+  const faceScanFailureCountRef = useRef<number>(0);
 
   // Biometrics
   const bioIntervalRef = useRef<number | null>(null);
@@ -136,6 +138,8 @@ export function ConversationListener() {
   // ------------------------------------------------------------------
 
   const identifyFaceFromCamera = useCallback(async () => {
+    if (!showCamera && !isRecording) return;
+    if (Date.now() < faceScanPausedUntilRef.current) return;
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas) {
@@ -164,6 +168,8 @@ export function ConversationListener() {
         return;
       }
       if (data.person) {
+        faceScanFailureCountRef.current = 0;
+        faceScanPausedUntilRef.current = 0;
         const faceId: FaceIdentification = {
           personId: data.person.id,
           personName: data.person.name,
@@ -205,11 +211,24 @@ export function ConversationListener() {
         } else if (reason === "no_api_key") {
           setFaceError(`No OpenAI key (${enrolledCount} enrolled)`);
         } else if (reason === "api_error") {
+          faceScanFailureCountRef.current += 1;
+          const lowered = (errorDetail ?? "").toLowerCase();
+          const isRateOrQuota =
+            lowered.includes("rate") ||
+            lowered.includes("quota") ||
+            lowered.includes("429") ||
+            lowered.includes("insufficient_quota");
+          const backoffMs = isRateOrQuota
+            ? 60_000
+            : Math.min(45_000, 5_000 * 2 ** Math.min(4, faceScanFailureCountRef.current));
+          faceScanPausedUntilRef.current = Date.now() + backoffMs;
+          const waitSec = Math.max(1, Math.round(backoffMs / 1000));
           const suffix = errorDetail ? `: ${errorDetail.slice(0, 90)}` : "";
-          setFaceError(`Vision API error (${enrolledCount} enrolled)${suffix}`);
+          setFaceError(`Vision API error (${enrolledCount} enrolled, retry in ${waitSec}s)${suffix}`);
         } else if (reason === "no_parse") {
           setFaceError(`Bad API response (${enrolledCount} enrolled)`);
         } else if (reason === "no_match" && !uncertain) {
+          faceScanFailureCountRef.current = 0;
           setFaceError(`No match (${enrolledCount} enrolled)`);
         } else if (!uncertain) {
           setFaceError(null);
@@ -224,15 +243,15 @@ export function ConversationListener() {
     } finally {
       setFaceScanning(false);
     }
-  }, []);
+  }, [isRecording, showCamera]);
 
   const startFaceChecks = useCallback(() => {
-    // Immediately identify, then every 6s
+    // Immediately identify, then every 10s (avoid Vision throttling/quota spikes)
     void identifyFaceFromCamera();
     if (faceCheckIntervalRef.current !== null) return;
     faceCheckIntervalRef.current = window.setInterval(
       () => void identifyFaceFromCamera(),
-      6_000
+      10_000
     );
   }, [identifyFaceFromCamera]);
 
@@ -246,6 +265,8 @@ export function ConversationListener() {
     setUncertainCandidate(null);
     setFaceScanning(false);
     setFaceError(null);
+    faceScanPausedUntilRef.current = 0;
+    faceScanFailureCountRef.current = 0;
   }, []);
 
   const confirmUncertainCandidate = useCallback(() => {
