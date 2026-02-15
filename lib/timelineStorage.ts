@@ -35,6 +35,8 @@ export interface TimelineBubble {
   heartRate?: number;
   meaningfulness?: number;
   voiceConversationId?: string;
+  transcriptSnippet?: string;
+  highlightPoints?: { id: string; timestampSec: number; label: string; type: string }[];
 }
 
 async function ensureTimelineDir() {

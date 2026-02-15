@@ -110,5 +110,179 @@
     "heartRate": 0.4,
     "meaningfulness": 0.75,
     "id": "bubble_seed_demo_arthur_2"
+  },
+  {
+    "sessionId": "seed_0213_1",
+    "time": "8:12 AM",
+    "person": "Nina (roommate)",
+    "durationSec": 540,
+    "durationMin": 9,
+    "size": "medium",
+    "color": "#6AAAB4",
+    "colorName": "steady",
+    "date": "2026-02-13",
+    "score": 0.54,
+    "cortisol": 0.33,
+    "heartRate": 0.42,
+    "meaningfulness": 0.64,
+    "transcriptSnippet": "Quick planning chat in the dorm kitchen about biking to a CS lecture before section and whether to grab coffee at Coupa first.",
+    "highlightPoints": [
+      {
+        "id": "seed_0213_1_h1",
+        "timestampSec": 85,
+        "label": "Shared morning plan before class",
+        "type": "positive"
+      },
+      {
+        "id": "seed_0213_1_h2",
+        "timestampSec": 340,
+        "label": "Checked in on assignment deadlines",
+        "type": "pattern"
+      }
+    ],
+    "id": "bubble_seed_0213_1"
+  },
+  {
+    "sessionId": "seed_0213_2",
+    "time": "10:04 AM",
+    "person": "CS106B section group",
+    "durationSec": 1260,
+    "durationMin": 21,
+    "size": "large",
+    "color": "#D4B07A",
+    "colorName": "warm-amber",
+    "date": "2026-02-13",
+    "score": 0.71,
+    "cortisol": 0.48,
+    "heartRate": 0.53,
+    "meaningfulness": 0.72,
+    "transcriptSnippet": "Section table debate on recursion strategy and runtime tradeoffs; everyone compared bugs and landed on a cleaner approach together.",
+    "highlightPoints": [
+      {
+        "id": "seed_0213_2_h1",
+        "timestampSec": 170,
+        "label": "Group disagreed on recursion base case",
+        "type": "observation"
+      },
+      {
+        "id": "seed_0213_2_h2",
+        "timestampSec": 890,
+        "label": "Consensus on simpler implementation",
+        "type": "positive"
+      }
+    ],
+    "id": "bubble_seed_0213_2"
+  },
+  {
+    "sessionId": "seed_0213_3",
+    "time": "12:22 PM",
+    "person": "Maya (friend)",
+    "durationSec": 780,
+    "durationMin": 13,
+    "size": "medium",
+    "color": "#7AB89E",
+    "colorName": "repair-sage",
+    "date": "2026-02-13",
+    "score": 0.63,
+    "cortisol": 0.24,
+    "heartRate": 0.39,
+    "meaningfulness": 0.8,
+    "transcriptSnippet": "Lunch at Arrillaga where you swapped summer internship interview stories and laughed about awkward coffee chat moments.",
+    "highlightPoints": [
+      {
+        "id": "seed_0213_3_h1",
+        "timestampSec": 205,
+        "label": "Shared interview anxiety openly",
+        "type": "positive"
+      }
+    ],
+    "id": "bubble_seed_0213_3"
+  },
+  {
+    "sessionId": "seed_0213_4",
+    "time": "2:48 PM",
+    "person": "EE lab partner",
+    "durationSec": 1020,
+    "durationMin": 17,
+    "size": "large",
+    "color": "#B84A3A",
+    "colorName": "stress-red",
+    "date": "2026-02-13",
+    "score": 0.76,
+    "cortisol": 0.72,
+    "heartRate": 0.68,
+    "meaningfulness": 0.58,
+    "transcriptSnippet": "Lab bench troubleshooting when a circuit kept failing; tense at first, then calmer after splitting test steps and documenting results.",
+    "highlightPoints": [
+      {
+        "id": "seed_0213_4_h1",
+        "timestampSec": 130,
+        "label": "Frustration rose during repeated failures",
+        "type": "missed_bid"
+      },
+      {
+        "id": "seed_0213_4_h2",
+        "timestampSec": 760,
+        "label": "Switched to structured debugging checklist",
+        "type": "pattern"
+      }
+    ],
+    "id": "bubble_seed_0213_4"
+  },
+  {
+    "sessionId": "seed_0213_5",
+    "time": "6:35 PM",
+    "person": "FroSoCo table",
+    "durationSec": 900,
+    "durationMin": 15,
+    "size": "medium",
+    "color": "#6AAAB4",
+    "colorName": "steady",
+    "date": "2026-02-13",
+    "score": 0.58,
+    "cortisol": 0.36,
+    "heartRate": 0.47,
+    "meaningfulness": 0.67,
+    "transcriptSnippet": "Dinner conversation ranged from approaching final projects to whether fountain hopping still counts if someone brings a towel.",
+    "highlightPoints": [
+      {
+        "id": "seed_0213_5_h1",
+        "timestampSec": 510,
+        "label": "Playful story time with table",
+        "type": "positive"
+      }
+    ],
+    "id": "bubble_seed_0213_5"
+  },
+  {
+    "sessionId": "seed_0213_6",
+    "time": "9:41 PM",
+    "person": "TreeHacks project team",
+    "durationSec": 1440,
+    "durationMin": 24,
+    "size": "large",
+    "color": "#D4B07A",
+    "colorName": "warm-amber",
+    "date": "2026-02-13",
+    "score": 0.74,
+    "cortisol": 0.52,
+    "heartRate": 0.55,
+    "meaningfulness": 0.77,
+    "transcriptSnippet": "Late-night brainstorm in Huang where the team narrowed scope, picked a demo storyline, and assigned next-day build tasks.",
+    "highlightPoints": [
+      {
+        "id": "seed_0213_6_h1",
+        "timestampSec": 420,
+        "label": "Too many feature ideas, needed focus",
+        "type": "observation"
+      },
+      {
+        "id": "seed_0213_6_h2",
+        "timestampSec": 1120,
+        "label": "Clear owner assigned for each task",
+        "type": "positive"
+      }
+    ],
+    "id": "bubble_seed_0213_6"
   }
 ]

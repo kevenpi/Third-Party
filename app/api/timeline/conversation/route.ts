@@ -86,6 +86,8 @@ export async function GET(request: NextRequest) {
       aiNarrative = `Conversation lasted ${minutes} minute${minutes === 1 ? "" : "s"} with ${bubble.person}. ${totalWords} words transcribed across ${speakerSet.size} speaker${speakerSet.size !== 1 ? "s" : ""}.`;
     } else if (words > 0) {
       aiNarrative = `Conversation lasted ${minutes} minute${minutes === 1 ? "" : "s"} with ${bubble.person}. Live transcript captured about ${words} words with confidence ${(confidence * 100).toFixed(0)}%.`;
+    } else if (bubble.transcriptSnippet && bubble.transcriptSnippet.trim().length > 0) {
+      aiNarrative = bubble.transcriptSnippet.trim();
     } else {
       aiNarrative = `Conversation lasted ${minutes} minute${minutes === 1 ? "" : "s"} with ${bubble.person}.`;
     }
