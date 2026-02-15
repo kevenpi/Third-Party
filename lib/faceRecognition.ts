@@ -31,6 +31,8 @@ export interface FaceIdentifyResult {
   reason?: "no_api_key" | "no_enrolled" | "api_error" | "no_parse" | "no_match";
   /** How many people have enrolled photos */
   enrolledCount?: number;
+  /** Detail for api_error/no_parse troubleshooting */
+  errorDetail?: string;
 }
 
 const identifyCache = new Map<string, IdentifyCacheEntry>();
@@ -463,14 +465,31 @@ export async function identifyFace(frameBase64: string): Promise<FaceIdentifyRes
     cacheIdentifyResult(frameHash, uncertainResult);
     return uncertainResult;
   } catch (err) {
-    const errMsg = err instanceof Error ? err.message : String(err);
-    console.error("Face identification error:", errMsg);
+    const e = err as {
+      message?: string;
+      status?: number;
+      code?: string;
+      type?: string;
+      error?: { message?: string; code?: string; type?: string };
+    };
+    const detailParts = [
+      e?.message,
+      e?.error?.message,
+      e?.code ? `code=${e.code}` : undefined,
+      e?.error?.code ? `code=${e.error.code}` : undefined,
+      e?.type ? `type=${e.type}` : undefined,
+      e?.error?.type ? `type=${e.error.type}` : undefined,
+      typeof e?.status === "number" ? `status=${e.status}` : undefined,
+    ].filter(Boolean) as string[];
+    const errorDetail = detailParts.join(" | ").slice(0, 240) || "Unknown API error";
+    console.error("Face identification error:", errorDetail);
     const miss: FaceIdentifyResult = {
       person: null,
       uncertainCandidate: null,
       noEnrolledFaces: false,
       reason: "api_error",
       enrolledCount: peopleWithPhotos.length,
+      errorDetail,
     };
     cacheIdentifyResult(frameHash, miss);
     return miss;

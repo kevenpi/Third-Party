@@ -60,6 +60,7 @@ export async function POST(request: NextRequest) {
         noEnrolledFaces: result.noEnrolledFaces,
         reason: result.reason,
         enrolledCount: result.enrolledCount ?? 0,
+        errorDetail: result.errorDetail,
       });
     }
 

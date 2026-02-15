@@ -199,12 +199,14 @@ export function ConversationListener() {
         // Use reason from server for precise diagnostics
         const reason = data.reason as string | undefined;
         const enrolledCount = (data.enrolledCount as number) ?? 0;
+        const errorDetail = (data.errorDetail as string | undefined)?.trim();
         if (data.noEnrolledFaces || reason === "no_enrolled") {
           setFaceError("No faces enrolled");
         } else if (reason === "no_api_key") {
           setFaceError(`No OpenAI key (${enrolledCount} enrolled)`);
         } else if (reason === "api_error") {
-          setFaceError(`Vision API error (${enrolledCount} enrolled)`);
+          const suffix = errorDetail ? `: ${errorDetail.slice(0, 90)}` : "";
+          setFaceError(`Vision API error (${enrolledCount} enrolled)${suffix}`);
         } else if (reason === "no_parse") {
           setFaceError(`Bad API response (${enrolledCount} enrolled)`);
         } else if (reason === "no_match" && !uncertain) {
