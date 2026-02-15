@@ -70,6 +70,8 @@ export function ConversationListener() {
   const [showCamera, setShowCamera] = useState(true);
   const [showTranscript, setShowTranscript] = useState(false);
   const [liveLines, setLiveLines] = useState<{ id: number; speaker: string; text: string; time: string; isFinal: boolean }[]>([]);
+  const [speechRecStatus, setSpeechRecStatus] = useState<"checking" | "active" | "unavailable" | "error">("checking");
+  const [currentBuffer, setCurrentBuffer] = useState("");
   const liveLineIdRef = useRef(0);
   const liveVideoRef = useRef<HTMLVideoElement | null>(null);
   const cameraReadyRef = useRef(false);
@@ -530,77 +532,97 @@ export function ConversationListener() {
         // Browser speech recognition
         const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
         if (SpeechRec) {
-          const recognition = new SpeechRec();
-          recognition.continuous = true;
-          recognition.interimResults = true;
-          recognition.lang = "en-US";
-          let pendingInterimId: number | null = null;
-          recognition.onresult = (event: any) => {
-            let transcript = "";
-            let bestConfidence = 0;
-            let hasFinal = false;
-            for (let i = event.resultIndex; i < event.results.length; i += 1) {
-              const result = event.results[i];
-              const alt = result?.[0];
-              if (!alt?.transcript) continue;
-              transcript += ` ${alt.transcript}`;
-              if (typeof alt.confidence === "number") {
-                bestConfidence = Math.max(bestConfidence, alt.confidence);
-              }
-              if (result.isFinal) hasFinal = true;
-            }
-            transcript = transcript.trim();
-            if (!transcript) return;
-            transcriptTextRef.current = transcript.slice(0, 500);
-            transcriptWordsRef.current = transcript.split(/\s+/).filter(Boolean).length;
-            transcriptConfidenceRef.current = bestConfidence > 0 ? Math.min(1, bestConfidence) : 0.5;
-            transcriptUpdatedAtRef.current = Date.now();
-
-            // Push to live transcript panel
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-            const speaker = identifiedPersonRef.current
-              ? (bestConfidence > 0.7 ? "Me" : identifiedPersonRef.current.personName)
-              : "Speaker";
-
-            if (hasFinal) {
-              // Replace interim with final
-              const id = liveLineIdRef.current++;
-              setLiveLines((prev) => {
-                const filtered = pendingInterimId !== null
-                  ? prev.filter((l) => l.id !== pendingInterimId)
-                  : prev;
-                return [...filtered, { id, speaker, text: transcript, time: timeStr, isFinal: true }].slice(-50);
-              });
-              pendingInterimId = null;
-            } else {
-              // Update or create interim line
-              if (pendingInterimId === null) {
-                pendingInterimId = liveLineIdRef.current++;
-              }
-              const interimId = pendingInterimId;
-              setLiveLines((prev) => {
-                const existing = prev.findIndex((l) => l.id === interimId);
-                if (existing >= 0) {
-                  const copy = [...prev];
-                  copy[existing] = { ...copy[existing], text: transcript, time: timeStr, speaker };
-                  return copy;
+          try {
+            const recognition = new SpeechRec();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = "en-US";
+            let pendingInterimId: number | null = null;
+            recognition.onresult = (event: any) => {
+              let transcript = "";
+              let bestConfidence = 0;
+              let hasFinal = false;
+              for (let i = event.resultIndex; i < event.results.length; i += 1) {
+                const result = event.results[i];
+                const alt = result?.[0];
+                if (!alt?.transcript) continue;
+                transcript += ` ${alt.transcript}`;
+                if (typeof alt.confidence === "number") {
+                  bestConfidence = Math.max(bestConfidence, alt.confidence);
                 }
-                return [...prev, { id: interimId, speaker, text: transcript, time: timeStr, isFinal: false }].slice(-50);
-              });
-            }
-          };
-          recognition.onerror = () => {};
-          recognition.onend = () => {
-            if (listening && recognitionRef.current === recognition) {
-              try { recognition.start(); } catch { /* ignore */ }
-            }
-          };
-          recognitionRef.current = recognition;
-          try { recognition.start(); } catch { /* ignore */ }
+                if (result.isFinal) hasFinal = true;
+              }
+              transcript = transcript.trim();
+              if (!transcript) return;
+              transcriptTextRef.current = transcript.slice(0, 500);
+              transcriptWordsRef.current = transcript.split(/\s+/).filter(Boolean).length;
+              transcriptConfidenceRef.current = bestConfidence > 0 ? Math.min(1, bestConfidence) : 0.5;
+              transcriptUpdatedAtRef.current = Date.now();
+
+              // Push to live transcript panel
+              const now = new Date();
+              const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+              const speaker = identifiedPersonRef.current
+                ? (bestConfidence > 0.7 ? "Me" : identifiedPersonRef.current.personName)
+                : "Speaker";
+
+              if (hasFinal) {
+                // Replace interim with final
+                const id = liveLineIdRef.current++;
+                setLiveLines((prev) => {
+                  const filtered = pendingInterimId !== null
+                    ? prev.filter((l) => l.id !== pendingInterimId)
+                    : prev;
+                  return [...filtered, { id, speaker, text: transcript, time: timeStr, isFinal: true }].slice(-50);
+                });
+                pendingInterimId = null;
+              } else {
+                // Update or create interim line
+                if (pendingInterimId === null) {
+                  pendingInterimId = liveLineIdRef.current++;
+                }
+                const interimId = pendingInterimId;
+                setLiveLines((prev) => {
+                  const existing = prev.findIndex((l) => l.id === interimId);
+                  if (existing >= 0) {
+                    const copy = [...prev];
+                    copy[existing] = { ...copy[existing], text: transcript, time: timeStr, speaker };
+                    return copy;
+                  }
+                  return [...prev, { id: interimId, speaker, text: transcript, time: timeStr, isFinal: false }].slice(-50);
+                });
+              }
+            };
+            recognition.onerror = (e: any) => {
+              const errType = e?.error ?? "unknown";
+              if (errType === "not-allowed" || errType === "service-not-allowed") {
+                setSpeechRecStatus("error");
+              }
+            };
+            recognition.onend = () => {
+              if (listening && recognitionRef.current === recognition) {
+                try { recognition.start(); } catch { /* ignore */ }
+              }
+            };
+            recognitionRef.current = recognition;
+            recognition.start();
+            setSpeechRecStatus("active");
+          } catch {
+            setSpeechRecStatus("error");
+          }
+        } else {
+          setSpeechRecStatus("unavailable");
         }
+
       })
-      .catch(() => {});
+      .catch(() => {
+        setSpeechRecStatus("unavailable");
+      });
+
+    // Sync transcript buffer to state every 400ms for live display
+    const bufferSyncId = window.setInterval(() => {
+      setCurrentBuffer(transcriptTextRef.current);
+    }, 400);
 
     // Request camera (back camera as Meta glasses proxy)
     navigator.mediaDevices
@@ -646,6 +668,7 @@ export function ConversationListener() {
 
     return () => {
       cancelled = true;
+      clearInterval(bufferSyncId);
       if (intervalRef.current !== null) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
@@ -1061,6 +1084,55 @@ export function ConversationListener() {
             </div>
           </div>
 
+          {/* Status bar */}
+          <div
+            style={{
+              padding: "6px 14px",
+              background: "rgba(255,255,255,0.02)",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              borderBottom: "1px solid rgba(255,255,255,0.04)",
+            }}
+          >
+            {/* Audio level mini-bar */}
+            <div style={{ flex: 1, height: 3, borderRadius: 2, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
+              <div
+                style={{
+                  width: `${Math.min(100, audioLevel * 200)}%`,
+                  height: "100%",
+                  background: isRecording ? "#EF4444" : "#7AB89E",
+                  borderRadius: 2,
+                  transition: "width 0.15s ease-out",
+                }}
+              />
+            </div>
+            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.25)", fontFamily: "Plus Jakarta Sans, sans-serif", whiteSpace: "nowrap" }}>
+              {speechRecStatus === "active" ? "speech rec on" : speechRecStatus === "unavailable" ? "speech rec n/a" : speechRecStatus === "error" ? "speech rec error" : "checking..."}
+            </span>
+          </div>
+
+          {/* Current buffer (live speech) */}
+          {currentBuffer && (
+            <div
+              style={{
+                padding: "8px 14px",
+                borderBottom: "1px solid rgba(255,255,255,0.04)",
+                background: "rgba(212,176,122,0.04)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#D4B07A", animation: "listener-pulse 1.5s ease-in-out infinite" }} />
+                <span style={{ fontSize: 9, color: "#D4B07A", fontFamily: "Plus Jakarta Sans, sans-serif", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                  Now hearing
+                </span>
+              </div>
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,0.7)", fontFamily: "Plus Jakarta Sans, sans-serif", lineHeight: 1.5, margin: 0, fontStyle: "italic" }}>
+                {currentBuffer}
+              </p>
+            </div>
+          )}
+
           {/* Transcript lines */}
           <div
             ref={transcriptPanelRef}
@@ -1071,16 +1143,39 @@ export function ConversationListener() {
               display: "flex",
               flexDirection: "column",
               gap: 8,
+              minHeight: 80,
             }}
           >
-            {liveLines.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "24px 0" }}>
-                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-                  {isRecording ? "Waiting for speech..." : "Start speaking to see the transcript"}
-                </p>
-                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", fontFamily: "Plus Jakarta Sans, sans-serif", marginTop: 6 }}>
-                  Words appear here in real time
-                </p>
+            {liveLines.length === 0 && !currentBuffer ? (
+              <div style={{ textAlign: "center", padding: "20px 0" }}>
+                {speechRecStatus === "unavailable" ? (
+                  <>
+                    <p style={{ fontSize: 12, color: "#B84A3A", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                      Speech Recognition not available
+                    </p>
+                    <p style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontFamily: "Plus Jakarta Sans, sans-serif", marginTop: 6 }}>
+                      Use Chrome or Edge for live transcription
+                    </p>
+                  </>
+                ) : speechRecStatus === "error" ? (
+                  <>
+                    <p style={{ fontSize: 12, color: "#B84A3A", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                      Microphone access denied
+                    </p>
+                    <p style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontFamily: "Plus Jakarta Sans, sans-serif", marginTop: 6 }}>
+                      Allow mic permission and reload
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                      {audioLevel > 0.02 ? "Hearing audio, processing..." : "Start speaking to see the transcript"}
+                    </p>
+                    <p style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", fontFamily: "Plus Jakarta Sans, sans-serif", marginTop: 6 }}>
+                      Words appear here in real time with speaker labels
+                    </p>
+                  </>
+                )}
               </div>
             ) : (
               liveLines.map((line) => {
@@ -1130,38 +1225,36 @@ export function ConversationListener() {
             )}
           </div>
 
-          {/* Footer with audio level bar */}
+          {/* Footer */}
           <div
             style={{
               padding: "6px 14px 8px",
               borderTop: "1px solid rgba(255,255,255,0.06)",
               display: "flex",
               alignItems: "center",
-              gap: 8,
+              justifyContent: "space-between",
             }}
           >
-            <div
-              style={{
-                flex: 1,
-                height: 3,
-                borderRadius: 2,
-                background: "rgba(255,255,255,0.06)",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  width: `${Math.min(100, audioLevel * 200)}%`,
-                  height: "100%",
-                  background: isRecording ? "#EF4444" : "#7AB89E",
-                  borderRadius: 2,
-                  transition: "width 0.15s ease-out",
-                }}
-              />
-            </div>
-            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontFamily: "Plus Jakarta Sans, sans-serif", whiteSpace: "nowrap" }}>
-              {liveLines.filter((l) => l.isFinal).length} lines
+            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.25)", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+              {liveLines.filter((l) => l.isFinal).length} finalized &middot; {liveLines.length} total
             </span>
+            {liveLines.length > 0 && (
+              <button
+                onClick={() => setLiveLines([])}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.25)",
+                  fontSize: 9,
+                  cursor: "pointer",
+                  fontFamily: "Plus Jakarta Sans, sans-serif",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                clear
+              </button>
+            )}
           </div>
         </div>
       )}
