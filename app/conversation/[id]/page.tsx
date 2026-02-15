@@ -52,14 +52,30 @@ export default function ConversationDrillInPage() {
   const [tagName, setTagName] = useState("");
   const [showTranscript, setShowTranscript] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [customTags, setCustomTags] = useState<string[]>([]);
+
+  const DEFAULT_TAG_OPTIONS = [
+    { id: "important", label: "Important" },
+    { id: "insightful", label: "Insightful" },
+    { id: "heated", label: "Heated" },
+    { id: "emotional", label: "Emotional" },
+    { id: "recurring", label: "Recurring Issue" },
+    { id: "growth", label: "Growth Moment" },
+  ];
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("custom-tags");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) setCustomTags(parsed);
+      }
+    } catch {}
+  }, []);
 
   const TAG_OPTIONS = [
-    { id: "important", label: "Important", emoji: "\u2B50" },
-    { id: "insightful", label: "Insightful", emoji: "\uD83D\uDCA1" },
-    { id: "heated", label: "Heated", emoji: "\uD83D\uDD25" },
-    { id: "emotional", label: "Emotional", emoji: "\uD83D\uDE22" },
-    { id: "recurring", label: "Recurring Issue", emoji: "\uD83D\uDD01" },
-    { id: "growth", label: "Growth Moment", emoji: "\uD83C\uDF31" },
+    ...DEFAULT_TAG_OPTIONS,
+    ...customTags.map((t) => ({ id: t, label: t })),
   ];
 
   const handleTagPerson = useCallback(() => {
@@ -297,7 +313,7 @@ export default function ConversationDrillInPage() {
                     : "bg-transparent border border-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.4)]"
                 }`}
               >
-                {tag.emoji} {tag.label}
+                {tag.label}
               </button>
             );
           })}

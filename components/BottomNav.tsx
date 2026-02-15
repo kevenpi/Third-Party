@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Clock, Users, MessageSquare } from "lucide-react";
+import { Clock, Users, MessageSquare, Tag } from "lucide-react";
 import { cn } from "@/lib/ui";
 
 export function BottomNav() {
@@ -12,6 +12,7 @@ export function BottomNav() {
     { href: "/timeline", icon: Clock, label: "Timeline", id: "timeline" },
     { href: "/people", icon: Users, label: "People", id: "people" },
     { href: "/agent", icon: MessageSquare, label: "Agent", id: "agent" },
+    { href: "/tags", icon: Tag, label: "Tags", id: "tags" },
   ];
 
   const isActive = (href: string) => {

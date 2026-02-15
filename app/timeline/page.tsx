@@ -157,15 +157,6 @@ export default function TimelinePage() {
   const dateScrollerRef = useRef<HTMLDivElement | null>(null);
   const [convTags, setConvTags] = useState<Record<string, string[]>>({});
 
-  const TAG_EMOJI: Record<string, string> = {
-    important: "\u2B50",
-    insightful: "\uD83D\uDCA1",
-    heated: "\uD83D\uDD25",
-    emotional: "\uD83D\uDE22",
-    recurring: "\uD83D\uDD01",
-    growth: "\uD83C\uDF31",
-  };
-
   const loadBubbles = useCallback(async (date: string) => {
     try {
       const r = await fetch(`/api/timeline?date=${date}`);
@@ -669,7 +660,11 @@ export default function TimelinePage() {
                         <p className="text-xs text-[rgba(255,255,255,0.5)]">{conv.time}</p>
                         <p className="text-xs text-[rgba(255,255,255,0.4)]">{formatDuration(conv.durationSec)}</p>
                         {convTags[conv.id] && (
-                          <p className="text-xs mt-0.5">{convTags[conv.id].map((t) => TAG_EMOJI[t] || "").join(" ")}</p>
+                          <div className="flex flex-wrap gap-1 mt-1 justify-end">
+                            {convTags[conv.id].map((t) => (
+                              <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full border border-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.5)]">{t}</span>
+                            ))}
+                          </div>
                         )}
                       </div>
                     )}
@@ -702,7 +697,11 @@ export default function TimelinePage() {
                         <p className="text-xs text-[rgba(255,255,255,0.5)]">{conv.time}</p>
                         <p className="text-xs text-[rgba(255,255,255,0.4)]">{formatDuration(conv.durationSec)}</p>
                         {convTags[conv.id] && (
-                          <p className="text-xs mt-0.5">{convTags[conv.id].map((t) => TAG_EMOJI[t] || "").join(" ")}</p>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {convTags[conv.id].map((t) => (
+                              <span key={t} className="text-[10px] px-1.5 py-0.5 rounded-full border border-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.5)]">{t}</span>
+                            ))}
+                          </div>
                         )}
                       </div>
                     )}
