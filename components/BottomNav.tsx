@@ -37,19 +37,13 @@ export function BottomNav() {
               className={cn(
                 "flex flex-col items-center justify-center gap-1 flex-1 h-full transition-all relative",
                 active
-                  ? "text-transparent bg-clip-text bg-gradient-to-b from-[#D4B07A] to-[#E8C97A]"
+                  ? "text-[#D4B07A]"
                   : "text-[#4A4440]"
               )}
             >
               <Icon className={cn("w-5 h-5 transition-all", active && "scale-110")} />
               <span className="text-[10px] font-medium tracking-wide">
-                {active ? (
-                  <span className="bg-gradient-to-b from-[#D4B07A] to-[#E8C97A] bg-clip-text text-transparent">
-                    {tab.label}
-                  </span>
-                ) : (
-                  tab.label
-                )}
+                {tab.label}
               </span>
               {active && (
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-[#D4B07A] to-[#E8C97A] rounded-full" />
