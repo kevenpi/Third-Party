@@ -69,6 +69,7 @@ export function ConversationListener() {
   const [transcriptFeed, setTranscriptFeed] = useState<{ id: string; text: string; ts: string }[]>([]);
   const [isFinalizing, setIsFinalizing] = useState(false);
   const [finalizeMessage, setFinalizeMessage] = useState<string | null>(null);
+  const [speechAvailable, setSpeechAvailable] = useState(true);
 
   // Audio
   const streamRef = useRef<MediaStream | null>(null);
@@ -86,6 +87,7 @@ export function ConversationListener() {
   const transcriptTextRef = useRef<string>("");
   const transcriptWordsRef = useRef<number>(0);
   const transcriptConfidenceRef = useRef<number>(0);
+  const finalizedTranscriptRef = useRef<string>("");
   const recognitionRef = useRef<any>(null);
   const transcriptFeedRef = useRef<string[]>([]);
 
@@ -335,7 +337,7 @@ export function ConversationListener() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          source: "meta_glasses" as const,
+          source: "microphone" as const,
           audioLevel,
           transcriptText: transcriptTextRef.current || undefined,
           transcriptWords: transcriptWordsRef.current || undefined,
@@ -431,9 +433,11 @@ export function ConversationListener() {
       transcriptTextRef.current = "";
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
+      finalizedTranscriptRef.current = "";
       transcriptFeedRef.current = [];
       setLiveTranscript("");
       setTranscriptFeed([]);
+      setSpeechAvailable(true);
       setIsFinalizing(false);
       wasRecordingRef.current = false;
       return;
@@ -462,23 +466,31 @@ export function ConversationListener() {
         // Browser speech recognition
         const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
         if (SpeechRec) {
+          setSpeechAvailable(true);
           const recognition = new SpeechRec();
           recognition.continuous = true;
           recognition.interimResults = true;
           recognition.lang = "en-US";
           recognition.onresult = (event: any) => {
-            let transcript = "";
+            let interimTranscript = "";
             let bestConfidence = 0;
             for (let i = event.resultIndex; i < event.results.length; i += 1) {
               const result = event.results[i];
               const alt = result?.[0];
               if (!alt?.transcript) continue;
-              transcript += ` ${alt.transcript}`;
+              if (result.isFinal) {
+                finalizedTranscriptRef.current = `${finalizedTranscriptRef.current} ${alt.transcript}`.trim();
+                if (finalizedTranscriptRef.current.length > 800) {
+                  finalizedTranscriptRef.current = finalizedTranscriptRef.current.slice(-800);
+                }
+              } else {
+                interimTranscript += ` ${alt.transcript}`;
+              }
               if (typeof alt.confidence === "number") {
                 bestConfidence = Math.max(bestConfidence, alt.confidence);
               }
             }
-            transcript = transcript.trim();
+            const transcript = `${finalizedTranscriptRef.current} ${interimTranscript}`.trim();
             if (!transcript) return;
             transcriptTextRef.current = transcript.slice(0, 500);
             setLiveTranscript(transcriptTextRef.current);
@@ -499,7 +511,12 @@ export function ConversationListener() {
               );
             }
           };
-          recognition.onerror = () => {};
+          recognition.onerror = (event: any) => {
+            const code = String(event?.error ?? "");
+            if (code === "not-allowed" || code === "service-not-allowed") {
+              setSpeechAvailable(false);
+            }
+          };
           recognition.onend = () => {
             if (listening && recognitionRef.current === recognition) {
               try { recognition.start(); } catch { /* ignore */ }
@@ -507,6 +524,8 @@ export function ConversationListener() {
           };
           recognitionRef.current = recognition;
           try { recognition.start(); } catch { /* ignore */ }
+        } else {
+          setSpeechAvailable(false);
         }
       })
       .catch(() => {});
@@ -571,9 +590,11 @@ export function ConversationListener() {
       transcriptTextRef.current = "";
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
+      finalizedTranscriptRef.current = "";
       transcriptFeedRef.current = [];
       setLiveTranscript("");
       setTranscriptFeed([]);
+      setSpeechAvailable(true);
       setIsFinalizing(false);
       wasRecordingRef.current = false;
     };
@@ -690,6 +711,11 @@ export function ConversationListener() {
             <p style={{ margin: "6px 0 0", fontSize: 11, color: "rgba(255,255,255,0.56)" }}>
               Current: {liveTranscript ? `"${liveTranscript.slice(0, 160)}"` : "No transcript yet"}
             </p>
+            {!speechAvailable ? (
+              <p style={{ margin: "6px 0 0", fontSize: 11, color: "rgba(255,214,139,0.86)" }}>
+                Live transcript is limited on this browser/device (SpeechRecognition unavailable).
+              </p>
+            ) : null}
             <div style={{ marginTop: 8, maxHeight: 180, overflowY: "auto", display: "grid", gap: 6 }}>
               {transcriptFeed.length === 0 ? (
                 <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.5)" }}>

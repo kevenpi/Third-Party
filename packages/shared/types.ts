@@ -234,6 +234,8 @@ export interface ConversationAwarenessState {
   activeSpeakers: SpeakerWindow[];
   rollingAudioLevels: number[];
   recentSignals: AwarenessSignalEvent[];
+  startCandidateCount?: number;
+  stopCandidateCount?: number;
   latestAction:
     | "idle"
     | "awaiting_conversation"

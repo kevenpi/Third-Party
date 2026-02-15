@@ -31,6 +31,8 @@ export function createEmptyAwarenessState(): ConversationAwarenessState {
     activeSpeakers: [],
     rollingAudioLevels: [],
     recentSignals: [],
+    startCandidateCount: 0,
+    stopCandidateCount: 0,
     latestAction: "idle"
   };
 }
