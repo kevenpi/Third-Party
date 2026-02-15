@@ -38,6 +38,14 @@ const SAMPLE_PEOPLE: Person[] = [
     emotionalColors: ["#D4B07A", "#B84A3A", "#7AB89E"],
     avatarGradient: "from-[#D4B07A] to-[#B84A3A]",
   },
+  {
+    id: "jessica",
+    name: "Jessica",
+    description: "A close friend you travel with. Easy warmth on the surface, but planning conversations reveal unspoken tensions.",
+    lastConversation: "yesterday at 3:20 PM",
+    emotionalColors: ["#E8A0BF", "#D4B07A", "#D4806A", "#C4684A"],
+    avatarGradient: "from-[#E8A0BF] to-[#D4806A]",
+  },
 ];
 
 export default function PeoplePage() {

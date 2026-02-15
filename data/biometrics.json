@@ -733,6 +733,143 @@
         }
       ],
       "overallInsight": "This conversation was the physiological mirror of the 12:45 PM conflict. Your HR started elevated at 72 (residual tension from earlier) but steadily dropped to 59 bpm - 9% below your morning baseline. Your HRV climbed from 44ms to 64ms over 35 minutes, the highest reading of your day. This is active co-regulation: Arthur's calm presence literally brought your nervous system back to rest. By the end, your stress score hit 1 - the closest your body came to full parasympathetic dominance all day. This is what repair looks like in the body."
+    },
+    "8": {
+      "participant": "Jessica",
+      "startTime": "2026-02-13T15:20:00",
+      "duration": "12 min",
+      "hrTimeline": [
+        { "elapsed": 0, "hr": 64, "hrv": 50, "stress": 18 },
+        { "elapsed": 15, "hr": 65, "hrv": 50, "stress": 19 },
+        { "elapsed": 30, "hr": 66, "hrv": 49, "stress": 20 },
+        { "elapsed": 45, "hr": 67, "hrv": 49, "stress": 21 },
+        { "elapsed": 60, "hr": 68, "hrv": 48, "stress": 22 },
+        { "elapsed": 75, "hr": 68, "hrv": 48, "stress": 23 },
+        { "elapsed": 90, "hr": 69, "hrv": 47, "stress": 24 },
+        { "elapsed": 105, "hr": 70, "hrv": 47, "stress": 25 },
+        { "elapsed": 120, "hr": 70, "hrv": 46, "stress": 26 },
+        { "elapsed": 135, "hr": 71, "hrv": 46, "stress": 27 },
+        { "elapsed": 150, "hr": 72, "hrv": 45, "stress": 28 },
+        { "elapsed": 165, "hr": 72, "hrv": 45, "stress": 29 },
+        { "elapsed": 180, "hr": 73, "hrv": 44, "stress": 30 },
+        { "elapsed": 195, "hr": 71, "hrv": 46, "stress": 27 },
+        { "elapsed": 210, "hr": 70, "hrv": 47, "stress": 25 },
+        { "elapsed": 225, "hr": 71, "hrv": 46, "stress": 27 },
+        { "elapsed": 240, "hr": 72, "hrv": 45, "stress": 29 },
+        { "elapsed": 255, "hr": 73, "hrv": 44, "stress": 31 },
+        { "elapsed": 270, "hr": 74, "hrv": 43, "stress": 33 },
+        { "elapsed": 285, "hr": 75, "hrv": 43, "stress": 34 },
+        { "elapsed": 300, "hr": 76, "hrv": 42, "stress": 35 },
+        { "elapsed": 315, "hr": 77, "hrv": 41, "stress": 37 },
+        { "elapsed": 330, "hr": 78, "hrv": 41, "stress": 38 },
+        { "elapsed": 345, "hr": 78, "hrv": 40, "stress": 39 },
+        { "elapsed": 360, "hr": 79, "hrv": 39, "stress": 40 },
+        { "elapsed": 375, "hr": 80, "hrv": 39, "stress": 41 },
+        { "elapsed": 390, "hr": 82, "hrv": 38, "stress": 44 },
+        { "elapsed": 405, "hr": 83, "hrv": 37, "stress": 46 },
+        { "elapsed": 420, "hr": 84, "hrv": 37, "stress": 47 },
+        { "elapsed": 435, "hr": 84, "hrv": 36, "stress": 48 },
+        { "elapsed": 450, "hr": 85, "hrv": 36, "stress": 49 },
+        { "elapsed": 465, "hr": 85, "hrv": 35, "stress": 50 },
+        { "elapsed": 480, "hr": 86, "hrv": 35, "stress": 51 },
+        { "elapsed": 495, "hr": 86, "hrv": 35, "stress": 51 },
+        { "elapsed": 510, "hr": 87, "hrv": 34, "stress": 53 },
+        { "elapsed": 525, "hr": 87, "hrv": 34, "stress": 53 },
+        { "elapsed": 540, "hr": 88, "hrv": 34, "stress": 55 },
+        { "elapsed": 555, "hr": 87, "hrv": 35, "stress": 53 },
+        { "elapsed": 570, "hr": 86, "hrv": 35, "stress": 51 },
+        { "elapsed": 585, "hr": 86, "hrv": 35, "stress": 51 },
+        { "elapsed": 600, "hr": 85, "hrv": 36, "stress": 49 },
+        { "elapsed": 615, "hr": 85, "hrv": 36, "stress": 49 },
+        { "elapsed": 630, "hr": 84, "hrv": 36, "stress": 48 },
+        { "elapsed": 645, "hr": 84, "hrv": 37, "stress": 47 },
+        { "elapsed": 660, "hr": 83, "hrv": 37, "stress": 46 },
+        { "elapsed": 675, "hr": 83, "hrv": 37, "stress": 46 },
+        { "elapsed": 690, "hr": 82, "hrv": 38, "stress": 44 },
+        { "elapsed": 705, "hr": 82, "hrv": 38, "stress": 44 },
+        { "elapsed": 720, "hr": 81, "hrv": 38, "stress": 43 }
+      ],
+      "baseline": { "hr": 64, "hrv": 50, "stress": 18 },
+      "peak": { "hr": 88, "hrv": 34, "elapsedAt": 540, "stress": 55 },
+      "recovery": { "minutes": 0 },
+      "messageCorrelations": [
+        {
+          "elapsed": 180,
+          "messagePreview": "Haha okay but seriously though, where do you actually want to go?",
+          "sender": "Jessica",
+          "hrBefore": 72,
+          "hrAfter": 71,
+          "hrvBefore": 45,
+          "hrvAfter": 46,
+          "stressBefore": 28,
+          "stressAfter": 27,
+          "annotation": {
+            "type": "pattern",
+            "label": "Avoidance through humor",
+            "icon": "~",
+            "text": "Jessica deflected a direct question with a laugh, then rephrased it. Your HR dipped 1 bpm - the humor briefly relaxed you - but notice how quickly the stress climbed right back. The joke resolved tension for seconds, not minutes. Your body sensed the real question underneath was still unanswered.",
+            "shortText": "Humor dipped HR 1 bpm briefly but stress resumed climbing - deflection, not resolution",
+            "longText": "Jessica asked where you wanted to go, laughed, then asked again more seriously. Your heart rate dropped 1 bpm for about 15 seconds - just long enough for the humor to register - before resuming its slow upward climb.\n\nThis is a pattern you and Jessica share: using humor as a pressure valve. It works in the moment. Your body briefly relaxes, cortisol dips, the conversation feels lighter. But the underlying question doesn't get answered, and your nervous system knows it.\n\nWatch what happened to your stress score: it dropped from 28 to 27 (barely perceptible), then by the next data point it was back at 29 and climbing. Your body gave the joke about 15 seconds of credit before resuming its slow-burn activation.\n\nCompare this to how humor works with Tane - when you two laugh together, your HRV improves and stays improved for minutes. With Jessica, humor creates a micro-dip that your body immediately corrects. The difference is that Tane's humor resolves tension. Jessica's humor redirects it.\n\nThis isn't a criticism of Jessica. It's a shared habit. You both use it. And it works well enough in low-stakes situations. But in planning conversations where real preferences need to be stated, it becomes a way to avoid vulnerability.",
+            "humanComparison": "Like scratching an itch through a sweater - you feel temporary relief but the itch is still there",
+            "pattern": {
+              "description": "Jessica's humor deflections produce less than 20 seconds of physiological relief before stress resumes climbing",
+              "avgRecovery": "N/A - humor delays stress rather than resolving it",
+              "relatedConversations": ["Jessica Feb 10", "Jessica Feb 7"]
+            }
+          }
+        },
+        {
+          "elapsed": 390,
+          "messagePreview": "I mean, I'm flexible, whatever works for you",
+          "sender": "You",
+          "hrBefore": 80,
+          "hrAfter": 82,
+          "hrvBefore": 39,
+          "hrvAfter": 38,
+          "stressBefore": 41,
+          "stressAfter": 44,
+          "annotation": {
+            "type": "missed_bid",
+            "label": "Unspoken tension",
+            "icon": "x",
+            "text": "You said 'whatever works for you' and your HR rose 2 bpm. Accommodation language that increases your own stress is a signal - your body knows you're not saying what you actually want. This phrase cost you physiologically because it suppressed a real preference.",
+            "shortText": "HR rose 2 bpm when you said 'whatever works' - your body knows you suppressed a preference",
+            "longText": "You said 'I'm flexible, whatever works for you' and your heart rate went up, not down. That's backwards from what you'd expect if you were genuinely flexible. If you truly had no preference, this phrase would be neutral - HR flat, stress unchanged. Instead, your HR climbed from 80 to 82 and your stress ticked from 41 to 44.\n\nYour body is telling you something your words aren't: you have a preference, and you just buried it.\n\nThis is what psychologists call 'self-silencing' - suppressing your own needs to maintain relational harmony. It feels like generosity in the moment. But your nervous system experiences it as a small betrayal. You just told your body's alarm system to stand down when it was trying to advocate for something you wanted.\n\nThe physiological cost is real but subtle. Your HRV dropped 1ms (39 to 38). Your stress rose 3 points. These aren't dramatic numbers, but they add up. Over the next 2.5 minutes, your HR continued climbing to 88 - not because Jessica said anything stressful, but because the tension of an unspoken preference keeps building when it has nowhere to go.\n\nThis is the slow-burn pattern that defines your conversations with Jessica during planning. No single moment is intense. But by the end, your stress is 55 and you can't point to any one thing that caused it.",
+            "humanComparison": "The stress of suppressing a preference is similar to holding in a sneeze - low-grade discomfort that compounds over time",
+            "pattern": {
+              "description": "Accommodation language ('whatever works', 'I'm flexible') consistently raises your HR by 2-3 bpm rather than lowering it",
+              "avgRecovery": "No recovery during conversation - stress compounds until conversation ends",
+              "relatedConversations": ["Jessica Feb 10", "Jessica Feb 4"]
+            }
+          }
+        },
+        {
+          "elapsed": 540,
+          "messagePreview": "Yeah, that sounds great. Let's do that.",
+          "sender": "You",
+          "hrBefore": 87,
+          "hrAfter": 88,
+          "hrvBefore": 34,
+          "hrvAfter": 34,
+          "stressBefore": 53,
+          "stressAfter": 55,
+          "annotation": {
+            "type": "observation",
+            "label": "Quiet concession",
+            "icon": "*",
+            "text": "You agreed to Jessica's plan and your stress peaked at 55. Your HRV held flat at 34ms - no relief from the decision. When genuine agreement happens, HR drops. When concession happens, HR stays elevated. Your body didn't experience this as resolution.",
+            "shortText": "Stress peaked at 55 when you agreed - no HR drop means concession, not genuine agreement",
+            "longText": "This is the moment you said yes to Jessica's plan. Your heart rate was 88 bpm. Your stress score was 55. And the most telling detail: nothing changed after you said it.\n\nWhen people genuinely agree with a plan - when they feel heard and aligned - there's a physiological signature: HR drops 3-5 bpm, HRV ticks up, stress decreases. It's your body saying 'resolved.' You can see this exact pattern in your conversation with Kevin at minute 8 (HR dropped 9 bpm after you proposed a solution you believed in).\n\nHere, you said 'that sounds great' and your HR went up 1 bpm. Your HRV didn't move. Your stress rose from 53 to 55. Your body did not experience this as agreement. It experienced it as surrender.\n\nThe conversation ended shortly after, and your stress stayed elevated. You left the call at 81 HR and 43 stress - numbers that would normally take another 8-10 minutes of calm activity to resolve. You carried this tension with you.\n\nThis is the cost of the slow-burn pattern with Jessica. There's no single dramatic spike to point at. No voice raised, no silence, no obvious conflict. Just a gradual accumulation of unsaid things that your body tracked even when your words didn't.\n\nThe question isn't whether Jessica's plan was wrong. It's whether you ever told her what yours was.",
+            "humanComparison": "Your body's response was similar to agreeing to work late when you had plans - technically voluntary but physiologically costly",
+            "pattern": {
+              "description": "Concessions to Jessica produce zero HR recovery. Genuine agreements with others produce 3-5 bpm drops within 30 seconds",
+              "avgRecovery": "8-10 minutes after conversation ends",
+              "relatedConversations": ["Jessica Feb 7", "Jessica Feb 4"]
+            }
+          }
+        }
+      ],
+      "overallInsight": "A slow-burn stress conversation with no single dramatic moment. Your HR climbed steadily from 64 to 88 bpm over 9 minutes - a 37% increase from baseline - without any obvious trigger. Your HRV dropped from 50 to 34ms in the same gradual arc. This is the physiological signature of suppressed preferences: no spike, no recovery, just a steady ramp as your body tracked what your words wouldn't say. The humor at 3:00 provided seconds of relief. The accommodation at 6:30 accelerated the climb. The concession at 9:00 peaked your stress without resolving it. You left this conversation carrying tension that had no clear source - because the source was internal."
     }
   }
 }

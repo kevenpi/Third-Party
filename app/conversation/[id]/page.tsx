@@ -108,6 +108,19 @@ const CONVERSATION_DATA: Record<string, {
       { id: "2", timestamp: 1200, timeDisplay: "20:00", description: "Moment of connection", color: "#6AAAB4" },
     ],
   },
+  "8": {
+    person: "Jessica",
+    date: "2026-02-13",
+    time: "3:20 PM",
+    duration: 720,
+    color: "#E8A0BF",
+    aiNarrative: "A trip-planning conversation that started with excitement but gradually shifted as logistics surfaced unspoken tensions. You both wanted different things from the trip but neither of you named it directly. Jessica used humor to deflect twice, you conceded at the end without saying what you actually preferred. The conversation ended politely but something was left unsaid.",
+    keyMoments: [
+      { id: "1", timestamp: 180, timeDisplay: "3:00", description: "Avoidance through humor", color: "#D4B07A" },
+      { id: "2", timestamp: 390, timeDisplay: "6:30", description: "Unspoken tension", color: "#D4806A" },
+      { id: "3", timestamp: 540, timeDisplay: "9:00", description: "Quiet concession", color: "#C4684A" },
+    ],
+  },
 };
 
 export default function ConversationDrillInPage() {

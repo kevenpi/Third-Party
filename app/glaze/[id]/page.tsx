@@ -97,6 +97,24 @@ const GLAZE_DATA: Record<string, {
       { date: "2026-02-01", color: "#D4B07A", size: "small" },
     ],
   },
+  jessica: {
+    name: "Jessica",
+    description: "Jessica is a close friend you travel with. Conversations are warm and easy on the surface, but planning discussions reveal quiet tensions neither of you addresses directly.",
+    stats: "2 weeks · 18 conversations · talked yesterday",
+    colorBand: ["#E8A0BF", "#C4B496", "#D4B07A", "#E8A0BF", "#D4806A", "#C4B496", "#E8A0BF"],
+    insights: [
+      { text: "Jessica uses humor to redirect when conversations approach real preferences. Your body relaxes but the underlying tension stays unresolved.", color: "#D4B07A" },
+      { text: "You tend to concede during planning conversations with Jessica rather than naming what you actually want.", color: "#D4806A" },
+      { text: "Your calmest moments with Jessica happen when the conversation is unstructured - no agenda, no decisions to make.", color: "#7AB89E" },
+    ],
+    conversations: [
+      { date: "2026-02-13", color: "#E8A0BF", size: "large" },
+      { date: "2026-02-10", color: "#C4B496", size: "medium" },
+      { date: "2026-02-07", color: "#D4B07A", size: "small" },
+      { date: "2026-02-04", color: "#E8A0BF", size: "medium" },
+      { date: "2026-02-02", color: "#7AB89E", size: "small" },
+    ],
+  },
 };
 
 function formatDate(dateStr: string): string {

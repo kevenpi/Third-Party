@@ -184,7 +184,7 @@ export function getDailySummaryForDate(date: string) {
 
   // Generate deterministic-but-varied summary for past dates
   const hash = [...date].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  const PEOPLE = ["Arthur", "Tane", "Kevin"];
+  const PEOPLE = ["Arthur", "Tane", "Kevin", "Jessica"];
   const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"];
 
   const avgHr = 66 + (hash % 12);

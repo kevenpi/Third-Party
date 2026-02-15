@@ -31,7 +31,7 @@ interface LiveAwarenessEvent {
   transcriptText?: string;
 }
 
-const PEOPLE = ["Arthur", "Tane", "Kevin"] as const;
+const PEOPLE = ["Arthur", "Tane", "Kevin", "Jessica"] as const;
 const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"] as const;
 
 function getRecentDates(count: number): string[] {
@@ -48,7 +48,15 @@ function getRecentDates(count: number): string[] {
 function archiveConversationsForDate(date: string): Conversation[] {
   const hash = [...date].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
   const longMoment = hash % 3;
-  return TIMES.map((time, idx) => {
+
+  // Check if yesterday - inject Jessica's conversation
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().slice(0, 10);
+  const isYesterday = date === yesterdayStr;
+
+  const base: Conversation[] = TIMES.map((time, idx) => {
     const person = PEOPLE[(hash + idx) % PEOPLE.length];
     const isHighStress = idx === (hash + 2) % TIMES.length;
     const isRepair = idx === (hash + 4) % TIMES.length;
@@ -68,6 +76,21 @@ function archiveConversationsForDate(date: string): Conversation[] {
       date
     };
   });
+
+  if (isYesterday) {
+    base.push({
+      id: "8",
+      time: "3:20 PM",
+      person: "Jessica",
+      durationSec: 720,
+      size: "large",
+      color: "#E8A0BF",
+      colorName: "warm-rose",
+      date,
+    });
+  }
+
+  return base;
 }
 
 function getBubbleSize(size: "small" | "medium" | "large"): string {
