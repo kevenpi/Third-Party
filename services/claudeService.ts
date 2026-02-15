@@ -56,3 +56,121 @@ export const generateDailyReflection = async (daySummary: string) => {
   const text = msg.content.filter((c) => c.type === "text").map((c) => (c as { text: string }).text).join("");
   return text.trim();
 };
+
+/* ── Conversation Reality Classification ── */
+
+export interface ConversationRealityDecision {
+  isConversation: boolean;
+  confidence: number;
+  rationale: string;
+  signals: string[];
+  provider: "claude" | "heuristic";
+}
+
+function parseJsonFromClaude(raw: string): Record<string, unknown> | null {
+  try {
+    const cleaned = raw.replace(/^[^{]*/, "").replace(/[^}]*$/, "");
+    if (!cleaned) return null;
+    return JSON.parse(cleaned);
+  } catch {
+    return null;
+  }
+}
+
+function heuristicConversationDecision(transcript: string): ConversationRealityDecision {
+  const cleaned = transcript.trim();
+  const words = cleaned.split(/\s+/).filter(Boolean).length;
+  const speakerTurns = cleaned
+    .split("\n")
+    .filter((line) => /^[^:\n]{1,30}:\s+/.test(line.trim())).length;
+  const questionMarks = (cleaned.match(/\?/g) ?? []).length;
+  const turnTaking = speakerTurns >= 3;
+  const enoughWords = words >= 18;
+  const dialogSignal = questionMarks >= 1 || /you|i|we|us/i.test(cleaned);
+  const isConversation = enoughWords && (turnTaking || dialogSignal);
+  const confidence = isConversation ? 0.68 : 0.35;
+  const signals = [
+    `word_count=${words}`,
+    `speaker_turns=${speakerTurns}`,
+    `question_marks=${questionMarks}`,
+  ];
+  const rationale = isConversation
+    ? "Heuristic detected sustained dialog-like language."
+    : "Heuristic detected low dialog signal or too-short snippet.";
+  return { isConversation, confidence, rationale, signals, provider: "heuristic" };
+}
+
+export async function classifyRealConversation(
+  transcript: string,
+): Promise<ConversationRealityDecision> {
+  const normalized = transcript.trim().slice(0, 8000);
+  if (!normalized) {
+    return {
+      isConversation: false,
+      confidence: 0.01,
+      rationale: "Transcript is empty.",
+      signals: ["word_count=0"],
+      provider: "heuristic",
+    };
+  }
+
+  const hasApiKey = Boolean(
+    process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY,
+  );
+  if (!hasApiKey) {
+    return heuristicConversationDecision(normalized);
+  }
+
+  try {
+    const msg = await client.messages.create({
+      model: DEFAULT_MODEL,
+      max_tokens: 350,
+      messages: [
+        {
+          role: "user",
+          content: [
+            "You are a strict classifier for wearable-audio snippets.",
+            "Decide whether this transcript is a genuine interpersonal conversation, not random speech/noise/monologue/TV/background chatter.",
+            'Output exactly one JSON object: { "isConversation": boolean, "confidence": number, "rationale": string, "signals": string[] }',
+            "confidence 0..1. signals = short evidence tags. No markdown.",
+            "",
+            "Transcript:",
+            normalized,
+          ].join("\n"),
+        },
+      ],
+    });
+
+    const text = msg.content
+      .filter((c) => c.type === "text")
+      .map((c) => (c as { text: string }).text)
+      .join("")
+      .trim();
+    const parsed = parseJsonFromClaude(text);
+    if (!parsed) {
+      const fallback = heuristicConversationDecision(normalized);
+      return { ...fallback, rationale: `Claude parse failed; fallback. ${fallback.rationale}` };
+    }
+
+    const confidence =
+      typeof parsed.confidence === "number"
+        ? Math.max(0, Math.min(1, parsed.confidence))
+        : 0.5;
+    const signals = Array.isArray(parsed.signals)
+      ? (parsed.signals as unknown[]).filter((s): s is string => typeof s === "string").slice(0, 8)
+      : [];
+
+    return {
+      isConversation: parsed.isConversation === true,
+      confidence,
+      rationale:
+        typeof parsed.rationale === "string" && parsed.rationale.trim().length > 0
+          ? parsed.rationale.trim().slice(0, 300)
+          : "Claude returned no rationale.",
+      signals,
+      provider: "claude",
+    };
+  } catch {
+    return heuristicConversationDecision(normalized);
+  }
+}

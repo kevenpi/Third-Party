@@ -477,7 +477,7 @@ export default function SpikeAnalysisPanel({
                       {c.annotation.pattern.relatedConversations.map((conv, idx) => (
                         <span key={idx}>
                           {idx > 0 && " · "}
-                          <span style={{ color: "#C4B496", cursor: "pointer" }}>{conv}</span>
+                          <span style={{ color: "#C4B496", cursor: "pointer" }}>{conv.person} ({conv.date})</span>
                         </span>
                       ))}
                     </p>

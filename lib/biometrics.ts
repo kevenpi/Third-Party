@@ -27,7 +27,7 @@ export interface MessageCorrelation {
     pattern?: {
       description: string;
       avgRecovery: string;
-      relatedConversations: string[];
+      relatedConversations: { person: string; date: string; similarity: string }[];
     };
   };
 }

@@ -193,6 +193,39 @@ export interface RecordingSession {
   unknownFaceFramePath?: string;
 }
 
+export interface AwarenessDebugEvent {
+  id: string;
+  timestamp: string;
+  category: "listener" | "ingest" | "decision" | "recording" | "pipeline";
+  message: string;
+  level?: "info" | "warn" | "error";
+  sessionId?: string;
+  action?:
+    | "idle"
+    | "awaiting_conversation"
+    | "start_recording"
+    | "continue_recording"
+    | "stop_recording";
+  data?: {
+    audioLevel?: number;
+    transcriptWords?: number;
+    transcriptConfidence?: number;
+    transcriptText?: string;
+    windowSamples?: number;
+    windowDurationSec?: number;
+    legibleFrames?: number;
+    distinctSpeakers?: number;
+    avgAudio?: number;
+    avgConfidence?: number;
+    words?: number;
+    transcriptStrong?: boolean;
+    multiSpeakerStrong?: boolean;
+    audioSpeechBlend?: boolean;
+    verdict?: boolean;
+    reason?: string;
+  };
+}
+
 export interface ConversationAwarenessState {
   listeningEnabled: boolean;
   isRecording: boolean;

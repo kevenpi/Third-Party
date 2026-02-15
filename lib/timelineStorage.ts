@@ -93,7 +93,17 @@ function isValidConversationSession(session: RecordingSession, durationSec: numb
   return transcriptRichEnough || speechRichEnough;
 }
 
-export async function saveTimelineBubbleFromSession(session: RecordingSession): Promise<TimelineBubble | null> {
+export interface BubbleExtras {
+  voiceConversationId?: string;
+  audioClipPath?: string;
+  transcriptSnippet?: string;
+  highlightPoints?: { id: string; timestampSec: number; label: string; type: string }[];
+}
+
+export async function saveTimelineBubbleFromSession(
+  session: RecordingSession,
+  extras?: BubbleExtras,
+): Promise<TimelineBubble | null> {
   if (!session.endedAt) return null;
   const start = new Date(session.startedAt).getTime();
   const end = new Date(session.endedAt).getTime();
@@ -155,7 +165,8 @@ export async function saveTimelineBubbleFromSession(session: RecordingSession): 
     score,
     cortisol: realCortisol,
     heartRate: realHeartRate,
-    meaningfulness: realMeaningfulness
+    meaningfulness: realMeaningfulness,
+    ...(extras?.voiceConversationId ? { voiceConversationId: extras.voiceConversationId } : {}),
   };
 
   await ensureTimelineDir();
