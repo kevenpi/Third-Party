@@ -9,6 +9,7 @@ import { activeDiarizationBackend, isAnyDiarizerConfigured } from "@/lib/voice/o
 import { randomUUID } from "crypto";
 import fs from "fs";
 import { classifyRealConversation } from "@/services/claudeService";
+import { saveTimelineBubbleFromSession } from "@/lib/timelineStorage";
 
 export async function POST(request: Request) {
   try {
@@ -123,6 +124,19 @@ export async function POST(request: Request) {
       "";
     const classification = await classifyRealConversation(transcriptForDecision);
     const qualifiesConversation = classification.isConversation && classification.confidence >= 0.45;
+    const bubble = session.endedAt && qualifiesConversation
+      ? await saveTimelineBubbleFromSession(session, {
+          voiceConversationId: voicePipeline?.conversationId,
+          audioClipPath: session.clipPaths[session.clipPaths.length - 1],
+          transcriptSnippet: voicePipeline?.transcriptSnippet,
+          highlightPoints: voicePipeline?.highlights?.map((h) => ({
+            id: h.id,
+            timestampSec: 0,
+            label: `${h.speaker}: ${h.text.slice(0, 90)}`,
+            type: "observation",
+          })),
+        })
+      : null;
 
     return NextResponse.json({
       session,
@@ -131,6 +145,7 @@ export async function POST(request: Request) {
         ...classification,
         qualifiesConversation,
       },
+      bubble,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
