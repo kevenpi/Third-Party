@@ -81,7 +81,7 @@ export async function POST(request: Request) {
 
           const processed = await processConversation(convo.id, "default");
           const speakers = voiceStorage.loadSpeakers("default");
-          const speakerLabel = (globalId?: string, local?: string) => {
+          const speakerLabel = (globalId?: string | null, local?: string | null) => {
             const s = globalId ? speakers.find((item) => item.id === globalId) : null;
             return s?.display_name ?? local ?? "Speaker";
           };
