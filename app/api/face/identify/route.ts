@@ -58,6 +58,8 @@ export async function POST(request: NextRequest) {
           : null,
         unknownFramePath,
         noEnrolledFaces: result.noEnrolledFaces,
+        reason: result.reason,
+        enrolledCount: result.enrolledCount ?? 0,
       });
     }
 
@@ -71,6 +73,7 @@ export async function POST(request: NextRequest) {
       },
       uncertainCandidate: null,
       noEnrolledFaces: false,
+      enrolledCount: result.enrolledCount ?? 0,
     });
   } catch (err) {
     return NextResponse.json(

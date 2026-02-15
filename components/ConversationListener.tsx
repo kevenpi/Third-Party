@@ -138,9 +138,15 @@ export function ConversationListener() {
   const identifyFaceFromCamera = useCallback(async () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
-    if (!video || !canvas) return;
+    if (!video || !canvas) {
+      setFaceError("Camera not ready");
+      return;
+    }
     const frame = captureFrame(video, canvas);
-    if (!frame) return;
+    if (!frame) {
+      setFaceError("Frame capture failed");
+      return;
+    }
 
     setFaceScanning(true);
     setFaceError(null);
@@ -189,8 +195,20 @@ export function ConversationListener() {
         } else {
           setUncertainCandidate(null);
         }
-        if (data.noEnrolledFaces) {
+
+        // Use reason from server for precise diagnostics
+        const reason = data.reason as string | undefined;
+        const enrolledCount = (data.enrolledCount as number) ?? 0;
+        if (data.noEnrolledFaces || reason === "no_enrolled") {
           setFaceError("No faces enrolled");
+        } else if (reason === "no_api_key") {
+          setFaceError(`No OpenAI key (${enrolledCount} enrolled)`);
+        } else if (reason === "api_error") {
+          setFaceError(`Vision API error (${enrolledCount} enrolled)`);
+        } else if (reason === "no_parse") {
+          setFaceError(`Bad API response (${enrolledCount} enrolled)`);
+        } else if (reason === "no_match" && !uncertain) {
+          setFaceError(`No match (${enrolledCount} enrolled)`);
         } else if (!uncertain) {
           setFaceError(null);
         }
@@ -1012,29 +1030,31 @@ export function ConversationListener() {
                   </div>
                 </>
               ) : faceError && !enrollMode ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
                   <span
                     style={{
                       fontSize: 10,
-                      color: faceError === "No faces enrolled" ? "#D4B07A" : "#B84A3A",
+                      color: faceError.includes("No faces enrolled") || faceError.includes("No match")
+                        ? "#D4B07A"
+                        : "#B84A3A",
                       fontFamily: "Plus Jakarta Sans, sans-serif",
                       letterSpacing: "0.03em",
                     }}
                   >
                     {faceError}
                   </span>
-                  {faceError === "No faces enrolled" && (
+                  {(faceError.includes("No faces enrolled") || faceError.includes("No match") || faceError.includes("No OpenAI")) && (
                     <button
                       type="button"
                       onClick={() => setEnrollMode(true)}
                       style={{
-                        borderRadius: 8,
-                        border: "1px solid rgba(212,176,122,0.4)",
-                        background: "rgba(212,176,122,0.12)",
+                        borderRadius: 6,
+                        border: "1px solid rgba(212,176,122,0.35)",
+                        background: "rgba(212,176,122,0.1)",
                         color: "#D4B07A",
-                        fontSize: 10,
+                        fontSize: 9,
                         fontWeight: 600,
-                        padding: "5px 8px",
+                        padding: "4px 8px",
                         cursor: "pointer",
                         fontFamily: "Plus Jakarta Sans, sans-serif",
                       }}

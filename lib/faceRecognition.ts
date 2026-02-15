@@ -27,6 +27,10 @@ export interface FaceIdentifyResult {
   person: FaceIdentification | null;
   uncertainCandidate: FaceIdentification | null;
   noEnrolledFaces: boolean;
+  /** Diagnostic reason when person is null */
+  reason?: "no_api_key" | "no_enrolled" | "api_error" | "no_parse" | "no_match";
+  /** How many people have enrolled photos */
+  enrolledCount?: number;
 }
 
 const identifyCache = new Map<string, IdentifyCacheEntry>();
@@ -318,6 +322,8 @@ export async function identifyFace(frameBase64: string): Promise<FaceIdentifyRes
       person: null,
       uncertainCandidate: null,
       noEnrolledFaces: true,
+      reason: "no_enrolled",
+      enrolledCount: 0,
     };
     cacheIdentifyResult(frameHash, result);
     return result;
@@ -329,6 +335,8 @@ export async function identifyFace(frameBase64: string): Promise<FaceIdentifyRes
       person: null,
       uncertainCandidate: null,
       noEnrolledFaces: false,
+      reason: "no_api_key",
+      enrolledCount: peopleWithPhotos.length,
     };
     cacheIdentifyResult(frameHash, result);
     return result;
@@ -377,10 +385,13 @@ export async function identifyFace(frameBase64: string): Promise<FaceIdentifyRes
     const text = response.choices[0]?.message?.content?.trim() ?? "";
     const jsonText = findJsonObject(text);
     if (!jsonText) {
+      console.warn("Face ID: GPT-4o returned non-JSON:", text.slice(0, 200));
       const miss: FaceIdentifyResult = {
         person: null,
         uncertainCandidate: null,
         noEnrolledFaces: false,
+        reason: "no_parse",
+        enrolledCount: peopleWithPhotos.length,
       };
       cacheIdentifyResult(frameHash, miss);
       return miss;
@@ -414,6 +425,7 @@ export async function identifyFace(frameBase64: string): Promise<FaceIdentifyRes
           person: strongMatch,
           uncertainCandidate: null,
           noEnrolledFaces: false,
+          enrolledCount: peopleWithPhotos.length,
         };
         cacheIdentifyResult(frameHash, strongResult);
         return strongResult;
@@ -445,15 +457,20 @@ export async function identifyFace(frameBase64: string): Promise<FaceIdentifyRes
       person: null,
       uncertainCandidate: uncertain,
       noEnrolledFaces: false,
+      reason: "no_match",
+      enrolledCount: peopleWithPhotos.length,
     };
     cacheIdentifyResult(frameHash, uncertainResult);
     return uncertainResult;
   } catch (err) {
-    console.error("Face identification error:", err);
+    const errMsg = err instanceof Error ? err.message : String(err);
+    console.error("Face identification error:", errMsg);
     const miss: FaceIdentifyResult = {
       person: null,
       uncertainCandidate: null,
       noEnrolledFaces: false,
+      reason: "api_error",
+      enrolledCount: peopleWithPhotos.length,
     };
     cacheIdentifyResult(frameHash, miss);
     return miss;
