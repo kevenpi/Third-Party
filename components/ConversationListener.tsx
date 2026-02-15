@@ -68,8 +68,12 @@ export function ConversationListener() {
   const [faceScanning, setFaceScanning] = useState(false);
   const [faceError, setFaceError] = useState<string | null>(null);
   const [showCamera, setShowCamera] = useState(true);
+  const [showTranscript, setShowTranscript] = useState(false);
+  const [liveLines, setLiveLines] = useState<{ id: number; speaker: string; text: string; time: string; isFinal: boolean }[]>([]);
+  const liveLineIdRef = useRef(0);
   const liveVideoRef = useRef<HTMLVideoElement | null>(null);
   const cameraReadyRef = useRef(false);
+  const transcriptPanelRef = useRef<HTMLDivElement | null>(null);
 
   // Audio
   const streamRef = useRef<MediaStream | null>(null);
@@ -530,9 +534,11 @@ export function ConversationListener() {
           recognition.continuous = true;
           recognition.interimResults = true;
           recognition.lang = "en-US";
+          let pendingInterimId: number | null = null;
           recognition.onresult = (event: any) => {
             let transcript = "";
             let bestConfidence = 0;
+            let hasFinal = false;
             for (let i = event.resultIndex; i < event.results.length; i += 1) {
               const result = event.results[i];
               const alt = result?.[0];
@@ -541,6 +547,7 @@ export function ConversationListener() {
               if (typeof alt.confidence === "number") {
                 bestConfidence = Math.max(bestConfidence, alt.confidence);
               }
+              if (result.isFinal) hasFinal = true;
             }
             transcript = transcript.trim();
             if (!transcript) return;
@@ -548,6 +555,40 @@ export function ConversationListener() {
             transcriptWordsRef.current = transcript.split(/\s+/).filter(Boolean).length;
             transcriptConfidenceRef.current = bestConfidence > 0 ? Math.min(1, bestConfidence) : 0.5;
             transcriptUpdatedAtRef.current = Date.now();
+
+            // Push to live transcript panel
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+            const speaker = identifiedPersonRef.current
+              ? (bestConfidence > 0.7 ? "Me" : identifiedPersonRef.current.personName)
+              : "Speaker";
+
+            if (hasFinal) {
+              // Replace interim with final
+              const id = liveLineIdRef.current++;
+              setLiveLines((prev) => {
+                const filtered = pendingInterimId !== null
+                  ? prev.filter((l) => l.id !== pendingInterimId)
+                  : prev;
+                return [...filtered, { id, speaker, text: transcript, time: timeStr, isFinal: true }].slice(-50);
+              });
+              pendingInterimId = null;
+            } else {
+              // Update or create interim line
+              if (pendingInterimId === null) {
+                pendingInterimId = liveLineIdRef.current++;
+              }
+              const interimId = pendingInterimId;
+              setLiveLines((prev) => {
+                const existing = prev.findIndex((l) => l.id === interimId);
+                if (existing >= 0) {
+                  const copy = [...prev];
+                  copy[existing] = { ...copy[existing], text: transcript, time: timeStr, speaker };
+                  return copy;
+                }
+                return [...prev, { id: interimId, speaker, text: transcript, time: timeStr, isFinal: false }].slice(-50);
+              });
+            }
           };
           recognition.onerror = () => {};
           recognition.onend = () => {
@@ -635,6 +676,13 @@ export function ConversationListener() {
       wasRecordingRef.current = false;
     };
   }, [listening, ingestMic, stopBrowserRecording, startFaceChecks, stopFaceChecks]);
+
+  // Auto-scroll transcript panel
+  useEffect(() => {
+    if (transcriptPanelRef.current && showTranscript) {
+      transcriptPanelRef.current.scrollTop = transcriptPanelRef.current.scrollHeight;
+    }
+  }, [liveLines, showTranscript]);
 
   // Attach camera stream to live preview when ref mounts
   const attachCameraToPreview = useCallback(
@@ -936,19 +984,205 @@ export function ConversationListener() {
         )}
       </div>
 
-      {/* ── Audio indicator (bottom center) ── */}
-      <div
+      {/* ── Live Transcript Panel (pops up from the circle) ── */}
+      {showTranscript && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 110,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "min(92vw, 380px)",
+            maxHeight: "45vh",
+            zIndex: 10000,
+            background: "rgba(18,17,15,0.96)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: 16,
+            boxShadow: "0 -8px 40px rgba(0,0,0,0.6)",
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+          }}
+        >
+          {/* Header */}
+          <div
+            style={{
+              padding: "10px 14px",
+              borderBottom: "1px solid rgba(255,255,255,0.06)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div
+                style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: "50%",
+                  background: isRecording ? "#EF4444" : "#7AB89E",
+                  boxShadow: isRecording ? "0 0 8px #EF4444" : "0 0 6px #7AB89E",
+                  animation: isRecording ? "listener-pulse 2s ease-in-out infinite" : "none",
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: "rgba(255,255,255,0.8)",
+                  fontFamily: "Plus Jakarta Sans, sans-serif",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Live Transcript
+              </span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {identifiedPerson && (
+                <span style={{ fontSize: 10, color: "#7AB89E", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                  {identifiedPerson.personName}
+                </span>
+              )}
+              <button
+                onClick={() => setShowTranscript(false)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "rgba(255,255,255,0.4)",
+                  fontSize: 16,
+                  cursor: "pointer",
+                  padding: "0 4px",
+                  lineHeight: 1,
+                }}
+              >
+                ×
+              </button>
+            </div>
+          </div>
+
+          {/* Transcript lines */}
+          <div
+            ref={transcriptPanelRef}
+            style={{
+              flex: 1,
+              overflowY: "auto",
+              padding: "10px 14px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 8,
+            }}
+          >
+            {liveLines.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "24px 0" }}>
+                <p style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                  {isRecording ? "Waiting for speech..." : "Start speaking to see the transcript"}
+                </p>
+                <p style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", fontFamily: "Plus Jakarta Sans, sans-serif", marginTop: 6 }}>
+                  Words appear here in real time
+                </p>
+              </div>
+            ) : (
+              liveLines.map((line) => {
+                const isMe = line.speaker === "Me" || line.speaker === "Speaker";
+                return (
+                  <div
+                    key={line.id}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 2,
+                      opacity: line.isFinal ? 1 : 0.6,
+                      transition: "opacity 0.2s ease",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <span
+                        style={{
+                          fontSize: 10,
+                          fontWeight: 600,
+                          color: isMe ? "#D4B07A" : "#6AAAB4",
+                          fontFamily: "Plus Jakarta Sans, sans-serif",
+                        }}
+                      >
+                        {line.speaker}
+                      </span>
+                      <span style={{ fontSize: 9, color: "rgba(255,255,255,0.2)" }}>{line.time}</span>
+                      {!line.isFinal && (
+                        <span style={{ fontSize: 8, color: "#D4B07A", fontStyle: "italic" }}>live</span>
+                      )}
+                    </div>
+                    <p
+                      style={{
+                        fontSize: 13,
+                        color: "rgba(255,255,255,0.85)",
+                        fontFamily: "Plus Jakarta Sans, sans-serif",
+                        lineHeight: 1.5,
+                        margin: 0,
+                        paddingLeft: 2,
+                      }}
+                    >
+                      {line.text}
+                    </p>
+                  </div>
+                );
+              })
+            )}
+          </div>
+
+          {/* Footer with audio level bar */}
+          <div
+            style={{
+              padding: "6px 14px 8px",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
+            <div
+              style={{
+                flex: 1,
+                height: 3,
+                borderRadius: 2,
+                background: "rgba(255,255,255,0.06)",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  width: `${Math.min(100, audioLevel * 200)}%`,
+                  height: "100%",
+                  background: isRecording ? "#EF4444" : "#7AB89E",
+                  borderRadius: 2,
+                  transition: "width 0.15s ease-out",
+                }}
+              />
+            </div>
+            <span style={{ fontSize: 9, color: "rgba(255,255,255,0.3)", fontFamily: "Plus Jakarta Sans, sans-serif", whiteSpace: "nowrap" }}>
+              {liveLines.filter((l) => l.isFinal).length} lines
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* ── Audio indicator (bottom center, clickable) ── */}
+      <button
+        onClick={() => setShowTranscript((v) => !v)}
         style={{
           position: "fixed",
           bottom: 76,
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 9999,
-          pointerEvents: "none",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           gap: 4,
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          padding: 0,
         }}
       >
         <div
@@ -972,9 +1206,9 @@ export function ConversationListener() {
             textTransform: "uppercase",
           }}
         >
-          {isRecording ? "recording" : "listening"}
+          {showTranscript ? "close" : isRecording ? "recording" : "listening"}
         </span>
-      </div>
+      </button>
     </>
   );
 }
