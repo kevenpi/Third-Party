@@ -34,6 +34,7 @@ export interface TimelineBubble {
   cortisol?: number;
   heartRate?: number;
   meaningfulness?: number;
+  voiceConversationId?: string;
 }
 
 async function ensureTimelineDir() {

@@ -21,7 +21,14 @@ export interface MessageCorrelation {
     type: "observation" | "missed_bid" | "pattern" | "positive";
     label: string;
     text: string;
+    longText?: string;
     icon: string;
+    humanComparison?: string;
+    pattern?: {
+      description: string;
+      avgRecovery: string;
+      relatedConversations: string[];
+    };
   };
 }
 

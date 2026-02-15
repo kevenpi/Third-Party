@@ -1,8 +1,0 @@
-{
-  "name": "ThirdParty",
-  "description": "A privacy-first AI system that quantifies relational dynamics in real time, surfaces power asymmetries, and acts as a consent-based mediator.",
-  "requestFramePermissions": [
-    "microphone",
-    "camera"
-  ]
-}
