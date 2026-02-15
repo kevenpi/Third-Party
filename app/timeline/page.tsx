@@ -200,9 +200,16 @@ export default function TimelinePage() {
   }, [today]);
 
   useEffect(() => {
-    if (selectedDate !== today) return;
-    if (dateScrollerRef.current) {
+    if (!dateScrollerRef.current) return;
+    if (selectedDate === today) {
       dateScrollerRef.current.scrollLeft = 0;
+      return;
+    }
+    // Scroll active pill into view
+    const container = dateScrollerRef.current;
+    const activeBtn = container.querySelector("[data-active-date]") as HTMLElement | null;
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     }
   }, [dates, selectedDate, today]);
 
@@ -330,15 +337,21 @@ export default function TimelinePage() {
         </div>
 
         {/* Date Selector */}
-        <div ref={dateScrollerRef} className="px-4 pb-3 overflow-x-auto">
-          <div className="flex gap-2">
+        <div className="relative pb-3">
+          <div
+            ref={dateScrollerRef}
+            className="date-scroller px-4 overflow-x-auto flex gap-2 flex-nowrap scroll-smooth"
+            style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            <style>{`.date-scroller::-webkit-scrollbar { display: none; }`}</style>
             {dates.map((date) => {
               const isSelected = date === selectedDate;
               return (
                 <button
                   key={date}
                   onClick={() => setSelectedDate(date)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all ${
+                  {...(isSelected ? { "data-active-date": true } : {})}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all flex-shrink-0 ${
                     isSelected
                       ? "bg-gradient-to-r from-[#D4B07A] to-[#E8C97A] text-[#12110F]"
                       : "bg-[#1E1B18] text-[rgba(255,255,255,0.5)] hover:text-[rgba(255,255,255,0.7)] border border-[rgba(255,255,255,0.06)]"
@@ -349,6 +362,8 @@ export default function TimelinePage() {
               );
             })}
           </div>
+          {/* Right fade hint */}
+          <div className="absolute right-0 top-0 bottom-3 w-8 pointer-events-none" style={{ background: "linear-gradient(to right, transparent, #12110F)" }} />
         </div>
       </div>
 
