@@ -13,6 +13,8 @@ import type { BiometricData, MessageCorrelation } from "@/lib/biometrics";
 
 const DATA_ROOT = getDataRoot();
 const BIO_DIR = path.join(DATA_ROOT, "biometrics");
+// Build-time / repo path for committed seed biometric data (read-only on Vercel)
+const STATIC_BIO_DIR = path.join(process.cwd(), "data", "biometrics");
 
 async function ensureDir() {
   await fs.mkdir(BIO_DIR, { recursive: true });
@@ -35,12 +37,23 @@ export async function saveBiometricData(
 
 /**
  * Load biometric data for a session. Returns null if not found.
+ * Checks the runtime data dir first, then falls back to the
+ * committed repo data dir (needed on Vercel where runtime is /tmp).
  */
 export async function loadBiometricData(
   sessionId: string
 ): Promise<BiometricData | null> {
+  // Try runtime path first (writable dir)
   try {
     const raw = await fs.readFile(sessionPath(sessionId), "utf8");
+    return JSON.parse(raw) as BiometricData;
+  } catch {
+    // Not found in runtime dir
+  }
+  // Fall back to static repo path (committed seed data)
+  try {
+    const staticPath = path.join(STATIC_BIO_DIR, `${sessionId}.json`);
+    const raw = await fs.readFile(staticPath, "utf8");
     return JSON.parse(raw) as BiometricData;
   } catch {
     return null;
