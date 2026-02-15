@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import * as storage from "@/lib/voice/speakerStorage";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const userId = "default";
 
