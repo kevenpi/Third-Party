@@ -47,6 +47,10 @@ function bubblePath(date: string): string {
   return path.join(TIMELINE_DIR, `${date}.json`);
 }
 
+function isSeedBubble(bubble: TimelineBubble): boolean {
+  return bubble.sessionId.startsWith("seed_") || bubble.id.startsWith("bubble_seed_");
+}
+
 /** Placeholder until we have real biometrics: 0–1 */
 const DEFAULT_CORTISOL = 0.5;
 const DEFAULT_HEART_RATE = 0.5;
@@ -191,7 +195,14 @@ export async function getBubblesForDate(date: string): Promise<TimelineBubble[]>
   try {
     const raw = await fs.readFile(filePath, "utf8");
     const list = JSON.parse(raw);
-    return Array.isArray(list) ? list : [];
+    if (!Array.isArray(list)) return [];
+    const bubbles = list as TimelineBubble[];
+    const today = localDateStr(new Date());
+    // Today should only show real, newly logged conversations.
+    if (date === today) {
+      return bubbles.filter((bubble) => !isSeedBubble(bubble));
+    }
+    return bubbles;
   } catch {
     return [];
   }
@@ -315,6 +326,7 @@ export async function seedSampleConversations(): Promise<boolean> {
     id: `bubble_${c.sessionId}`,
   }));
 
-  await saveBubblesDirect(bubbles);
+  // Keep today empty so the timeline starts blank and fills from real sessions.
+  await saveBubblesDirect(bubbles.filter((bubble) => bubble.date !== dateStr(0)));
   return true;
 }
