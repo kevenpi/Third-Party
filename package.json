@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start -p 3003",
     "embedder": "cd services/speaker_embedder && uvicorn app:app --host 0.0.0.0 --port 5000",
+    "diarizer": "cd services/pyannote && uvicorn app:app --host 0.0.0.0 --port 5010",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
   },

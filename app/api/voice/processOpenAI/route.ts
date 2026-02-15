@@ -3,7 +3,7 @@ import { randomUUID } from "crypto";
 import * as storage from "@/lib/voice/speakerStorage";
 import { processConversation } from "@/lib/voice/processConversation";
 import { toWav16kMono } from "@/lib/voice/audioConvert";
-import { hasOpenAIApiKey } from "@/lib/openaiKey";
+import { activeDiarizationBackend, isAnyDiarizerConfigured } from "@/lib/voice/openaiTranscribe";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -11,15 +11,18 @@ export const maxDuration = 120;
 const userId = "default";
 
 /**
- * POST: run full pipeline (OpenAI transcribe+diarize → embeddings → speaker clustering).
+ * POST: run full pipeline (configured diarization backend -> embeddings -> speaker clustering).
  * Body (JSON): { conversationId: string } OR formData with "audio" file (then we create chunk+convo and process).
  * Returns: { segments, speakers, speakersCreated } with global speaker IDs and optional display_name.
  */
 export async function POST(request: NextRequest) {
   try {
-    if (!hasOpenAIApiKey()) {
+    if (!isAnyDiarizerConfigured()) {
       return NextResponse.json(
-        { error: "OpenAI key not set. Required for transcription + diarization." },
+        {
+          error:
+            "No diarization backend configured. Set OPENAI_API_KEY or configure pyannote via PYANNOTE_DIARIZER_URL/PYANNOTE_SERVICE_URL.",
+        },
         { status: 503 }
       );
     }
@@ -88,6 +91,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       conversationId,
+      diarizationBackend: activeDiarizationBackend(),
       segments: segmentsWithName,
       speakers: speakers.map((s) => ({ id: s.id, display_name: s.display_name, last_seen_at: s.last_seen_at })),
       speakersCreated,

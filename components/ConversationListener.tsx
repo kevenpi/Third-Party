@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Activity, X } from "lucide-react";
 import {
   startBiometricRecording,
   stopBiometricRecording,
@@ -63,6 +64,11 @@ export function ConversationListener() {
   const [listening, setListening] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [liveTranscript, setLiveTranscript] = useState("");
+  const [transcriptFeed, setTranscriptFeed] = useState<{ id: string; text: string; ts: string }[]>([]);
+  const [isFinalizing, setIsFinalizing] = useState(false);
+  const [finalizeMessage, setFinalizeMessage] = useState<string | null>(null);
 
   // Audio
   const streamRef = useRef<MediaStream | null>(null);
@@ -81,6 +87,7 @@ export function ConversationListener() {
   const transcriptWordsRef = useRef<number>(0);
   const transcriptConfidenceRef = useRef<number>(0);
   const recognitionRef = useRef<any>(null);
+  const transcriptFeedRef = useRef<string[]>([]);
 
   // Camera / Face
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -99,20 +106,35 @@ export function ConversationListener() {
 
   const uploadClip = useCallback(async (sessionId: string) => {
     if (chunksRef.current.length === 0) return;
+    setIsFinalizing(true);
+    setFinalizeMessage("Finalizing recording...");
     const blob = new Blob(chunksRef.current, { type: mimeTypeRef.current });
     chunksRef.current = [];
     try {
       const audioBase64 = await blobToBase64(blob);
-      await fetch("/api/conversationAwareness/uploadClip", {
+      const response = await fetch("/api/conversationAwareness/uploadClip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, audioBase64, mimeType: mimeTypeRef.current }),
       });
+      const payload = await response.json().catch(() => null);
+      const qualifies = payload?.classification?.qualifiesConversation === true;
+      if (response.ok) {
+        setFinalizeMessage(
+          qualifies
+            ? "Conversation qualifies. Bubble created."
+            : "Snippet did not qualify as a conversation."
+        );
+      } else {
+        setFinalizeMessage("Clip saved, but classification failed.");
+      }
       const form = new FormData();
       form.append("audio", blob, `clip_${sessionId}.webm`);
       void fetch("/api/voice/processOpenAI", { method: "POST", body: form });
     } catch {
-      /* ignore */
+      setFinalizeMessage("Could not finalize clip upload.");
+    } finally {
+      setIsFinalizing(false);
     }
   }, []);
 
@@ -330,6 +352,9 @@ export function ConversationListener() {
 
       const nowRecording = !!(state.isRecording && resolvedSessionId);
       setIsRecording(nowRecording);
+      if (nowRecording) {
+        setFinalizeMessage(null);
+      }
 
       if (nowRecording && resolvedSessionId) {
         startBrowserRecording(resolvedSessionId);
@@ -406,6 +431,10 @@ export function ConversationListener() {
       transcriptTextRef.current = "";
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
+      transcriptFeedRef.current = [];
+      setLiveTranscript("");
+      setTranscriptFeed([]);
+      setIsFinalizing(false);
       wasRecordingRef.current = false;
       return;
     }
@@ -452,8 +481,23 @@ export function ConversationListener() {
             transcript = transcript.trim();
             if (!transcript) return;
             transcriptTextRef.current = transcript.slice(0, 500);
+            setLiveTranscript(transcriptTextRef.current);
             transcriptWordsRef.current = transcript.split(/\s+/).filter(Boolean).length;
             transcriptConfidenceRef.current = bestConfidence > 0 ? Math.min(1, bestConfidence) : 0.5;
+            const prev = transcriptFeedRef.current[transcriptFeedRef.current.length - 1];
+            if (!prev || prev !== transcriptTextRef.current) {
+              transcriptFeedRef.current = [...transcriptFeedRef.current, transcriptTextRef.current].slice(-8);
+              setTranscriptFeed(
+                transcriptFeedRef.current
+                  .slice()
+                  .reverse()
+                  .map((text, idx) => ({
+                    id: `${Date.now()}_${idx}`,
+                    text,
+                    ts: new Date().toISOString(),
+                  }))
+              );
+            }
           };
           recognition.onerror = () => {};
           recognition.onend = () => {
@@ -527,6 +571,10 @@ export function ConversationListener() {
       transcriptTextRef.current = "";
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
+      transcriptFeedRef.current = [];
+      setLiveTranscript("");
+      setTranscriptFeed([]);
+      setIsFinalizing(false);
       wasRecordingRef.current = false;
     };
   }, [listening, ingestMic, stopBrowserRecording]);
@@ -535,7 +583,7 @@ export function ConversationListener() {
 
   // Map audio level (0-1) to visual intensity
   const intensity = Math.min(1, audioLevel * 4);
-  const size = 16 + intensity * 16; // 16-32px
+  const size = 18 + intensity * 8; // 18-26px
   const color = isRecording ? "#EF4444" : "#7AB89E";
   const spread = 4 + intensity * 24;
   const opacity = 0.4 + intensity * 0.6;
@@ -551,40 +599,124 @@ export function ConversationListener() {
       <div
         style={{
           position: "fixed",
-          bottom: 76,
+          top: 10,
           left: "50%",
           transform: "translateX(-50%)",
           zIndex: 9999,
-          pointerEvents: "none",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 4,
+          pointerEvents: "auto",
+          width: "min(92vw, 440px)",
         }}
       >
-        <div
+        <button
+          type="button"
+          onClick={() => setShowOverlay((v) => !v)}
           style={{
-            width: size,
-            height: size,
-            borderRadius: "50%",
-            backgroundColor: color,
-            opacity,
-            boxShadow: `0 0 ${spread}px ${Math.round(spread * 0.5)}px ${color}`,
-            transition: "width 0.15s ease-out, height 0.15s ease-out, opacity 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.3s ease",
-            animation: isRecording ? "listener-pulse 2s ease-in-out infinite" : "none",
-          }}
-        />
-        <span
-          style={{
-            fontSize: 9,
-            color: "rgba(255,255,255,0.4)",
-            fontFamily: "Plus Jakarta Sans, sans-serif",
-            letterSpacing: "0.05em",
-            textTransform: "uppercase",
+            width: "100%",
+            borderRadius: 999,
+            border: "1px solid rgba(255,255,255,0.12)",
+            background: "rgba(18,17,15,0.82)",
+            backdropFilter: "blur(10px)",
+            color: "rgba(255,255,255,0.92)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 10,
+            padding: "8px 12px",
+            fontSize: 12,
           }}
         >
-          {isRecording ? "recording" : "listening"}
-        </span>
+          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span
+              style={{
+                width: size,
+                height: size,
+                borderRadius: "50%",
+                backgroundColor: color,
+                opacity,
+                boxShadow: `0 0 ${spread}px ${Math.round(spread * 0.5)}px ${color}`,
+                transition:
+                  "width 0.15s ease-out, height 0.15s ease-out, opacity 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.3s ease",
+                animation: isRecording ? "listener-pulse 1.7s ease-in-out infinite" : "none",
+              }}
+            />
+            <Activity className="w-3.5 h-3.5" />
+            {isFinalizing
+              ? "Finalizing snippet..."
+              : isRecording
+                ? "Live conversation recording"
+                : "Live conversation listener"}
+          </span>
+          <span style={{ color: "rgba(255,255,255,0.6)" }}>
+            {showOverlay ? "Hide" : "Open"}
+          </span>
+        </button>
+
+        {showOverlay && (
+          <div
+            style={{
+              marginTop: 8,
+              borderRadius: 14,
+              border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(18,17,15,0.94)",
+              color: "rgba(255,255,255,0.85)",
+              padding: 12,
+              boxShadow: "0 12px 28px rgba(0,0,0,0.35)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <p style={{ margin: 0, fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(255,255,255,0.58)" }}>
+                Live transcript monitor
+              </p>
+              <button
+                type="button"
+                onClick={() => setShowOverlay(false)}
+                style={{
+                  color: "rgba(255,255,255,0.56)",
+                  background: "transparent",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <p style={{ margin: "6px 0 0", fontSize: 12 }}>
+              {isFinalizing
+                ? finalizeMessage ?? "Finalizing..."
+                : isRecording
+                  ? "Recording and streaming transcript in real time."
+                  : finalizeMessage ?? "Waiting for coherent conversation."}
+            </p>
+            <p style={{ margin: "6px 0 0", fontSize: 11, color: "rgba(255,255,255,0.56)" }}>
+              Current: {liveTranscript ? `"${liveTranscript.slice(0, 160)}"` : "No transcript yet"}
+            </p>
+            <div style={{ marginTop: 8, maxHeight: 180, overflowY: "auto", display: "grid", gap: 6 }}>
+              {transcriptFeed.length === 0 ? (
+                <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.5)" }}>
+                  Transcript chunks will appear here while listening.
+                </p>
+              ) : (
+                transcriptFeed.map((entry) => (
+                  <div
+                    key={entry.id}
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.08)",
+                      borderRadius: 8,
+                      padding: "6px 8px",
+                      fontSize: 12,
+                      background: "rgba(255,255,255,0.03)",
+                    }}
+                  >
+                    <span style={{ fontSize: 10, color: "rgba(255,255,255,0.48)", marginRight: 6 }}>
+                      {new Date(entry.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                    </span>
+                    {entry.text}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

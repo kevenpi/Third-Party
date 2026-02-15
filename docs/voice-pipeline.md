@@ -1,9 +1,10 @@
-# Voice pipeline: OpenAI diarization + speaker clustering
+# Voice pipeline: diarization + speaker clustering
 
 ## Architecture (Layer 1–3)
 
 1. **Layer 1 – Diarization (speaker turns)**  
-   **OpenAI `gpt-4o-transcribe-diarize`** returns segments with local speaker labels (e.g. `S0`, `S1` or `A`, `B`) and timestamps. One API call gives both transcript and who spoke when inside that clip.
+   Default is **OpenAI `gpt-4o-transcribe-diarize`** (transcript + speaker turns).  
+   Optional backend is local **pyannote** (`services/pyannote`) for speaker-turn detection.
 
 2. **Layer 2 – Cross-episode speaker identity**  
    We do **not** use Azure Speaker Recognition (retired; and it’s for “which of these enrolled speakers?”, not open-world discovery).  
@@ -35,7 +36,9 @@
 
 ## Env
 
-- **OPENAI_API_KEY** – required for transcription + diarization.
+- **OPENAI_API_KEY** – required for OpenAI diarization backend.
+- **VOICE_DIARIZATION_BACKEND** – optional (`pyannote` to prefer pyannote service; default OpenAI).
+- **PYANNOTE_DIARIZER_URL** / **PYANNOTE_SERVICE_URL** – optional pyannote endpoint (`/diarize`).
 - **SPEAKER_EMBEDDER_URL** – optional. If set, POST audio bytes to this URL; expect `{ embedding: number[] }`. If unset, a placeholder embedding is used so clustering runs for testing.
 - **SPEAKER_MATCH_THRESHOLD** – cosine similarity threshold (default `0.72`).
 - **CONVO_GAP_MS** – gap in ms to start a new conversation (default 10 min).

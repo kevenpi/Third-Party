@@ -218,13 +218,18 @@ function evaluateConversationWindow(signals: AwarenessSignalEvent[]): WindowEval
   ).size;
   const avgAudio =
     signals.reduce((sum, s) => sum + s.audioLevel, 0) / Math.max(1, signals.length);
+  const maxAudio = signals.reduce((peak, s) => Math.max(peak, s.audioLevel), 0);
 
   const transcriptStrong = words >= 10 || (words >= 6 && avgConfidence >= 0.2);
   const multiSpeakerStrong = legibleFrames >= 4 && distinctSpeakers >= 2;
   const audioSpeechBlend = avgAudio >= LEGIBLE_AUDIO_THRESHOLD && words >= 5;
   // Fallback: sustained speech-level audio even without transcript
   // (covers iOS / browsers where SpeechRecognition is unavailable)
-  const sustainedAudio = legibleFrames >= 4 && avgAudio >= 0.06 && durationSec >= 4;
+  const sustainedAudio =
+    legibleFrames >= 4 &&
+    avgAudio >= Math.max(LEGIBLE_AUDIO_THRESHOLD * 1.5, 0.05) &&
+    maxAudio >= 0.08 &&
+    durationSec >= 4;
   const enoughWindowSpan = durationSec >= SEGMENT_SECONDS * 0.8;
   const isConversation =
     enoughWindowSpan && (transcriptStrong || multiSpeakerStrong || audioSpeechBlend || sustainedAudio);

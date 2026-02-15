@@ -108,7 +108,13 @@ Two pipelines:
 1. **OpenAI + speaker memory (recommended)**  
    **OpenAI `gpt-4o-transcribe-diarize`** for transcription + diarization (speaker turns). Then **speaker embeddings + clustering** (cosine similarity, centroid updates) to build persistent “who is this voice?” across sessions. No Azure Speaker Recognition; open-world discovery. See [docs/voice-pipeline.md](docs/voice-pipeline.md).
 
-2. **Google + Azure (optional)**  
+2. **Pyannote diarization + speaker memory (optional)**  
+   Run local pyannote diarization service and set:
+   - `VOICE_DIARIZATION_BACKEND=pyannote`
+   - `PYANNOTE_DIARIZER_URL=http://localhost:5010/diarize`
+   This uses pyannote for speaker-turn detection and keeps the same speaker clustering/persistent profiles pipeline.
+
+3. **Google + Azure (optional)**  
    Google Speech-to-Text for diarization; Azure Speaker Recognition to identify **enrolled** speakers only.
 
 ### Setup (OpenAI pipeline)
@@ -119,6 +125,16 @@ See **Quick start** above. In short:
 2. **Real speaker IDs (optional):** Run `npm run embedder` in a second terminal (or run the Python service manually; see Quick start). Set **SPEAKER_EMBEDDER_URL=http://localhost:5000/embed** in `.env.local`.  
    Details: [docs/speaker-embedding-analysis.md](docs/speaker-embedding-analysis.md).
 3. **Audio conversion:** The app uses **ffmpeg-static** (installed with npm) to convert uploads to WAV 16 kHz mono; no separate ffmpeg install needed.
+
+### Setup (Pyannote diarization backend)
+
+1. In a second terminal run:
+   - `npm run diarizer`
+   - or follow [`services/pyannote/README.md`](services/pyannote/README.md)
+2. In `.env.local` set:
+   - `VOICE_DIARIZATION_BACKEND=pyannote`
+   - `PYANNOTE_DIARIZER_URL=http://localhost:5010/diarize`
+3. Keep `OPENAI_API_KEY` optional for fallback behavior if the local pyannote service is unavailable.
 
 ### Setup (Google + Azure)
 
