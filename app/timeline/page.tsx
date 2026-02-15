@@ -308,7 +308,7 @@ export default function TimelinePage() {
   return (
     <div className="min-h-screen bg-[#12110F] pb-20 relative">
       {/* Top Bar */}
-      <div className="sticky top-0 z-40 bg-[#12110F]/80 backdrop-blur-md border-b border-[rgba(255,255,255,0.06)]">
+      <div className="sticky top-0 z-40 bg-[#12110F]/80 backdrop-blur-md border-b border-[rgba(255,255,255,0.06)] overflow-hidden">
         <div className="max-w-md mx-auto px-4 py-4 flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-normal" style={{ fontFamily: "Fraunces, serif" }}>Today</h1>
@@ -337,7 +337,7 @@ export default function TimelinePage() {
         </div>
 
         {/* Date Selector */}
-        <div className="relative pb-3">
+        <div className="relative pb-3 max-w-md mx-auto">
           <div
             ref={dateScrollerRef}
             className="date-scroller px-4 overflow-x-auto flex gap-2 flex-nowrap scroll-smooth"
