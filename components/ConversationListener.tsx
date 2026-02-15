@@ -72,6 +72,9 @@ export function ConversationListener() {
   const [liveLines, setLiveLines] = useState<{ id: number; speaker: string; text: string; time: string; isFinal: boolean }[]>([]);
   const [speechRecStatus, setSpeechRecStatus] = useState<"checking" | "active" | "unavailable" | "error">("checking");
   const [currentBuffer, setCurrentBuffer] = useState("");
+  const [enrollMode, setEnrollMode] = useState(false);
+  const [enrollName, setEnrollName] = useState("");
+  const [enrolling, setEnrolling] = useState(false);
   const liveLineIdRef = useRef(0);
   const liveVideoRef = useRef<HTMLVideoElement | null>(null);
   const cameraReadyRef = useRef(false);
@@ -251,6 +254,46 @@ export function ConversationListener() {
     setUncertainCandidate(null);
     uncertainDismissUntilRef.current = Date.now() + 20_000;
   }, []);
+
+  // ------------------------------------------------------------------
+  // Face enrollment from live camera
+  // ------------------------------------------------------------------
+
+  const enrollFaceFromCamera = useCallback(async (name: string) => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    if (!video || !canvas || !name.trim()) return;
+    const frame = captureFrame(video, canvas);
+    if (!frame) {
+      setFaceError("Could not capture frame");
+      return;
+    }
+    setEnrolling(true);
+    setFaceError(null);
+    try {
+      const personId = name.trim().toLowerCase().replace(/\s+/g, "_");
+      const res = await fetch("/api/face/enroll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ personId, name: name.trim(), imageBase64: frame }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setFaceError(data?.error ?? "Enrollment failed");
+        return;
+      }
+      // Enrollment succeeded — clear cache and immediately try to identify
+      setEnrollMode(false);
+      setEnrollName("");
+      setFaceError(null);
+      // Trigger an immediate face check
+      void identifyFaceFromCamera();
+    } catch {
+      setFaceError("Enrollment request failed");
+    } finally {
+      setEnrolling(false);
+    }
+  }, [identifyFaceFromCamera]);
 
   // ------------------------------------------------------------------
   // Biometric recording
@@ -867,7 +910,7 @@ export function ConversationListener() {
                 display: "flex",
                 flexDirection: "column",
                 gap: 7,
-                minHeight: uncertainCandidate ? 60 : 28,
+                minHeight: uncertainCandidate || enrollMode ? 60 : 28,
               }}
             >
               {identifiedPerson ? (
@@ -968,17 +1011,104 @@ export function ConversationListener() {
                     </button>
                   </div>
                 </>
-              ) : faceError ? (
-                <span
-                  style={{
-                    fontSize: 10,
-                    color: "#B84A3A",
-                    fontFamily: "Plus Jakarta Sans, sans-serif",
-                    letterSpacing: "0.03em",
-                  }}
-                >
-                  {faceError}
-                </span>
+              ) : faceError && !enrollMode ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      color: faceError === "No faces enrolled" ? "#D4B07A" : "#B84A3A",
+                      fontFamily: "Plus Jakarta Sans, sans-serif",
+                      letterSpacing: "0.03em",
+                    }}
+                  >
+                    {faceError}
+                  </span>
+                  {faceError === "No faces enrolled" && (
+                    <button
+                      type="button"
+                      onClick={() => setEnrollMode(true)}
+                      style={{
+                        borderRadius: 8,
+                        border: "1px solid rgba(212,176,122,0.4)",
+                        background: "rgba(212,176,122,0.12)",
+                        color: "#D4B07A",
+                        fontSize: 10,
+                        fontWeight: 600,
+                        padding: "5px 8px",
+                        cursor: "pointer",
+                        fontFamily: "Plus Jakarta Sans, sans-serif",
+                      }}
+                    >
+                      + Enroll face
+                    </button>
+                  )}
+                </div>
+              ) : enrollMode ? (
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <span style={{ fontSize: 10, color: "#D4B07A", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+                    Look at the camera, type your name:
+                  </span>
+                  <div style={{ display: "flex", gap: 4 }}>
+                    <input
+                      type="text"
+                      value={enrollName}
+                      onChange={(e) => setEnrollName(e.target.value)}
+                      placeholder="Name"
+                      autoFocus
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && enrollName.trim()) {
+                          void enrollFaceFromCamera(enrollName);
+                        }
+                      }}
+                      style={{
+                        flex: 1,
+                        background: "rgba(255,255,255,0.06)",
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        borderRadius: 6,
+                        padding: "4px 8px",
+                        fontSize: 11,
+                        color: "#fff",
+                        outline: "none",
+                        fontFamily: "Plus Jakarta Sans, sans-serif",
+                      }}
+                    />
+                    <button
+                      type="button"
+                      disabled={enrolling || !enrollName.trim()}
+                      onClick={() => void enrollFaceFromCamera(enrollName)}
+                      style={{
+                        borderRadius: 6,
+                        border: "1px solid rgba(122,184,158,0.5)",
+                        background: enrolling ? "rgba(122,184,158,0.08)" : "rgba(122,184,158,0.2)",
+                        color: "#7AB89E",
+                        fontSize: 10,
+                        fontWeight: 600,
+                        padding: "4px 10px",
+                        cursor: enrolling ? "wait" : "pointer",
+                        fontFamily: "Plus Jakarta Sans, sans-serif",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {enrolling ? "..." : "Save"}
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => { setEnrollMode(false); setEnrollName(""); }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "rgba(255,255,255,0.3)",
+                      fontSize: 9,
+                      cursor: "pointer",
+                      fontFamily: "Plus Jakarta Sans, sans-serif",
+                      padding: 0,
+                      textAlign: "left",
+                    }}
+                  >
+                    cancel
+                  </button>
+                </div>
               ) : faceScanning ? (
                 <span
                   style={{
@@ -991,16 +1121,35 @@ export function ConversationListener() {
                   Scanning...
                 </span>
               ) : (
-                <span
-                  style={{
-                    fontSize: 10,
-                    color: "rgba(255,255,255,0.3)",
-                    fontFamily: "Plus Jakarta Sans, sans-serif",
-                    letterSpacing: "0.03em",
-                  }}
-                >
-                  No face detected
-                </span>
+                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+                  <span
+                    style={{
+                      fontSize: 10,
+                      color: "rgba(255,255,255,0.3)",
+                      fontFamily: "Plus Jakarta Sans, sans-serif",
+                      letterSpacing: "0.03em",
+                    }}
+                  >
+                    No face detected
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setEnrollMode(true)}
+                    style={{
+                      borderRadius: 6,
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      background: "rgba(255,255,255,0.04)",
+                      color: "rgba(255,255,255,0.5)",
+                      fontSize: 9,
+                      padding: "3px 8px",
+                      cursor: "pointer",
+                      fontFamily: "Plus Jakarta Sans, sans-serif",
+                      textAlign: "center",
+                    }}
+                  >
+                    + Enroll face
+                  </button>
+                </div>
               )}
             </div>
           </div>
