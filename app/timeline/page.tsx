@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Settings, Power } from "lucide-react";
-import { getDailySummary, getConversationPeakStress, getStressColor } from "@/lib/biometrics";
+import { getDailySummary, getDailySummaryForDate, getConversationPeakStress, getStressColor } from "@/lib/biometrics";
 
 interface Conversation {
   id: string;
@@ -278,7 +278,7 @@ export default function TimelinePage() {
 
       {/* Daily Biometric Summary */}
       {(() => {
-        const summary = getDailySummary();
+        const summary = getDailySummaryForDate(selectedDate);
         return (
           <div className="max-w-md mx-auto px-4 pt-4">
             <div

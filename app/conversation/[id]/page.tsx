@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, MoreVertical, Play, Pause } from "lucide-react";
 import BiometricChart from "@/components/BiometricChart";
 import MessageCorrelationCard from "@/components/MessageCorrelationCard";
+import SpikeAnalysisPanel from "@/components/SpikeAnalysisPanel";
 import { getBiometricData, getStressColor, interpolateHR, formatBiometricChange, formatElapsed } from "@/lib/biometrics";
-import type { BiometricData } from "@/lib/biometrics";
+import type { BiometricData, MessageCorrelation } from "@/lib/biometrics";
 
 interface KeyMoment {
   id: string;
@@ -119,8 +120,36 @@ export default function ConversationDrillInPage() {
   const [isTagged, setIsTagged] = useState(true);
   const [reflection, setReflection] = useState("");
   const [showReflectionInput, setShowReflectionInput] = useState(false);
+  const [selectedSpike, setSelectedSpike] = useState<MessageCorrelation | null>(null);
+  const [spikeIndex, setSpikeIndex] = useState(0);
 
   const bioData = useMemo(() => getBiometricData(params.id as string), [params.id]);
+
+  const handleSpikeClick = useCallback((correlation: MessageCorrelation) => {
+    setSelectedSpike(correlation);
+    if (bioData) {
+      const idx = bioData.messageCorrelations.findIndex((c) => c.elapsed === correlation.elapsed);
+      setSpikeIndex(idx >= 0 ? idx : 0);
+    }
+  }, [bioData]);
+
+  const handleSpikeClose = useCallback(() => {
+    setSelectedSpike(null);
+  }, []);
+
+  const handleSpikePrev = useCallback(() => {
+    if (!bioData || spikeIndex <= 0) return;
+    const newIdx = spikeIndex - 1;
+    setSpikeIndex(newIdx);
+    setSelectedSpike(bioData.messageCorrelations[newIdx]);
+  }, [bioData, spikeIndex]);
+
+  const handleSpikeNext = useCallback(() => {
+    if (!bioData || spikeIndex >= bioData.messageCorrelations.length - 1) return;
+    const newIdx = spikeIndex + 1;
+    setSpikeIndex(newIdx);
+    setSelectedSpike(bioData.messageCorrelations[newIdx]);
+  }, [bioData, spikeIndex]);
 
   useEffect(() => {
     const id = params.id as string;
@@ -357,6 +386,8 @@ export default function ConversationDrillInPage() {
                 data={bioData.hrTimeline}
                 messageCorrelations={bioData.messageCorrelations}
                 baseline={bioData.baseline}
+                selectedElapsed={selectedSpike?.elapsed ?? null}
+                onSpikeClick={handleSpikeClick}
               />
             </div>
 
@@ -364,7 +395,13 @@ export default function ConversationDrillInPage() {
             {bioData.messageCorrelations.length > 0 && (
               <div className="space-y-3">
                 {bioData.messageCorrelations.map((corr, idx) => (
-                  <MessageCorrelationCard key={idx} correlation={corr} />
+                  <div
+                    key={idx}
+                    onClick={() => handleSpikeClick(corr)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <MessageCorrelationCard correlation={corr} />
+                  </div>
                 ))}
               </div>
             )}
@@ -476,6 +513,21 @@ export default function ConversationDrillInPage() {
           )}
         </div>
       </div>
+
+      {/* Spike Analysis Side Panel */}
+      {bioData && selectedSpike && (
+        <SpikeAnalysisPanel
+          correlation={selectedSpike}
+          hrTimeline={bioData.hrTimeline}
+          baseline={bioData.baseline}
+          isOpen={!!selectedSpike}
+          onClose={handleSpikeClose}
+          onPrev={spikeIndex > 0 ? handleSpikePrev : null}
+          onNext={spikeIndex < bioData.messageCorrelations.length - 1 ? handleSpikeNext : null}
+          currentIndex={spikeIndex}
+          totalCount={bioData.messageCorrelations.length}
+        />
+      )}
     </div>
   );
 }

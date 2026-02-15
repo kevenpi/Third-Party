@@ -22,6 +22,14 @@ export interface MessageCorrelation {
     label: string;
     text: string;
     icon: string;
+    shortText?: string;
+    longText?: string;
+    humanComparison?: string;
+    pattern?: {
+      description: string;
+      avgRecovery: string;
+      relatedConversations: string[];
+    };
   };
 }
 
@@ -135,33 +143,62 @@ export function getAnnotationBorderColor(type: string): string {
 }
 
 export function getDailySummary() {
-  const convIds = Object.keys(data.conversations);
-  const all = convIds.map((id) => data.conversations[id]);
+  const today = new Date().toISOString().slice(0, 10);
+  return getDailySummaryForDate(today);
+}
 
-  const avgHr = Math.round(
-    all.reduce(
-      (sum, c) =>
-        sum +
-        c.hrTimeline.reduce((s, p) => s + p.hr, 0) / c.hrTimeline.length,
-      0
-    ) / all.length
-  );
+export function getDailySummaryForDate(date: string) {
+  const today = new Date().toISOString().slice(0, 10);
 
-  const stressMoments = all.filter((c) => c.peak.stress > 50);
+  if (date === today) {
+    // Use real biometric data for today
+    const convIds = Object.keys(data.conversations);
+    const all = convIds.map((id) => data.conversations[id]);
 
-  const peakConv = all.reduce((best, c) =>
-    c.peak.stress > best.peak.stress ? c : best
-  );
+    const avgHr = Math.round(
+      all.reduce(
+        (sum, c) =>
+          sum +
+          c.hrTimeline.reduce((s, p) => s + p.hr, 0) / c.hrTimeline.length,
+        0
+      ) / all.length
+    );
+
+    const stressMoments = all.filter((c) => c.peak.stress > 50);
+
+    const peakConv = all.reduce((best, c) =>
+      c.peak.stress > best.peak.stress ? c : best
+    );
+
+    return {
+      avgHr,
+      stressMomentCount: stressMoments.length,
+      peakStress: peakConv.peak.stress,
+      peakPerson: peakConv.participant,
+      peakTime: new Date(peakConv.startTime).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      }),
+    };
+  }
+
+  // Generate deterministic-but-varied summary for past dates
+  const hash = [...date].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const PEOPLE = ["Arthur", "Tane", "Kevin"];
+  const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"];
+
+  const avgHr = 66 + (hash % 12);
+  const stressMomentCount = (hash % 4);
+  const peakStress = 35 + (hash % 50);
+  const peakPerson = PEOPLE[(hash + 1) % PEOPLE.length];
+  const peakTime = TIMES[(hash + 2) % TIMES.length];
 
   return {
     avgHr,
-    stressMomentCount: stressMoments.length,
-    peakStress: peakConv.peak.stress,
-    peakPerson: peakConv.participant,
-    peakTime: new Date(peakConv.startTime).toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-    }),
+    stressMomentCount,
+    peakStress,
+    peakPerson,
+    peakTime,
   };
 }
 

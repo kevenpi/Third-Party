@@ -42,12 +42,20 @@
           "annotation": {
             "type": "positive",
             "label": "Shared moment of warmth",
-            "text": "Your HR rose 2 bpm briefly and then settled below baseline  - this is what genuine amusement looks like biometrically. A micro-moment of connection that your body rewarded with relaxation.",
-            "icon": "+"
+            "icon": "+",
+            "text": "Your HR rose 2 bpm briefly and then settled below baseline - this is what genuine amusement looks like biometrically. A micro-moment of connection that your body rewarded with relaxation.",
+            "shortText": "HR rose 2 bpm then dropped below baseline - genuine amusement and connection",
+            "longText": "Your heart rate rose just 2 bpm when you both reached for the same cup - barely a blip, less than what most people experience checking their phone. But what happened next is the interesting part.\n\nYour HR didn't just return to baseline - it dropped below it, settling at 64 bpm. Your HRV jumped from 50 to 53ms. In psychophysiology, this is called the 'post-amusement relaxation response.' Your nervous system interpreted this small shared moment as evidence of safety, and it rewarded you with deeper calm.\n\nThis is a micro-moment of connection - researcher Barbara Fredrickson calls these 'positivity resonances.' They last seconds but their physiological signature lingers for minutes. Your stress score dropped from 17 to 14 after this moment and stayed low for the rest of the conversation.",
+            "humanComparison": "The relaxation after this moment was deeper than what most people experience during a 10-minute meditation session",
+            "pattern": {
+              "description": "Morning moments with Arthur consistently produce your calmest HR readings of the day",
+              "avgRecovery": "N/A - no recovery needed",
+              "relatedConversations": ["Arthur Feb 12 morning", "Arthur Feb 11 morning"]
+            }
           }
         }
       ],
-      "overallInsight": "A calm, grounding start to your day. Your HR stayed within 4 bpm of baseline the entire time and your HRV averaged 53ms  - indicating a parasympathetic-dominant (relaxed) state. The brief laugh at 0:30 produced a healthy HR micro-spike followed by deepened calm. These small moments of ease with Arthur are physiologically restorative."
+      "overallInsight": "A calm, grounding start to your day. Your HR stayed within 4 bpm of baseline the entire time and your HRV averaged 53ms - indicating a parasympathetic-dominant (relaxed) state. The brief laugh at 0:30 produced a healthy HR micro-spike followed by deepened calm. These small moments of ease with Arthur are physiologically restorative."
     },
     "2": {
       "participant": "Kevin",
@@ -121,8 +129,16 @@
           "annotation": {
             "type": "observation",
             "label": "Mild stress activation",
-            "text": "Your HR climbed 6 bpm when the deadline shift was mentioned. A moderate response  - enough to show this matters to you, but your HRV only dropped to 38ms, which means you stayed in problem-solving mode rather than threat mode.",
-            "icon": "!"
+            "icon": "!",
+            "text": "Your HR climbed 6 bpm when the deadline shift was mentioned. A moderate response - enough to show this matters to you, but your HRV only dropped to 38ms, which means you stayed in problem-solving mode rather than threat mode.",
+            "shortText": "HR climbed 6 bpm at deadline news - moderate activation, stayed in problem-solving mode",
+            "longText": "Your heart rate climbed 6 bpm in about 20 seconds when Kevin mentioned the deadline shift - that's roughly equivalent to walking up a short flight of stairs. Not alarming on its own, but the context matters.\n\nYour HRV dropped from 42 to 38ms, which tells us your autonomic nervous system shifted slightly toward sympathetic dominance. But here's the key: 38ms is still above the threshold where your prefrontal cortex stays fully engaged. In plain terms, your body said 'pay attention' without saying 'panic.'\n\nThis is actually a healthy stress response. Your cortisol probably ticked up just enough to sharpen your focus. The fact that you immediately moved to problem-solving (conversation 2, minute 5) suggests your body used this activation productively rather than getting stuck in it.",
+            "humanComparison": "About the same stress response as being told your flight is delayed by 2 hours",
+            "pattern": {
+              "description": "Work deadline shifts produce moderate but manageable stress responses for you",
+              "avgRecovery": "3 minutes",
+              "relatedConversations": ["Kevin Feb 11", "Kevin Feb 9"]
+            }
           }
         },
         {
@@ -138,12 +154,20 @@
           "annotation": {
             "type": "positive",
             "label": "Problem-solving calms you",
-            "text": "When you shifted to proposing a solution, your HR dropped 3 bpm and HRV rose  - taking action on a problem literally calms your nervous system. This is a strength: you regulate through competence.",
-            "icon": "+"
+            "icon": "+",
+            "text": "When you shifted to proposing a solution, your HR dropped 3 bpm and HRV rose - taking action on a problem literally calms your nervous system. This is a strength: you regulate through competence.",
+            "shortText": "HR dropped 3 bpm when you proposed a solution - action regulates your stress",
+            "longText": "Something fascinating happened here. The moment you shifted from receiving information to proposing a solution, your heart rate dropped 3 bpm and your HRV recovered 2ms. This happened in under 30 seconds.\n\nThis is your nervous system's signature move. When you feel agency - when you can do something about a stressor - your vagus nerve activates and pulls your heart rate down. Psychologists call this 'active coping,' and your body is exceptionally good at it.\n\nThe stress score dropped from 30 to 26, which doesn't sound dramatic, but it represents a meaningful shift from 'mild concern' to 'engaged and capable.' Your body literally rewards you for being the person who has the plan.\n\nThis pattern shows up consistently across your conversations with Kevin. You absorb the problem, feel the stress briefly, then regulate yourself by taking action. It's an effective strategy - with one caveat: it works less well when the problem isn't solvable through competence alone (see your conversations with Arthur).",
+            "humanComparison": "The calming effect was similar to taking three deep breaths - but it happened automatically",
+            "pattern": {
+              "description": "You consistently self-regulate through problem-solving. HR drops average 4 bpm when you shift from listening to proposing solutions",
+              "avgRecovery": "Immediate",
+              "relatedConversations": ["Kevin Feb 12", "Kevin Feb 10"]
+            }
           }
         }
       ],
-      "overallInsight": "A professional conversation that stayed in the moderate stress zone (peak stress 43). Your HR reached 80 bpm when the deadline shifted  - a 18% increase from baseline  - but returned quickly once you moved into problem-solving mode. Your HRV never dropped below 38ms, suggesting you maintained cognitive flexibility throughout. Work conversations tend to activate your sympathetic nervous system less than personal ones."
+      "overallInsight": "A professional conversation that stayed in the moderate stress zone (peak stress 43). Your HR reached 80 bpm when the deadline shifted - a 18% increase from baseline - but returned quickly once you moved into problem-solving mode. Your HRV never dropped below 38ms, suggesting you maintained cognitive flexibility throughout. Work conversations tend to activate your sympathetic nervous system less than personal ones."
     },
     "3": {
       "participant": "Tane",
@@ -213,8 +237,16 @@
           "annotation": {
             "type": "positive",
             "label": "Joyful activation",
-            "text": "Your HR rose 6 bpm but your HRV actually stayed stable at 51ms  - this is positive arousal, not stress. Your body was energized by the memory. When HR rises without HRV dropping, it's engagement, not anxiety.",
-            "icon": "+"
+            "icon": "+",
+            "text": "Your HR rose 6 bpm but your HRV actually stayed stable at 51ms - this is positive arousal, not stress. Your body was energized by the memory. When HR rises without HRV dropping, it's engagement, not anxiety.",
+            "shortText": "HR rose 6 bpm with stable HRV - pure positive arousal, not stress",
+            "longText": "Your heart rate jumped 6 bpm in about 10 seconds - that's a noticeable spike. But here's what makes this moment special: your HRV barely moved. It went from 50 to 51ms, actually improving slightly.\n\nThis is the physiological fingerprint of joy. When your heart rate rises from stress, your HRV always drops - your vagus nerve withdraws, your breathing gets shallow, your body prepares for threat. But when HR rises from positive excitement, your HRV stays stable or even improves. Your parasympathetic nervous system stays engaged while your sympathetic system adds energy.\n\nIt's like the difference between your car accelerating because you're pressing the gas versus because you're going downhill - same speed increase, completely different mechanism.\n\nYour stress score stayed flat at 22 (actually dropped to 21 right before). This means your body was genuinely having fun. The memory of building that trebuchet activated your reward circuitry without triggering any threat detection.",
+            "humanComparison": "Similar to the rush of opening a surprise gift - energizing without any anxiety",
+            "pattern": {
+              "description": "Shared memories with close friends produce your healthiest HR patterns - activation with preserved HRV",
+              "avgRecovery": "N/A - no recovery needed",
+              "relatedConversations": ["Tane Feb 10", "Tane Feb 7"]
+            }
           }
         },
         {
@@ -230,12 +262,20 @@
           "annotation": {
             "type": "positive",
             "label": "Deep connection",
-            "text": "Peak HR of 80 bpm during Tane's personal reflection, but your HRV rose from 52 to 54ms. This is the signature of empathic engagement  - your body was activated by the emotional depth while maintaining safety. You feel safe being present with Tane.",
-            "icon": "+"
+            "icon": "+",
+            "text": "Peak HR of 80 bpm during Tane's personal reflection, but your HRV rose from 52 to 54ms. This is the signature of empathic engagement - your body was activated by the emotional depth while maintaining safety. You feel safe being present with Tane.",
+            "shortText": "Peak HR 80 with rising HRV - empathic engagement while feeling completely safe",
+            "longText": "This is the peak heart rate of your conversation with Tane - 80 bpm - and it happened during his most vulnerable moment. But look at what your HRV did: it rose from 52 to 54ms. That's the opposite of what happens during stress.\n\nIn neuroscience, this pattern is called 'empathic resonance with maintained regulation.' Your mirror neurons activated - you literally felt some of what Tane was feeling - but your vagus nerve stayed fully engaged. Your body was saying: 'I'm moved by this, and I'm safe here.'\n\nThis is rare. Most people's HRV drops when they encounter emotional intensity, even positive emotional intensity. The fact that yours rose suggests Tane is what attachment researchers call a 'secure base' for you - someone whose vulnerability makes you feel more regulated, not less.\n\nYour stress score didn't budge from 19. Your body processed deep emotional content without any threat response. After this moment, your HR began a steady decline that didn't stop until it reached 62 bpm - your lowest reading all day.",
+            "humanComparison": "Your nervous system responded the way it would to a warm bath - activated but deeply safe",
+            "pattern": {
+              "description": "Tane's vulnerability consistently improves your HRV. He's a co-regulating presence in your life",
+              "avgRecovery": "N/A - these moments improve your baseline",
+              "relatedConversations": ["Tane Feb 8", "Tane Feb 5"]
+            }
           }
         }
       ],
-      "overallInsight": "This was physiologically the most restorative conversation of your day. Your HR fluctuated naturally between 62-80 bpm, and your HRV steadily climbed from 52ms to 60ms by the end  - your nervous system was being actively regulated by this connection. Peak HR of 80 during Tane's personal story was positive arousal (HRV held steady), not stress. By minute 14, your resting HR dropped below your morning baseline. Tane is a co-regulating presence for you."
+      "overallInsight": "This was physiologically the most restorative conversation of your day. Your HR fluctuated naturally between 62-80 bpm, and your HRV steadily climbed from 52ms to 60ms by the end - your nervous system was being actively regulated by this connection. Peak HR of 80 during Tane's personal story was positive arousal (HRV held steady), not stress. By minute 14, your resting HR dropped below your morning baseline. Tane is a co-regulating presence for you."
     },
     "4": {
       "participant": "Arthur",
@@ -349,8 +389,16 @@
           "annotation": {
             "type": "observation",
             "label": "Defensive escalation",
-            "text": "Your HR spiked 10 bpm in under 15 seconds when Arthur pushed for a decision. Your HRV dropped from 35 to 28ms  - crossing into fight-or-flight territory. Your body interpreted a request for clarity as pressure, activating a defensive response.",
-            "icon": "!"
+            "icon": "!",
+            "text": "Your HR spiked 10 bpm in under 15 seconds when Arthur pushed for a decision. Your HRV dropped from 35 to 28ms - crossing into fight-or-flight territory. Your body interpreted a request for clarity as pressure, activating a defensive response.",
+            "shortText": "HR spiked 10 bpm in 15 seconds - fight-or-flight activation from perceived pressure",
+            "longText": "Your heart rate jumped 10 bpm in just 15 seconds - that's faster than most people's response to a car horn. Your body shifted into fight-or-flight before you consciously processed what Arthur said.\n\nThe question about the weekend was practical, but your nervous system read it as: 'you're not pulling your weight.' This is a pattern - the 3rd time this week a responsibility topic has triggered this response.\n\nYour HRV dropped from 35 to 28ms, which is significant. At 28ms, your prefrontal cortex - the part of your brain that handles nuance, empathy, and perspective-taking - starts to go offline. You were literally less capable of hearing Arthur's intention in that moment. Your body was preparing to defend, not to understand.\n\nThe speed of this response suggests it's not about this specific question. It's a conditioned pattern - your nervous system has learned to treat requests for decisions in this relationship as threats. That learning probably happened long before this conversation.",
+            "humanComparison": "That's a stronger response than most people have during a job interview",
+            "pattern": {
+              "description": "3rd time this week responsibility topics pushed stress above 60",
+              "avgRecovery": "11 minutes",
+              "relatedConversations": ["Arthur Feb 12", "Arthur Feb 10"]
+            }
           }
         },
         {
@@ -366,8 +414,16 @@
           "annotation": {
             "type": "pattern",
             "label": "Second escalation wave",
-            "text": "After a partial recovery (HR dropped to 85), the conversation re-escalated. Your HR jumped 10 bpm again  - this second wave hit harder because your nervous system hadn't fully recovered from the first spike. Your HRV was already depleted, leaving less buffer.",
-            "icon": "~"
+            "icon": "~",
+            "text": "After a partial recovery (HR dropped to 85), the conversation re-escalated. Your HR jumped 10 bpm again - this second wave hit harder because your nervous system hadn't fully recovered from the first spike. Your HRV was already depleted, leaving less buffer.",
+            "shortText": "HR jumped 10 bpm again on depleted reserves - second wave hit harder than the first",
+            "longText": "This is the moment that tells the real story of this conversation. Your heart rate had partially recovered - down to 85 from the earlier peak of 96. But your HRV was only at 36ms, which means your nervous system was still in a depleted state. You had the appearance of calm without the physiological reserves to back it up.\n\nWhen you raised your voice, your HR jumped 10 bpm again. But this time, the same 10 bpm increase hit differently. Going from 85 to 95 on already-depleted HRV is like sprinting on tired legs - the same effort produces a much harder impact on your system.\n\nYour HRV crashed back to 28ms. Your stress score shot from 47 to 65. And critically, this second wave had a longer tail than the first - it took your body nearly 4 minutes to begin meaningful recovery, compared to about 2 minutes after the first spike.\n\nThis is what therapists call 'emotional flooding' - when your nervous system is hit again before it's recovered from the first hit. During flooding, you lose access to empathy, humor, and creative problem-solving. Whatever you said in this moment, your body wasn't equipped to say it well.",
+            "humanComparison": "Your body was under more physiological stress than most people experience during a fender bender",
+            "pattern": {
+              "description": "Second escalation waves in arguments produce 40% longer recovery times than first spikes",
+              "avgRecovery": "8 minutes from second wave vs 5 from first",
+              "relatedConversations": ["Arthur Feb 12", "Arthur Feb 8"]
+            }
           }
         },
         {
@@ -383,8 +439,16 @@
           "annotation": {
             "type": "missed_bid",
             "label": "Silence as shutdown",
-            "text": "When Arthur went quiet, your HR peaked at 105 and your HRV bottomed at 23ms  - a 52% drop from baseline. Silence during conflict often increases stress because your brain fills the void with threat. Your body was at peak activation even though no words were being exchanged.",
-            "icon": "x"
+            "icon": "x",
+            "text": "When Arthur went quiet, your HR peaked at 105 and your HRV bottomed at 23ms - a 52% drop from baseline. Silence during conflict often increases stress because your brain fills the void with threat. Your body was at peak activation even though no words were being exchanged.",
+            "shortText": "Peak stress at 79 during silence - your brain fills quiet with threat during conflict",
+            "longText": "This is the most physiologically intense moment of your entire day. Arthur stopped talking, and your heart rate hit 105 bpm - a 54% increase from your morning baseline of 68. Your HRV bottomed out at 23ms, which is a 52% drop from where you started this conversation.\n\nAt 23ms HRV, your autonomic nervous system was in full sympathetic dominance. Your blood was being redirected from your digestive system to your muscles. Your pupils were likely dilated. Your breathing was shallow and rapid. Your body was ready to fight or run - from a conversation with someone you love.\n\nHere's what's counterintuitive: silence during conflict is often more stressful than the conflict itself. When Arthur went quiet, your brain lost its ability to predict what was coming next. Uncertainty is one of the most potent stress triggers in the human nervous system. Your amygdala started filling the silence with worst-case scenarios.\n\nThe fact that your stress score stayed pinned at 79 even with no words being exchanged tells us this wasn't about what Arthur said - it was about what the silence meant to your nervous system. And your nervous system interpreted it as abandonment.",
+            "humanComparison": "Your heart rate was higher than what most people experience during a panic attack",
+            "pattern": {
+              "description": "Silence during conflict with Arthur consistently produces your highest stress readings. Your body finds uncertainty more threatening than disagreement",
+              "avgRecovery": "14 minutes",
+              "relatedConversations": ["Arthur Feb 10", "Arthur Feb 6"]
+            }
           }
         },
         {
@@ -400,12 +464,20 @@
           "annotation": {
             "type": "observation",
             "label": "Repair activation",
-            "text": "Your HR rose 7 bpm during the repair attempt  - repair takes courage, and your body registered it as mild stress. But your HRV stayed at 40ms, meaning you were activated but not in threat mode. The repair was genuine, even if it felt incomplete.",
-            "icon": "*"
+            "icon": "*",
+            "text": "Your HR rose 7 bpm during the repair attempt - repair takes courage, and your body registered it as mild stress. But your HRV stayed at 40ms, meaning you were activated but not in threat mode. The repair was genuine, even if it felt incomplete.",
+            "shortText": "HR rose 7 bpm during repair - courage costs energy, but your body stayed regulated",
+            "longText": "Repair is one of the hardest things a nervous system can do after conflict. Your body had just spent 6 minutes recovering from peak stress - your HR had dropped from 105 to 73, your HRV had climbed from 23 back to 44ms. You were finally approaching calm.\n\nAnd then you chose to re-engage. Your HR jumped 7 bpm, from 73 to 80. Your stress score rose from 31 to 38. But - and this is the crucial detail - your HRV only dropped to 40ms. It didn't crash. Your vagus nerve stayed engaged.\n\nThis tells us the repair attempt was genuine. When people make fake or obligatory repair attempts ('fine, sorry, whatever'), their HRV typically drops below 30ms because the inauthenticity creates its own stress. Your body was activated but regulated - the stress you felt was the cost of vulnerability, not the cost of pretending.\n\nThe repair felt incomplete because your body was still recovering. At 40ms HRV, you had enough cognitive resources to be sincere but not enough to be expansive. You could say 'I'm sorry' but probably couldn't articulate why. That deeper repair needs a calmer nervous system - which is exactly what happened at 8 PM.",
+            "humanComparison": "The stress of repair was similar to making a difficult phone call - uncomfortable but manageable",
+            "pattern": {
+              "description": "Your repair attempts consistently show genuine physiological signatures (HRV stays above 35ms). You repair authentically, even when incomplete",
+              "avgRecovery": "3 minutes post-repair",
+              "relatedConversations": ["Arthur Feb 12 evening", "Arthur Feb 9"]
+            }
           }
         }
       ],
-      "overallInsight": "This was your highest-stress conversation today. Your HR increased 54% from baseline (68 → 105 bpm) and your HRV dropped 52% (48 → 23ms). The conversation had two distinct escalation waves  - the first around the 3:45 mark when weekend plans came up, and the second at 7:20 when voices were raised. Arthur's silence at 9:10 coincided with your biometric peak, suggesting unresolved tension is more stressful to your body than active disagreement. The repair attempt at 15:40 was physiologically genuine  - your HR briefly spiked (effort) then began a slow descent. But your body took 14 minutes after the conversation ended to return to baseline. Something was left unfinished."
+      "overallInsight": "This was your highest-stress conversation today. Your HR increased 54% from baseline (68 to 105 bpm) and your HRV dropped 52% (48 to 23ms). The conversation had two distinct escalation waves - the first around the 3:45 mark when weekend plans came up, and the second at 7:20 when voices were raised. Arthur's silence at 9:10 coincided with your biometric peak, suggesting unresolved tension is more stressful to your body than active disagreement. The repair attempt at 15:40 was physiologically genuine - your HR briefly spiked (effort) then began a slow descent. But your body took 14 minutes after the conversation ended to return to baseline. Something was left unfinished."
     },
     "5": {
       "participant": "Kevin",
@@ -430,7 +502,7 @@
       "peak": { "hr": 73, "hrv": 44, "elapsedAt": 40, "stress": 31 },
       "recovery": { "minutes": 0 },
       "messageCorrelations": [],
-      "overallInsight": "A brief, neutral check-in. Your biometrics barely moved  - HR stayed within 3 bpm of baseline, HRV held steady. This is what a low-stakes interaction looks like physiologically: your body didn't register any threat or excitement. Efficient and forgettable in the best sense."
+      "overallInsight": "A brief, neutral check-in. Your biometrics barely moved - HR stayed within 3 bpm of baseline, HRV held steady. This is what a low-stakes interaction looks like physiologically: your body didn't register any threat or excitement. Efficient and forgettable in the best sense."
     },
     "6": {
       "participant": "Kevin",
@@ -488,8 +560,16 @@
           "annotation": {
             "type": "observation",
             "label": "Empathic concern",
-            "text": "Your HR hit 90 bpm when Kevin expressed worry  - a 29% increase from baseline. Your HRV dropped to 33ms, putting you at the edge of the stress zone. You absorbed Kevin's anxiety here  - your body mirrored her concern.",
-            "icon": "!"
+            "icon": "!",
+            "text": "Your HR hit 90 bpm when Kevin expressed worry - a 29% increase from baseline. Your HRV dropped to 33ms, putting you at the edge of the stress zone. You absorbed Kevin's anxiety here - your body mirrored her concern.",
+            "shortText": "HR hit 90 at Kevin's worry - you absorbed her anxiety, your body mirrored her stress",
+            "longText": "When Kevin said she was worried about the milestone, your heart rate climbed from 86 to 90 bpm and your HRV dropped from 35 to 33ms. You crossed the 50-point stress threshold for the first time in this conversation.\n\nWhat happened here is called 'stress contagion' - your nervous system literally caught Kevin's anxiety. Your mirror neurons fired in response to the worry in her voice, and your autonomic nervous system responded as if the threat were yours, not hers.\n\nAt 33ms HRV, you were at the boundary between productive concern and unproductive anxiety. Your prefrontal cortex was still engaged (barely), but your body was starting to prepare for threat. The 29% HR increase from baseline tells us this wasn't casual concern - your body registered Kevin's worry as genuinely important.\n\nThis is a double-edged quality. Your high empathic sensitivity means you're attuned to others' emotional states, which makes you an excellent collaborator. But it also means you absorb stress that isn't yours. Kevin's worry became your physiology within seconds.",
+            "humanComparison": "You absorbed Kevin's stress the way a tuning fork picks up vibrations from another fork nearby",
+            "pattern": {
+              "description": "You consistently absorb others' anxiety during work conversations. Your HR mirrors their emotional state within 10-15 seconds",
+              "avgRecovery": "5 minutes",
+              "relatedConversations": ["Kevin Feb 11", "Kevin Feb 9"]
+            }
           }
         },
         {
@@ -505,12 +585,20 @@
           "annotation": {
             "type": "positive",
             "label": "Reassurance calms both of you",
+            "icon": "+",
             "text": "When you offered reassurance, your own HR dropped 9 bpm and HRV recovered 6ms. Helping others regulate their stress literally regulates yours. Your body rewards you for being the stabilizing force.",
-            "icon": "+"
+            "shortText": "HR dropped 9 bpm when you reassured Kevin - helping others calms your own nervous system",
+            "longText": "This is one of the most remarkable moments in your biometric data today. When you offered Kevin reassurance about scope, your own heart rate dropped 9 bpm in under a minute - from 82 to 73. Your HRV recovered 6ms, jumping from 38 to 44. Your stress score fell from 42 to 31.\n\nThis is called 'co-regulation through caregiving.' When you take on the role of stabilizer - the person who has the perspective, who can see the path forward - your vagus nerve activates powerfully. It's as if your body says: 'If I'm calm enough to help someone else, then I must be safe.'\n\nThe 9 bpm drop is significant. That's faster and larger than what most relaxation techniques achieve. Deep breathing typically produces a 3-5 bpm drop over several minutes. You achieved nearly double that in under 60 seconds, simply by being helpful.\n\nThis is your superpower, but it comes with a caveat: this regulation strategy works beautifully in work contexts where problems have solutions. It works less well in emotional contexts where the other person doesn't need a solution - they need you to sit with them in the discomfort. That's the difference between your Kevin conversations and your Arthur conversations.",
+            "humanComparison": "The calming effect was stronger than what most people get from a 5-minute guided breathing exercise",
+            "pattern": {
+              "description": "Reassuring others produces your fastest HR recovery - average 7 bpm drop in under 90 seconds",
+              "avgRecovery": "Immediate - reassuring others IS your recovery",
+              "relatedConversations": ["Kevin Feb 12", "Kevin Feb 10"]
+            }
           }
         }
       ],
-      "overallInsight": "A moderately stressful work conversation (peak stress 53) that followed a predictable arc: slow build as Kevin shared concerns, peak at minute 5, then steady recovery as you shifted to problem-solving. Your HR rose 29% to 90 bpm and HRV dropped to 33ms  - genuine concern, not threat. The most notable moment was at 8:00 when you reassured Kevin: your own HR dropped 9 bpm in under a minute. You co-regulate through competence and reassurance."
+      "overallInsight": "A moderately stressful work conversation (peak stress 53) that followed a predictable arc: slow build as Kevin shared concerns, peak at minute 5, then steady recovery as you shifted to problem-solving. Your HR rose 29% to 90 bpm and HRV dropped to 33ms - genuine concern, not threat. The most notable moment was at 8:00 when you reassured Kevin: your own HR dropped 9 bpm in under a minute. You co-regulate through competence and reassurance."
     },
     "7": {
       "participant": "Arthur",
@@ -606,8 +694,16 @@
           "annotation": {
             "type": "positive",
             "label": "Nostalgic warmth",
-            "text": "Your HR rose 6 bpm when Arthur shared a dream  - but your HRV held at 54ms. This is warm activation, not stress. Your body responded to shared history with gentle engagement. The micro-spike resolved within 3 minutes as you both leaned into the memory.",
-            "icon": "+"
+            "icon": "+",
+            "text": "Your HR rose 6 bpm when Arthur shared a dream - but your HRV held at 54ms. This is warm activation, not stress. Your body responded to shared history with gentle engagement. The micro-spike resolved within 3 minutes as you both leaned into the memory.",
+            "shortText": "HR rose 6 bpm at shared memory - warm activation with HRV holding steady at 54ms",
+            "longText": "Arthur mentioned a dream about your old apartment, and your heart rate rose 6 bpm - from 68 to 74. But your HRV barely moved, dropping just 1ms from 55 to 54. This is the exact same physiological pattern you showed with Tane during the trebuchet story: activation without threat.\n\nYour body responded to the shared history with what neuroscientists call 'approach motivation.' Your sympathetic nervous system added energy - your heart pumped a little faster, your attention sharpened - but your parasympathetic system stayed fully engaged. You were leaning in, not bracing.\n\nThe stress score rose from 11 to 16, which is barely noticeable. For context, most people's stress score fluctuates by 5-10 points just from shifting position in a chair. This wasn't stress - it was interest.\n\nWhat makes this moment significant is the contrast with your 12:45 conversation. Same person, same relationship, completely different nervous system response. At 12:45, Arthur's words triggered fight-or-flight. At 8:00 PM, Arthur's words triggered warmth. The difference isn't Arthur - it's the context. Evening, safety, no unresolved logistics. Your nervous system can relax with Arthur when there's nothing to decide.",
+            "humanComparison": "The warmth you felt was similar to looking at old photos with a close friend - gentle and grounding",
+            "pattern": {
+              "description": "Evening conversations with Arthur after conflict produce some of your calmest biometric readings, often dropping below morning baseline",
+              "avgRecovery": "N/A - these moments improve your baseline",
+              "relatedConversations": ["Arthur Feb 12 evening", "Arthur Feb 9 evening"]
+            }
           }
         },
         {
@@ -623,12 +719,20 @@
           "annotation": {
             "type": "positive",
             "label": "Moment of connection",
-            "text": "When you said 'I missed this,' your HR dropped to 62 and HRV rose to 60ms  - the calmest point of your entire day. Vulnerability with Arthur doesn't always mean stress. This moment was physiologically the opposite of the 12:45 conversation. Your body trusts this version of your connection.",
-            "icon": "+"
+            "icon": "+",
+            "text": "When you said 'I missed this,' your HR dropped to 62 and HRV rose to 60ms - the calmest point of your entire day. Vulnerability with Arthur doesn't always mean stress. This moment was physiologically the opposite of the 12:45 conversation. Your body trusts this version of your connection.",
+            "shortText": "HR dropped to 62, HRV rose to 60ms - the calmest moment of your entire day",
+            "longText": "This is the most physiologically significant moment of your entire day - and it's not a spike. It's the opposite.\n\nWhen you said 'I missed this,' your heart rate dropped from 64 to 62 bpm. Your HRV rose from 58 to 60ms. Your stress score fell from 9 to 6. These are among the lowest readings your body produced in 24 hours.\n\nAt 62 bpm and 60ms HRV, your body was in deep parasympathetic dominance. Your vagus nerve was fully activated. Your breathing was slow and deep. Your muscles were relaxed. Your digestive system was active. In clinical terms, your body was in a state of 'rest and digest' - the opposite of the fight-or-flight you experienced at 12:45.\n\nBut here's the part that matters most: this calm didn't come from meditation or exercise or being alone. It came from vulnerability with Arthur. You said something honest and simple - 'I missed this' - and your body rewarded you with the deepest calm of your day.\n\nThis is what attachment researchers call 'earned security.' Your nervous system, which spent much of the day in various states of activation, found its lowest point in connection. Not in solitude, not in distraction - in being vulnerable with the person who also triggered your highest stress. The same relationship produced both extremes. That's not a contradiction - it's intimacy.",
+            "humanComparison": "Your body was calmer than most people's during deep sleep. This level of safety is rare in waking life",
+            "pattern": {
+              "description": "Moments of genuine vulnerability with Arthur consistently produce your lowest stress readings of the day",
+              "avgRecovery": "N/A - this IS recovery",
+              "relatedConversations": ["Arthur Feb 12", "Arthur Feb 10"]
+            }
           }
         }
       ],
-      "overallInsight": "This conversation was the physiological mirror of the 12:45 PM conflict. Your HR started elevated at 72 (residual tension from earlier) but steadily dropped to 59 bpm  - 9% below your morning baseline. Your HRV climbed from 44ms to 64ms over 35 minutes, the highest reading of your day. This is active co-regulation: Arthur's calm presence literally brought your nervous system back to rest. By the end, your stress score hit 1  - the closest your body came to full parasympathetic dominance all day. This is what repair looks like in the body."
+      "overallInsight": "This conversation was the physiological mirror of the 12:45 PM conflict. Your HR started elevated at 72 (residual tension from earlier) but steadily dropped to 59 bpm - 9% below your morning baseline. Your HRV climbed from 44ms to 64ms over 35 minutes, the highest reading of your day. This is active co-regulation: Arthur's calm presence literally brought your nervous system back to rest. By the end, your stress score hit 1 - the closest your body came to full parasympathetic dominance all day. This is what repair looks like in the body."
     }
   }
 }
