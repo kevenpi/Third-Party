@@ -1,18 +1,34 @@
 [
   {
-    "sessionId": "seed_arthur_7",
-    "time": "10:00 AM",
-    "person": "Arthur",
-    "durationSec": 900,
-    "durationMin": 15,
+    "sessionId": "seed_tane_3",
+    "time": "1:15 PM",
+    "person": "Tane",
+    "durationSec": 720,
+    "durationMin": 12,
     "size": "medium",
-    "color": "#D4B07A",
-    "colorName": "warm-amber",
+    "color": "#B84A3A",
+    "colorName": "stress-red",
+    "date": "2026-02-10",
+    "score": 0.65,
+    "cortisol": 0.65,
+    "heartRate": 0.6,
+    "meaningfulness": 0.4,
+    "id": "bubble_seed_tane_3"
+  },
+  {
+    "sessionId": "seed_kevin_5",
+    "time": "3:30 PM",
+    "person": "Kevin",
+    "durationSec": 600,
+    "durationMin": 10,
+    "size": "medium",
+    "color": "#B84A3A",
+    "colorName": "stress-red",
     "date": "2026-02-10",
     "score": 0.6,
-    "cortisol": 0.45,
-    "heartRate": 0.5,
-    "meaningfulness": 0.55,
-    "id": "bubble_seed_arthur_7"
+    "cortisol": 0.7,
+    "heartRate": 0.65,
+    "meaningfulness": 0.4,
+    "id": "bubble_seed_kevin_5"
   }
 ]

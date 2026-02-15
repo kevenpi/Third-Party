@@ -1,18 +1,18 @@
 [
   {
-    "sessionId": "seed_tane_4",
-    "time": "5:00 PM",
-    "person": "Tane",
-    "durationSec": 300,
-    "durationMin": 5,
+    "sessionId": "seed_kevin_6",
+    "time": "10:00 AM",
+    "person": "Kevin",
+    "durationSec": 360,
+    "durationMin": 6,
     "size": "small",
-    "color": "#C4B496",
-    "colorName": "neutral-sand",
+    "color": "#6AAAB4",
+    "colorName": "steady",
     "date": "2026-02-08",
-    "score": 0.35,
-    "cortisol": 0.3,
-    "heartRate": 0.35,
-    "meaningfulness": 0.5,
-    "id": "bubble_seed_tane_4"
+    "score": 0.4,
+    "cortisol": 0.25,
+    "heartRate": 0.4,
+    "meaningfulness": 0.55,
+    "id": "bubble_seed_kevin_6"
   }
 ]

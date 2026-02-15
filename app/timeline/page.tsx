@@ -59,13 +59,20 @@ interface LiveDebugEvent {
   };
 }
 
+function localDateStr(d: Date): string {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 function getRecentDates(count: number): string[] {
   const out: string[] = [];
   const today = new Date();
   for (let i = 0; i < count; i++) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
-    out.push(d.toISOString().slice(0, 10));
+    out.push(localDateStr(d));
   }
   return out;
 }
@@ -79,19 +86,21 @@ function getBubbleSize(size: "small" | "medium" | "large"): string {
 }
 
 function formatDateDisplay(dateStr: string): string {
-  const date = new Date(dateStr);
+  const date = new Date(dateStr + "T00:00:00"); // parse as local
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   return `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()}`;
 }
 
 function formatDateShort(dateStr: string): string {
-  const date = new Date(dateStr);
-  const today = new Date();
-  const diffDays = Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-  
-  if (diffDays === 0) return "Today";
-  if (diffDays === 1) return "Yesterday";
+  const todayStr = localDateStr(new Date());
+  if (dateStr === todayStr) return "Today";
+  const yest = new Date();
+  yest.setDate(yest.getDate() - 1);
+  if (dateStr === localDateStr(yest)) return "Yesterday";
+  // Parse as local date (add T00:00 to avoid UTC interpretation)
+  const date = new Date(dateStr + "T00:00:00");
+  const diffDays = Math.round((new Date().getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
   if (diffDays < 7) return date.toLocaleDateString("en-US", { weekday: "short" });
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
@@ -116,7 +125,7 @@ function formatDuration(seconds: number): string {
 
 export default function TimelinePage() {
   const router = useRouter();
-  const today = new Date().toISOString().slice(0, 10);
+  const today = localDateStr(new Date());
   const [selectedDate, setSelectedDate] = useState<string>(today);
   const [dates, setDates] = useState<string[]>(() => getRecentDates(14));
   const [conversations, setConversations] = useState<Conversation[]>([]);

@@ -1,18 +1,18 @@
 [
   {
-    "sessionId": "seed_kevin_6",
+    "sessionId": "seed_arthur_7",
     "time": "10:00 AM",
-    "person": "Kevin",
-    "durationSec": 360,
-    "durationMin": 6,
-    "size": "small",
-    "color": "#6AAAB4",
-    "colorName": "steady",
+    "person": "Arthur",
+    "durationSec": 900,
+    "durationMin": 15,
+    "size": "medium",
+    "color": "#D4B07A",
+    "colorName": "warm-amber",
     "date": "2026-02-09",
-    "score": 0.4,
-    "cortisol": 0.25,
-    "heartRate": 0.4,
+    "score": 0.6,
+    "cortisol": 0.45,
+    "heartRate": 0.5,
     "meaningfulness": 0.55,
-    "id": "bubble_seed_kevin_6"
+    "id": "bubble_seed_arthur_7"
   }
 ]

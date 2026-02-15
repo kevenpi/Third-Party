@@ -23,7 +23,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ dates });
     }
 
-    const day = date ?? new Date().toISOString().slice(0, 10);
+    const day = date ?? (() => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    })();
     const bubbles = await getBubblesForDate(day);
     return NextResponse.json({ date: day, bubbles });
   } catch (err) {

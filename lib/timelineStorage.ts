@@ -11,6 +11,14 @@ import { getDataRoot } from "@/lib/runtimePaths";
 const DATA_ROOT = getDataRoot();
 const TIMELINE_DIR = path.join(DATA_ROOT, "timeline");
 
+/** Return YYYY-MM-DD in local timezone (not UTC). */
+function localDateStr(d: Date): string {
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 export interface TimelineBubble {
   id: string;
   sessionId: string;
@@ -238,7 +246,7 @@ export async function seedSampleConversations(): Promise<boolean> {
   const dateStr = (daysAgo: number) => {
     const d = new Date(today);
     d.setDate(d.getDate() - daysAgo);
-    return d.toISOString().slice(0, 10);
+    return localDateStr(d);
   };
 
   const SAMPLE_CONVOS: Omit<TimelineBubble, "id">[] = [
