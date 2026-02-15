@@ -1,0 +1,883 @@
+[
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:13.595Z",
+    "audioLevel": 0.014008056366175822,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.2640080563661758
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:14.710Z",
+    "audioLevel": 0.015843729654934854,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26584372965493486
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:15.916Z",
+    "audioLevel": 0.013907018061654609,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.2639070180616546
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:17.114Z",
+    "audioLevel": 0.01456507038794814,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26456507038794813
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:18.305Z",
+    "audioLevel": 0.01494060838351735,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26494060838351735
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:19.506Z",
+    "audioLevel": 0.9128539933774591,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 1
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:20.101Z",
+    "audioLevel": 0,
+    "presenceScore": 0,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.15
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:20.713Z",
+    "audioLevel": 0.1788783722192423,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4288783722192423
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:21.395Z",
+    "audioLevel": 0.18378088235294118,
+    "presenceScore": 0.40840196078431373,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.5584019607843137
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:21.916Z",
+    "audioLevel": 0.01442608752985602,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.264426087529856
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:22.701Z",
+    "audioLevel": 0.12257977941176472,
+    "presenceScore": 0.2723995098039216,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.4223995098039216
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:23.116Z",
+    "audioLevel": 0.06592248067602459,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.3159224806760246
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:24.000Z",
+    "audioLevel": 0.2653128676470588,
+    "presenceScore": 0.5895841503267973,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.7395841503267974
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:24.310Z",
+    "audioLevel": 0.2101984938809838,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46019849388098377
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:25.299Z",
+    "audioLevel": 0.20355588235294117,
+    "presenceScore": 0.45234640522875813,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.6023464052287582
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:25.513Z",
+    "audioLevel": 0.014278699651330655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26427869965133066
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:26.596Z",
+    "audioLevel": 0.050201838235294116,
+    "presenceScore": 0.11155964052287581,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.26155964052287584
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:26.715Z",
+    "audioLevel": 0.040002826948406234,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.29000282694840623
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:27.909Z",
+    "audioLevel": 0.025858823529411767,
+    "presenceScore": 0.0574640522875817,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.2074640522875817
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:27.913Z",
+    "audioLevel": 0.08658910459560124,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.3365891045956012
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:29.113Z",
+    "audioLevel": 0.1448545726366452,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.3948545726366452
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:29.194Z",
+    "audioLevel": 0.020603676470588236,
+    "presenceScore": 0.045785947712418305,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.1957859477124183
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:30.310Z",
+    "audioLevel": 0.014730118946908186,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.2647301189469082
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:30.496Z",
+    "audioLevel": 0.013171323529411765,
+    "presenceScore": 0.029269607843137254,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.17926960784313725
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:31.513Z",
+    "audioLevel": 0.03254992465173113,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.2825499246517311
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:31.807Z",
+    "audioLevel": 0.05131102941176471,
+    "presenceScore": 0.11402450980392156,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.26402450980392156
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:32.712Z",
+    "audioLevel": 0.029998972398324657,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.27999897239832466
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:33.102Z",
+    "audioLevel": 0.0343875,
+    "presenceScore": 0.07641666666666666,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.22641666666666665
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:33.911Z",
+    "audioLevel": 0.015593802778808322,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26559380277880834
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:34.397Z",
+    "audioLevel": 0.057860661764705876,
+    "presenceScore": 0.12857924836601306,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.27857924836601305
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:35.109Z",
+    "audioLevel": 0.2920180599526093,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5420180599526093
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:35.696Z",
+    "audioLevel": 0.048258823529411764,
+    "presenceScore": 0.10724183006535948,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.2572418300653595
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:36.309Z",
+    "audioLevel": 0.43663155328401504,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.686631553284015
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:37.001Z",
+    "audioLevel": 0.030586397058823524,
+    "presenceScore": 0.06796977124183005,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.21796977124183003
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:37.512Z",
+    "audioLevel": 0.12108476666999941,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.3710847666699994
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:38.294Z",
+    "audioLevel": 0.06101066176470588,
+    "presenceScore": 0.13557924836601307,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.28557924836601306
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:38.709Z",
+    "audioLevel": 0.11499248397149303,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.36499248397149303
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:39.593Z",
+    "audioLevel": 0.0847514705882353,
+    "presenceScore": 0.18833660130718954,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.33833660130718957
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:39.909Z",
+    "audioLevel": 0.07998046875,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.32998046875
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:40.892Z",
+    "audioLevel": 0.07003602941176472,
+    "presenceScore": 0.1556356209150327,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.3056356209150327
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:41.108Z",
+    "audioLevel": 0.05351077983669346,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.30351077983669345
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:42.203Z",
+    "audioLevel": 0.05601801470588236,
+    "presenceScore": 0.12448447712418301,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.274484477124183
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:42.310Z",
+    "audioLevel": 0.014158261928786183,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26415826192878616
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:43.503Z",
+    "audioLevel": 0.16386948529411766,
+    "presenceScore": 0.3641544117647059,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.5141544117647059
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:43.509Z",
+    "audioLevel": 0.25467118052989357,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5046711805298936
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:44.711Z",
+    "audioLevel": 0.015141522045351106,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26514152204535113
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:44.792Z",
+    "audioLevel": 0.15413897058823528,
+    "presenceScore": 0.34253104575163396,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.492531045751634
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:45.906Z",
+    "audioLevel": 0.09881366126326965,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.3488136612632696
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:46.099Z",
+    "audioLevel": 0.1604827205882353,
+    "presenceScore": 0.3566282679738562,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.5066282679738562
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:47.116Z",
+    "audioLevel": 0.03421851867876293,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.2842185186787629
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:47.394Z",
+    "audioLevel": 0.09903198529411765,
+    "presenceScore": 0.22007107843137255,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.37007107843137255
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:48.306Z",
+    "audioLevel": 0.48751322410449327,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.7375132241044933
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:48.696Z",
+    "audioLevel": 0.029466911764705884,
+    "presenceScore": 0.06548202614379085,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.21548202614379086
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:49.516Z",
+    "audioLevel": 0.17026929744860272,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.42026929744860275
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:50.000Z",
+    "audioLevel": 0.045008455882352943,
+    "presenceScore": 0.1000187908496732,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.2500187908496732
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:50.713Z",
+    "audioLevel": 0.07418343758005454,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.3241834375800545
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:51.298Z",
+    "audioLevel": 0.05973419117647059,
+    "presenceScore": 0.13274264705882352,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.2827426470588235
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:51.914Z",
+    "audioLevel": 0.1762072102704915,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.42620721027049147
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:52.599Z",
+    "audioLevel": 0.2255672794117647,
+    "presenceScore": 0.5012606209150327,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.6512606209150327
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:53.112Z",
+    "audioLevel": 0.2502454292078104,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5002454292078105
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:53.900Z",
+    "audioLevel": 0.2228341911764706,
+    "presenceScore": 0.495187091503268,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.645187091503268
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:54.308Z",
+    "audioLevel": 0.1655339260536753,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.41553392605367534
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:55.197Z",
+    "audioLevel": 0.2700996323529412,
+    "presenceScore": 0.6002214052287582,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.7502214052287582
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:55.511Z",
+    "audioLevel": 0.014229231104930597,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.2642292311049306
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:56.502Z",
+    "audioLevel": 0.18309632352941177,
+    "presenceScore": 0.4068807189542484,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.5568807189542484
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:56.713Z",
+    "audioLevel": 0.1547891302230395,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.40478913022303953
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:57.801Z",
+    "audioLevel": 0.2910764705882353,
+    "presenceScore": 0.6468366013071896,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.7968366013071896
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:57.910Z",
+    "audioLevel": 0.01664974625311055,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26664974625311055
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:43:59.104Z",
+    "audioLevel": 0.341075,
+    "presenceScore": 0.7579444444444444,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.9079444444444444
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:43:59.111Z",
+    "audioLevel": 0.015658266893171107,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.2656582668931711
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:44:00.309Z",
+    "audioLevel": 0.014771092931334107,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.2647710929313341
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:44:00.396Z",
+    "audioLevel": 0.09786875,
+    "presenceScore": 0.2174861111111111,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.36748611111111107
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:44:01.516Z",
+    "audioLevel": 0.014065466673832247,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.26406546667383224
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:44:01.706Z",
+    "audioLevel": 0.14224926470588234,
+    "presenceScore": 0.31610947712418297,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.46610947712418294
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:44:02.713Z",
+    "audioLevel": 0.3134771899635952,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5634771899635952
+      }
+    ]
+  },
+  {
+    "source": "phone_camera",
+    "timestamp": "2026-02-14T20:44:02.999Z",
+    "audioLevel": 0.1531481617647059,
+    "presenceScore": 0.3403292483660131,
+    "speakerHints": [
+      {
+        "personTag": "Partner",
+        "speakingScore": 0.4903292483660131
+      }
+    ]
+  },
+  {
+    "source": "microphone",
+    "timestamp": "2026-02-14T20:44:03.910Z",
+    "audioLevel": 0.024287562900997744,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.27428756290099776
+      }
+    ]
+  }
+]

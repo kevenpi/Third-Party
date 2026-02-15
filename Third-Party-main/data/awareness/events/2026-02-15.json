@@ -1,0 +1,4743 @@
+[
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:32.664Z",
+    "audioLevel": 0.013885271343015412,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46388527134301544
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:32.996Z",
+    "audioLevel": 0.01373208005303668,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637320800530367
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:33.797Z",
+    "audioLevel": 0.014186692202253473,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641866922022535
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:34.596Z",
+    "audioLevel": 0.01455815275735706,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46455815275735707
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:35.398Z",
+    "audioLevel": 0.014363106492851748,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643631064928518
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:36.206Z",
+    "audioLevel": 0.013517676401738727,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46351767640173874
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:36.996Z",
+    "audioLevel": 0.014509636997911326,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645096369979113
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:37.797Z",
+    "audioLevel": 0.014029612762153539,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46402961276215354
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:38.598Z",
+    "audioLevel": 0.013870754589079983,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46387075458908
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:39.397Z",
+    "audioLevel": 0.013935960898501071,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639359608985011
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:40.196Z",
+    "audioLevel": 0.014236308564261497,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642363085642615
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:40.996Z",
+    "audioLevel": 0.01340543247388952,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46340543247388954
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:41.796Z",
+    "audioLevel": 0.014043965310932062,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46404396531093206
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:42.596Z",
+    "audioLevel": 0.01768821995216856,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4676882199521686
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:43.397Z",
+    "audioLevel": 0.014412115528970261,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46441211552897027
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:44.197Z",
+    "audioLevel": 0.013717401181868458,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637174011818685
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:44.996Z",
+    "audioLevel": 0.013246693252500961,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46324669325250095
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:45.796Z",
+    "audioLevel": 0.013427956319188493,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4634279563191885
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:46.595Z",
+    "audioLevel": 0.014481840732924594,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644818407329246
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:47.395Z",
+    "audioLevel": 0.0142008859949005,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642008859949005
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:48.195Z",
+    "audioLevel": 0.013746743250009779,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637467432500098
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:48.995Z",
+    "audioLevel": 0.01397926279746524,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46397926279746526
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:49.796Z",
+    "audioLevel": 0.014987729139700071,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4649877291397001
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:50.595Z",
+    "audioLevel": 0.014736955855583076,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647369558555831
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:51.395Z",
+    "audioLevel": 0.013554884499649126,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46355488449964916
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:52.196Z",
+    "audioLevel": 0.014215065615003077,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642150656150031
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:52.997Z",
+    "audioLevel": 0.014509636997911326,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645096369979113
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:53.799Z",
+    "audioLevel": 0.014551231838136666,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645512318381367
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:54.599Z",
+    "audioLevel": 0.013292240756241944,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.463292240756242
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:55.401Z",
+    "audioLevel": 0.01494060838351735,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46494060838351736
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:56.197Z",
+    "audioLevel": 0.01443306845817646,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46443306845817645
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:56.996Z",
+    "audioLevel": 0.014805151295505647,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46480515129550565
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:57.796Z",
+    "audioLevel": 0.014818752723542362,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648187527235424
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:58.595Z",
+    "audioLevel": 0.014516577747888724,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46451657774788874
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:22:59.395Z",
+    "audioLevel": 0.014509636997911326,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645096369979113
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:00.198Z",
+    "audioLevel": 0.014893338543598717,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648933385435987
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:00.995Z",
+    "audioLevel": 0.014320965258283224,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46432096525828326
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:01.796Z",
+    "audioLevel": 0.014933864709789229,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46493386470978926
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:02.595Z",
+    "audioLevel": 0.014453991013433996,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464453991013434
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:03.395Z",
+    "audioLevel": 0.01387801486415922,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46387801486415925
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:04.195Z",
+    "audioLevel": 0.014723278863443517,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46472327886344356
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:04.995Z",
+    "audioLevel": 0.014613402112488027,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464613402112488
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:05.796Z",
+    "audioLevel": 0.014502692926205686,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645026929262057
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:06.596Z",
+    "audioLevel": 0.014620293601723953,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46462029360172397
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:07.396Z",
+    "audioLevel": 0.01385622262637988,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4638562226263799
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:08.196Z",
+    "audioLevel": 0.014689030668972631,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46468903066897266
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:08.995Z",
+    "audioLevel": 0.014488794798503247,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46448879479850325
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:09.796Z",
+    "audioLevel": 0.014620293601723953,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46462029360172397
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:10.596Z",
+    "audioLevel": 0.014620293601723953,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46462029360172397
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:11.396Z",
+    "audioLevel": 0.014029612762153539,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46402961276215354
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:12.196Z",
+    "audioLevel": 0.01442608752985602,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46442608752985604
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:12.996Z",
+    "audioLevel": 0.014682171443443838,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46468217144344387
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:13.796Z",
+    "audioLevel": 0.014578895801965436,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46457889580196543
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:14.595Z",
+    "audioLevel": 0.014043965310932062,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46404396531093206
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:15.396Z",
+    "audioLevel": 0.013921497001611183,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46392149700161117
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:16.196Z",
+    "audioLevel": 0.014222150123598879,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642221501235989
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:16.995Z",
+    "audioLevel": 0.013885271343015412,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46388527134301544
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:17.796Z",
+    "audioLevel": 0.013783332995991701,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637833329959917
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:18.594Z",
+    "audioLevel": 0.014599609375000001,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464599609375
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:19.395Z",
+    "audioLevel": 0.015134867893394799,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4651348678933948
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:20.195Z",
+    "audioLevel": 0.014750620166219653,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46475062016621965
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:20.995Z",
+    "audioLevel": 0.01397926279746524,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46397926279746526
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:21.795Z",
+    "audioLevel": 0.013717401181868458,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637174011818685
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:22.596Z",
+    "audioLevel": 0.01466157451287737,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4646615745128774
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:23.396Z",
+    "audioLevel": 0.013805240294048346,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46380524029404835
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:24.194Z",
+    "audioLevel": 0.013680635098109375,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46368063509810936
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:24.995Z",
+    "audioLevel": 0.014363106492851748,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643631064928518
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:25.795Z",
+    "audioLevel": 0.014022430978851015,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46402243097885104
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:26.594Z",
+    "audioLevel": 0.014811953570753364,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648119535707534
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:27.394Z",
+    "audioLevel": 0.013554884499649126,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46355488449964916
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:28.194Z",
+    "audioLevel": 0.014447020195081402,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46444702019508144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:28.995Z",
+    "audioLevel": 0.01477791088366178,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46477791088366177
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:29.795Z",
+    "audioLevel": 0.014571984734593453,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645719847345935
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:30.594Z",
+    "audioLevel": 0.014058303206765202,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640583032067652
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:31.398Z",
+    "audioLevel": 0.015101553153692788,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4651015531536928
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:32.196Z",
+    "audioLevel": 0.014370118017063773,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643701180170638
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:32.995Z",
+    "audioLevel": 0.014832341678918263,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648323416789183
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:33.794Z",
+    "audioLevel": 0.01453738011501799,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464537380115018
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:34.610Z",
+    "audioLevel": 0.014440046011621605,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644400460116216
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:35.396Z",
+    "audioLevel": 0.013885271343015412,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46388527134301544
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:36.196Z",
+    "audioLevel": 0.01373208005303668,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637320800530367
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:36.996Z",
+    "audioLevel": 0.014440046011621605,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644400460116216
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:37.796Z",
+    "audioLevel": 0.013739413607659848,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46373941360765986
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:38.595Z",
+    "audioLevel": 0.013577160413608238,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46357716041360825
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:39.396Z",
+    "audioLevel": 0.014094084133069763,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640940841330698
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:40.196Z",
+    "audioLevel": 0.015148173274332268,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4651481732743323
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:40.995Z",
+    "audioLevel": 0.014981006677312237,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46498100667731224
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:41.794Z",
+    "audioLevel": 0.013761390822891817,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637613908228918
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:42.596Z",
+    "audioLevel": 0.014879805293603863,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648798052936039
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:43.395Z",
+    "audioLevel": 0.014927117989449512,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4649271179894495
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:44.195Z",
+    "audioLevel": 0.014384130812218808,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643841308122188
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:44.995Z",
+    "audioLevel": 0.014750620166219653,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46475062016621965
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:45.796Z",
+    "audioLevel": 0.014852701800621941,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46485270180062194
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:46.595Z",
+    "audioLevel": 0.014158261928786183,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641582619287862
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:47.394Z",
+    "audioLevel": 0.014544307625592265,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645443076255923
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:48.196Z",
+    "audioLevel": 0.014313929657142174,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643139296571422
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:48.994Z",
+    "audioLevel": 0.014544307625592265,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645443076255923
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:49.795Z",
+    "audioLevel": 0.014236308564261497,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642363085642615
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:50.597Z",
+    "audioLevel": 0.014179589977927383,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641795899779274
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:51.394Z",
+    "audioLevel": 0.014736955855583076,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647369558555831
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:52.195Z",
+    "audioLevel": 0.01437712612185348,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643771261218535
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:52.994Z",
+    "audioLevel": 0.014079782674152582,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640797826741526
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:53.794Z",
+    "audioLevel": 0.013935960898501071,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639359608985011
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:54.595Z",
+    "audioLevel": 0.013928730827509374,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639287308275094
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:55.394Z",
+    "audioLevel": 0.014229231104930597,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642292311049306
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:56.195Z",
+    "audioLevel": 0.014771092931334107,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647710929313341
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:56.995Z",
+    "audioLevel": 0.014927117989449512,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4649271179894495
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:57.795Z",
+    "audioLevel": 0.0144748833264539,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644748833264539
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:58.594Z",
+    "audioLevel": 0.014072626494440417,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640726264944404
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:23:59.397Z",
+    "audioLevel": 0.014750620166219653,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46475062016621965
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:00.194Z",
+    "audioLevel": 0.01416537484655655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46416537484655657
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:00.994Z",
+    "audioLevel": 0.01396484375,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46396484375
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:01.794Z",
+    "audioLevel": 0.015188019480670917,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4651880194806709
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:02.594Z",
+    "audioLevel": 0.014320965258283224,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46432096525828326
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:03.394Z",
+    "audioLevel": 0.014599609375000001,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464599609375
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:04.195Z",
+    "audioLevel": 0.014086935218517477,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640869352185175
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:04.994Z",
+    "audioLevel": 0.014530449301696755,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645304493016968
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:05.796Z",
+    "audioLevel": 0.014222150123598879,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642221501235989
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:06.594Z",
+    "audioLevel": 0.014682171443443838,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46468217144344387
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:07.395Z",
+    "audioLevel": 0.014136901702498102,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641369017024981
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:08.194Z",
+    "audioLevel": 0.014647827135721313,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46464782713572134
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:08.995Z",
+    "audioLevel": 0.014243382506841767,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642433825068418
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:09.794Z",
+    "audioLevel": 0.015392248387574983,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.465392248387575
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:10.594Z",
+    "audioLevel": 0.014122643603356,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46412264360335603
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:11.394Z",
+    "audioLevel": 0.014613402112488027,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464613402112488
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:12.195Z",
+    "audioLevel": 0.01432799740467229,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643279974046723
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:12.993Z",
+    "audioLevel": 0.01456507038794814,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46456507038794814
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:13.794Z",
+    "audioLevel": 0.013972055133775235,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46397205513377526
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:14.595Z",
+    "audioLevel": 0.013472891044838117,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46347289104483813
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:15.394Z",
+    "audioLevel": 0.014236308564261497,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642363085642615
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:16.194Z",
+    "audioLevel": 0.014516577747888724,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46451657774788874
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:16.994Z",
+    "audioLevel": 0.015398791320235024,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46539879132023504
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:17.794Z",
+    "audioLevel": 0.01384895092678362,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46384895092678363
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:18.596Z",
+    "audioLevel": 0.01442608752985602,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46442608752985604
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:19.393Z",
+    "audioLevel": 0.014771092931334107,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647710929313341
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:20.194Z",
+    "audioLevel": 0.014299848070204544,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642998480702046
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:20.994Z",
+    "audioLevel": 0.014243382506841767,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642433825068418
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:21.793Z",
+    "audioLevel": 0.0142008859949005,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642008859949005
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:22.595Z",
+    "audioLevel": 0.014384130812218808,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643841308122188
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:23.393Z",
+    "audioLevel": 0.014179589977927383,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641795899779274
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:24.193Z",
+    "audioLevel": 0.013790639295469025,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46379063929546904
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:24.994Z",
+    "audioLevel": 0.0141511454357863,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641511454357863
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:25.793Z",
+    "audioLevel": 0.014825548758168614,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648255487581686
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:26.594Z",
+    "audioLevel": 0.013972055133775235,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46397205513377526
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:27.393Z",
+    "audioLevel": 0.01476427183056339,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647642718305634
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:28.195Z",
+    "audioLevel": 0.01477791088366178,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46477791088366177
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:28.993Z",
+    "audioLevel": 0.014136901702498102,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641369017024981
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:29.794Z",
+    "audioLevel": 0.0142008859949005,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642008859949005
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:30.594Z",
+    "audioLevel": 0.014179589977927383,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641795899779274
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:31.394Z",
+    "audioLevel": 0.0141937908728014,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46419379087280144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:32.196Z",
+    "audioLevel": 0.01466157451287737,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4646615745128774
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:32.993Z",
+    "audioLevel": 0.014440046011621605,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644400460116216
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:33.793Z",
+    "audioLevel": 0.014495745527998054,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46449574552799805
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:34.594Z",
+    "audioLevel": 0.014384130812218808,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643841308122188
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:35.394Z",
+    "audioLevel": 0.014412115528970261,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46441211552897027
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:36.194Z",
+    "audioLevel": 0.014229231104930597,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642292311049306
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:36.994Z",
+    "audioLevel": 0.01475744757698386,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647574475769839
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:37.794Z",
+    "audioLevel": 0.01477791088366178,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46477791088366177
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:38.593Z",
+    "audioLevel": 0.014453991013433996,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464453991013434
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:39.394Z",
+    "audioLevel": 0.01437712612185348,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643771261218535
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:40.194Z",
+    "audioLevel": 0.01462718184408573,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46462718184408575
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:40.993Z",
+    "audioLevel": 0.014136901702498102,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641369017024981
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:41.795Z",
+    "audioLevel": 0.014271643214205201,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642716432142052
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:42.593Z",
+    "audioLevel": 0.0144748833264539,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644748833264539
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:43.394Z",
+    "audioLevel": 0.014516577747888724,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46451657774788874
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:44.194Z",
+    "audioLevel": 0.013819825866308795,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4638198258663088
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:44.994Z",
+    "audioLevel": 0.014460958471545774,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644609584715458
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:45.806Z",
+    "audioLevel": 0.014229231104930597,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642292311049306
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:46.595Z",
+    "audioLevel": 0.0142008859949005,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642008859949005
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:47.394Z",
+    "audioLevel": 0.014419103221758508,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644191032217585
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:48.194Z",
+    "audioLevel": 0.0144748833264539,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644748833264539
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:48.993Z",
+    "audioLevel": 0.01442608752985602,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46442608752985604
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:49.795Z",
+    "audioLevel": 0.014412115528970261,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46441211552897027
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:50.593Z",
+    "audioLevel": 0.013658527943728035,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.463658527943728
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:51.395Z",
+    "audioLevel": 0.0142645832863855,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46426458328638553
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:52.193Z",
+    "audioLevel": 0.014571984734593453,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645719847345935
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:52.994Z",
+    "audioLevel": 0.014447020195081402,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46444702019508144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:53.793Z",
+    "audioLevel": 0.015995589959824606,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4659955899598246
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:54.593Z",
+    "audioLevel": 0.018424612163876943,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46842461216387693
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:55.395Z",
+    "audioLevel": 0.014502692926205686,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645026929262057
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:56.193Z",
+    "audioLevel": 0.014179589977927383,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641795899779274
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:56.993Z",
+    "audioLevel": 0.014398129969607307,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46439812996960733
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:57.793Z",
+    "audioLevel": 0.01416537484655655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46416537484655657
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:58.593Z",
+    "audioLevel": 0.014467922574271413,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46446792257427144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:24:59.393Z",
+    "audioLevel": 0.014257519862686066,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642575198626861
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:00.193Z",
+    "audioLevel": 0.01323147590887626,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46323147590887626
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:00.994Z",
+    "audioLevel": 0.013577160413608238,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46357716041360825
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:01.793Z",
+    "audioLevel": 0.014689030668972631,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46468903066897266
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:02.593Z",
+    "audioLevel": 0.01429280207417677,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642928020741768
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:03.394Z",
+    "audioLevel": 0.015293768500101354,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46529376850010135
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:04.193Z",
+    "audioLevel": 0.013841675407013419,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46384167540701343
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:04.994Z",
+    "audioLevel": 0.0142008859949005,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642008859949005
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:05.793Z",
+    "audioLevel": 0.01510822197855027,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4651082219785503
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:06.594Z",
+    "audioLevel": 0.014363106492851748,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643631064928518
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:07.393Z",
+    "audioLevel": 0.014695886692995404,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46469588669299544
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:08.194Z",
+    "audioLevel": 0.01387801486415922,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46387801486415925
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:08.993Z",
+    "audioLevel": 0.014000863525462212,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640008635254622
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:09.794Z",
+    "audioLevel": 0.014215065615003077,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642150656150031
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:10.593Z",
+    "audioLevel": 0.013367808396117429,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46336780839611746
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:11.393Z",
+    "audioLevel": 0.014460958471545774,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644609584715458
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:12.193Z",
+    "audioLevel": 0.014108371094805046,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46410837109480507
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:12.993Z",
+    "audioLevel": 0.015081528986007557,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4650815289860076
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:13.793Z",
+    "audioLevel": 0.014257519862686066,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642575198626861
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:14.592Z",
+    "audioLevel": 0.014065466673832247,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46406546667383225
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:15.395Z",
+    "audioLevel": 0.014094084133069763,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640940841330698
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:16.193Z",
+    "audioLevel": 0.013427956319188493,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4634279563191885
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:16.993Z",
+    "audioLevel": 0.013457929473265844,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46345792947326586
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:17.794Z",
+    "audioLevel": 0.014342051353519047,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643420513535191
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:18.593Z",
+    "audioLevel": 0.014058303206765202,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640583032067652
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:19.393Z",
+    "audioLevel": 0.014186692202253473,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641866922022535
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:20.193Z",
+    "audioLevel": 0.01492036821836534,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46492036821836535
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:20.992Z",
+    "audioLevel": 0.013375341678426328,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4633753416784263
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:21.793Z",
+    "audioLevel": 0.01456507038794814,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46456507038794814
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:22.593Z",
+    "audioLevel": 0.01387801486415922,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46387801486415925
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:23.392Z",
+    "audioLevel": 0.0135400135302793,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4635400135302793
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:24.193Z",
+    "audioLevel": 0.01474378959388478,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647437895938848
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:24.994Z",
+    "audioLevel": 0.01396484375,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46396484375
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:25.793Z",
+    "audioLevel": 0.013827112882826932,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46382711288282696
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:26.592Z",
+    "audioLevel": 0.01501458889088802,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46501458889088804
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:27.393Z",
+    "audioLevel": 0.013950409799114593,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639504097991146
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:28.192Z",
+    "audioLevel": 0.01397926279746524,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46397926279746526
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:28.993Z",
+    "audioLevel": 0.013827112882826932,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46382711288282696
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:29.796Z",
+    "audioLevel": 0.01411550915298741,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46411550915298744
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:30.593Z",
+    "audioLevel": 0.013943187220427459,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639431872204275
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:31.393Z",
+    "audioLevel": 0.014467922574271413,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46446792257427144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:32.192Z",
+    "audioLevel": 0.014654702436327886,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4646547024363279
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:32.994Z",
+    "audioLevel": 0.01464094860651566,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46464094860651567
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:33.792Z",
+    "audioLevel": 0.014571984734593453,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645719847345935
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:34.592Z",
+    "audioLevel": 0.013790639295469025,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46379063929546904
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:35.394Z",
+    "audioLevel": 0.015227761422523148,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46522776142252315
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:36.192Z",
+    "audioLevel": 0.01335272908122628,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46335272908122627
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:36.992Z",
+    "audioLevel": 0.0147847256919021,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647847256919021
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:37.793Z",
+    "audioLevel": 0.014516577747888724,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46451657774788874
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:38.592Z",
+    "audioLevel": 0.014516577747888724,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46451657774788874
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:39.393Z",
+    "audioLevel": 0.014571984734593453,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645719847345935
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:40.193Z",
+    "audioLevel": 0.014335026101393632,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46433502610139366
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:40.993Z",
+    "audioLevel": 0.014285752602934541,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46428575260293453
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:41.792Z",
+    "audioLevel": 0.014811953570753364,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648119535707534
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:42.597Z",
+    "audioLevel": 0.013819825866308795,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4638198258663088
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:43.393Z",
+    "audioLevel": 0.014278699651330655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642786996513307
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:44.192Z",
+    "audioLevel": 0.013885271343015412,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46388527134301544
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:44.994Z",
+    "audioLevel": 0.01391425941495013,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639142594149501
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:45.792Z",
+    "audioLevel": 0.014278699651330655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642786996513307
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:46.592Z",
+    "audioLevel": 0.015134867893394799,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4651348678933948
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:47.393Z",
+    "audioLevel": 0.014370118017063773,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643701180170638
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:48.192Z",
+    "audioLevel": 0.014186692202253473,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641866922022535
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:48.992Z",
+    "audioLevel": 0.014313929657142174,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643139296571422
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:49.792Z",
+    "audioLevel": 0.013768708765883313,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46376870876588333
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:50.593Z",
+    "audioLevel": 0.013739413607659848,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46373941360765986
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:51.392Z",
+    "audioLevel": 0.014370118017063773,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643701180170638
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:52.193Z",
+    "audioLevel": 0.01474378959388478,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647437895938848
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:52.993Z",
+    "audioLevel": 0.013390395528636564,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4633903955286366
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:53.792Z",
+    "audioLevel": 0.014516577747888724,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46451657774788874
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:54.593Z",
+    "audioLevel": 0.014029612762153539,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46402961276215354
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:55.392Z",
+    "audioLevel": 0.01455815275735706,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46455815275735707
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:56.193Z",
+    "audioLevel": 0.0142008859949005,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642008859949005
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:56.992Z",
+    "audioLevel": 0.014571984734593453,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645719847345935
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:57.792Z",
+    "audioLevel": 0.014015245515412842,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46401524551541284
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:58.592Z",
+    "audioLevel": 0.014495745527998054,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46449574552799805
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:25:59.393Z",
+    "audioLevel": 0.014215065615003077,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642150656150031
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:00.193Z",
+    "audioLevel": 0.01373208005303668,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637320800530367
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:00.992Z",
+    "audioLevel": 0.014502692926205686,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645026929262057
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:01.793Z",
+    "audioLevel": 0.014730118946908186,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647301189469082
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:02.592Z",
+    "audioLevel": 0.01434907316610792,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643490731661079
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:03.392Z",
+    "audioLevel": 0.014094084133069763,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640940841330698
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:04.193Z",
+    "audioLevel": 0.01358457760094849,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4635845776009485
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:04.992Z",
+    "audioLevel": 0.01453738011501799,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464537380115018
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:05.792Z",
+    "audioLevel": 0.014320965258283224,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46432096525828326
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:06.593Z",
+    "audioLevel": 0.014036790870969129,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46403679087096916
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:07.392Z",
+    "audioLevel": 0.014578895801965436,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46457889580196543
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:08.194Z",
+    "audioLevel": 0.013261893135014177,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4632618931350142
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:08.992Z",
+    "audioLevel": 0.014805151295505647,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46480515129550565
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:09.792Z",
+    "audioLevel": 0.014689030668972631,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46468903066897266
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:10.592Z",
+    "audioLevel": 0.014453991013433996,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464453991013434
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:11.392Z",
+    "audioLevel": 0.014008056366175822,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640080563661758
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:12.193Z",
+    "audioLevel": 0.014299848070204544,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642998480702046
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:12.992Z",
+    "audioLevel": 0.015081528986007557,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4650815289860076
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:13.793Z",
+    "audioLevel": 0.014335026101393632,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46433502610139366
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:14.592Z",
+    "audioLevel": 0.01399366698757968,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639936669875797
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:15.393Z",
+    "audioLevel": 0.01384895092678362,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46384895092678363
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:16.192Z",
+    "audioLevel": 0.01384895092678362,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46384895092678363
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:16.992Z",
+    "audioLevel": 0.015028000763942607,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46502800076394263
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:17.792Z",
+    "audioLevel": 0.01358457760094849,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4635845776009485
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:18.593Z",
+    "audioLevel": 0.014299848070204544,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642998480702046
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:19.392Z",
+    "audioLevel": 0.01387801486415922,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46387801486415925
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:20.193Z",
+    "audioLevel": 0.013465412337048514,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4634654123370485
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:20.992Z",
+    "audioLevel": 0.014811953570753364,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648119535707534
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:21.792Z",
+    "audioLevel": 0.013950409799114593,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639504097991146
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:22.593Z",
+    "audioLevel": 0.0147847256919021,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647847256919021
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:23.392Z",
+    "audioLevel": 0.05947520183257996,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.50947520183258
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:24.191Z",
+    "audioLevel": 0.020068032663475007,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.470068032663475
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:24.992Z",
+    "audioLevel": 0.014954086607623703,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4649540866076237
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:25.794Z",
+    "audioLevel": 0.017290810559999127,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46729081055999916
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:26.592Z",
+    "audioLevel": 0.014108371094805046,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46410837109480507
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:27.393Z",
+    "audioLevel": 0.014243382506841767,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642433825068418
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:28.196Z",
+    "audioLevel": 0.014495745527998054,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46449574552799805
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:28.992Z",
+    "audioLevel": 0.013132133361938655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46313213336193865
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:29.793Z",
+    "audioLevel": 0.013972055133775235,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46397205513377526
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:30.594Z",
+    "audioLevel": 0.014384130812218808,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643841308122188
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:31.392Z",
+    "audioLevel": 0.014000863525462212,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640008635254622
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:32.479Z",
+    "audioLevel": 0.0142008859949005,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642008859949005
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:32.994Z",
+    "audioLevel": 0.014689030668972631,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46468903066897266
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:33.792Z",
+    "audioLevel": 0.013360270866115206,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4633602708661152
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:34.592Z",
+    "audioLevel": 0.09764461600622772,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5476446160062277
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:35.396Z",
+    "audioLevel": 0.20701535721723474,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.6570153572172348
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:36.193Z",
+    "audioLevel": 0.013427956319188493,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4634279563191885
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:36.992Z",
+    "audioLevel": 0.0142645832863855,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46426458328638553
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:37.793Z",
+    "audioLevel": 0.014144025362160329,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641440253621603
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:38.593Z",
+    "audioLevel": 0.014933864709789229,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46493386470978926
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:39.392Z",
+    "audioLevel": 0.09408138833233139,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5440813883323314
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:40.204Z",
+    "audioLevel": 0.4274824848267812,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.8774824848267813
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:40.992Z",
+    "audioLevel": 0.01630124594718275,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46630124594718275
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:41.796Z",
+    "audioLevel": 0.014391132093145532,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46439113209314553
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:42.594Z",
+    "audioLevel": 0.014342051353519047,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643420513535191
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:43.392Z",
+    "audioLevel": 0.014022430978851015,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46402243097885104
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:44.192Z",
+    "audioLevel": 0.014488794798503247,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46448879479850325
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:44.992Z",
+    "audioLevel": 0.01430689059615238,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643068905961524
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:45.792Z",
+    "audioLevel": 0.01396484375,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46396484375
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:46.592Z",
+    "audioLevel": 0.013673270018114952,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.463673270018115
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:47.392Z",
+    "audioLevel": 0.013928730827509374,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639287308275094
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:48.192Z",
+    "audioLevel": 0.014236308564261497,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642363085642615
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:48.991Z",
+    "audioLevel": 0.013680635098109375,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46368063509810936
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:49.791Z",
+    "audioLevel": 0.014363106492851748,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643631064928518
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:50.592Z",
+    "audioLevel": 0.013200988596685084,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46320098859668507
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:51.392Z",
+    "audioLevel": 0.015287180617607407,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46528718061760743
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:52.192Z",
+    "audioLevel": 0.01435609154420726,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46435609154420726
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:52.993Z",
+    "audioLevel": 0.014467922574271413,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46446792257427144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:53.791Z",
+    "audioLevel": 0.035328000472944716,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4853280004729447
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:54.592Z",
+    "audioLevel": 0.016070982003441224,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4660709820034412
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:55.392Z",
+    "audioLevel": 0.03624283818497316,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.48624283818497316
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:56.193Z",
+    "audioLevel": 0.013636384949522991,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46363638494952303
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:56.994Z",
+    "audioLevel": 0.014689030668972631,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46468903066897266
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:57.793Z",
+    "audioLevel": 0.014299848070204544,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642998480702046
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:58.591Z",
+    "audioLevel": 0.08266101152806722,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5326610115280672
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:26:59.392Z",
+    "audioLevel": 0.0756982958880248,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5256982958880249
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:00.192Z",
+    "audioLevel": 0.06091269942105577,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5109126994210558
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:00.992Z",
+    "audioLevel": 0.01411550915298741,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46411550915298744
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:01.792Z",
+    "audioLevel": 0.014467922574271413,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46446792257427144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:02.594Z",
+    "audioLevel": 0.014000863525462212,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640008635254622
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:03.392Z",
+    "audioLevel": 0.0161834115421646,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4661834115421646
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:04.192Z",
+    "audioLevel": 0.05144931044862544,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5014493104486255
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:04.992Z",
+    "audioLevel": 0.24953677415555425,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.6995367741555543
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:05.793Z",
+    "audioLevel": 0.09609940675042278,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5460994067504228
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:06.593Z",
+    "audioLevel": 0.1127330168221255,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5627330168221255
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:07.393Z",
+    "audioLevel": 0.01359939983951031,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4635993998395103
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:08.192Z",
+    "audioLevel": 0.03030299558782034,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.48030299558782036
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:08.992Z",
+    "audioLevel": 0.017279155142051816,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4672791551420518
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:09.794Z",
+    "audioLevel": 0.014523515180900212,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46452351518090024
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:10.593Z",
+    "audioLevel": 0.030362771418030895,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4803627714180309
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:11.393Z",
+    "audioLevel": 0.9530068884037199,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 1
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:12.192Z",
+    "audioLevel": 0.013834396061042179,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4638343960610422
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:12.991Z",
+    "audioLevel": 0.014278699651330655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642786996513307
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:13.792Z",
+    "audioLevel": 0.01476427183056339,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647642718305634
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:14.592Z",
+    "audioLevel": 0.014798345893493357,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647983458934934
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:15.392Z",
+    "audioLevel": 0.01466844336990112,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46466844336990115
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:16.192Z",
+    "audioLevel": 0.014488794798503247,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46448879479850325
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:16.992Z",
+    "audioLevel": 0.014702739519990831,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46470273951999086
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:17.792Z",
+    "audioLevel": 0.014398129969607307,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46439812996960733
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:18.594Z",
+    "audioLevel": 0.014285752602934541,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46428575260293453
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:19.392Z",
+    "audioLevel": 0.014886573456470847,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648865734564709
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:20.195Z",
+    "audioLevel": 0.015247593549124618,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46524759354912465
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:20.992Z",
+    "audioLevel": 0.0144748833264539,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644748833264539
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:21.823Z",
+    "audioLevel": 0.013695353375736739,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46369535337573675
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:22.595Z",
+    "audioLevel": 0.014215065615003077,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642150656150031
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:23.391Z",
+    "audioLevel": 0.01442608752985602,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46442608752985604
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:24.191Z",
+    "audioLevel": 0.014879805293603863,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648798052936039
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:24.992Z",
+    "audioLevel": 0.022415406892492627,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4724154068924926
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:25.792Z",
+    "audioLevel": 0.014502692926205686,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645026929262057
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:26.592Z",
+    "audioLevel": 0.027665151251995288,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4776651512519953
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:27.391Z",
+    "audioLevel": 0.014613402112488027,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464613402112488
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:28.192Z",
+    "audioLevel": 0.014342051353519047,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643420513535191
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:28.991Z",
+    "audioLevel": 0.014207977573866801,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46420797757386684
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:29.791Z",
+    "audioLevel": 0.024432292998137747,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4744322929981378
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:30.591Z",
+    "audioLevel": 0.01834242017562486,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4683424201756249
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:31.391Z",
+    "audioLevel": 0.014839131490067626,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648391314900676
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:32.191Z",
+    "audioLevel": 0.014229231104930597,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642292311049306
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:32.990Z",
+    "audioLevel": 0.01476427183056339,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647642718305634
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:33.790Z",
+    "audioLevel": 0.01435609154420726,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46435609154420726
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:34.591Z",
+    "audioLevel": 0.014599609375000001,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464599609375
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:35.392Z",
+    "audioLevel": 0.06783681758708185,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.5178368175870819
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:36.191Z",
+    "audioLevel": 0.02027278832956319,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4702727883295632
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:36.991Z",
+    "audioLevel": 0.015234375000000001,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46523437500000003
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:37.791Z",
+    "audioLevel": 0.014101229423330069,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641012294233301
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:38.591Z",
+    "audioLevel": 0.013754068986341107,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46375406898634114
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:39.391Z",
+    "audioLevel": 0.01434907316610792,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643490731661079
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:40.191Z",
+    "audioLevel": 0.014101229423330069,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641012294233301
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:40.990Z",
+    "audioLevel": 0.014405124446565705,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46440512444656573
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:41.791Z",
+    "audioLevel": 0.021633311664392155,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.47163331166439215
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:42.591Z",
+    "audioLevel": 0.014825548758168614,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648255487581686
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:43.403Z",
+    "audioLevel": 0.01476427183056339,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647642718305634
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:44.191Z",
+    "audioLevel": 0.014086935218517477,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640869352185175
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:44.990Z",
+    "audioLevel": 0.014689030668972631,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46468903066897266
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:45.790Z",
+    "audioLevel": 0.014058303206765202,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4640583032067652
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:46.591Z",
+    "audioLevel": 0.014620293601723953,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46462029360172397
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:47.391Z",
+    "audioLevel": 0.0141937908728014,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46419379087280144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:48.190Z",
+    "audioLevel": 0.01474378959388478,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647437895938848
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:48.991Z",
+    "audioLevel": 0.014578895801965436,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46457889580196543
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:49.791Z",
+    "audioLevel": 0.01464094860651566,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46464094860651567
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:50.591Z",
+    "audioLevel": 0.014236308564261497,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642363085642615
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:51.390Z",
+    "audioLevel": 0.01443306845817646,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46443306845817645
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:52.191Z",
+    "audioLevel": 0.015094881382590184,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4650948813825902
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:52.990Z",
+    "audioLevel": 0.012954507383567439,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46295450738356747
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:53.791Z",
+    "audioLevel": 0.01455815275735706,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46455815275735707
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:54.590Z",
+    "audioLevel": 0.014363106492851748,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643631064928518
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:55.390Z",
+    "audioLevel": 0.014453991013433996,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.464453991013434
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:56.191Z",
+    "audioLevel": 0.013761390822891817,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637613908228918
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:56.990Z",
+    "audioLevel": 0.014022430978851015,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46402243097885104
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:57.790Z",
+    "audioLevel": 0.013702706586132702,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637027065861327
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:58.590Z",
+    "audioLevel": 0.013885271343015412,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46388527134301544
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:27:59.391Z",
+    "audioLevel": 0.014509636997911326,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4645096369979113
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:00.191Z",
+    "audioLevel": 0.014798345893493357,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647983458934934
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:00.990Z",
+    "audioLevel": 0.013783332995991701,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4637833329959917
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:01.790Z",
+    "audioLevel": 0.013223860670312284,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4632238606703123
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:02.590Z",
+    "audioLevel": 0.014179589977927383,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4641795899779274
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:03.390Z",
+    "audioLevel": 0.014730118946908186,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4647301189469082
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:04.191Z",
+    "audioLevel": 0.01417248419448044,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46417248419448043
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:04.991Z",
+    "audioLevel": 0.014839131490067626,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648391314900676
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:05.790Z",
+    "audioLevel": 0.01416537484655655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46416537484655657
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:06.592Z",
+    "audioLevel": 0.01364376994055961,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4636437699405596
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:07.390Z",
+    "audioLevel": 0.014818752723542362,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648187527235424
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:08.190Z",
+    "audioLevel": 0.014419103221758508,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4644191032217585
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:08.990Z",
+    "audioLevel": 0.014043965310932062,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46404396531093206
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:09.803Z",
+    "audioLevel": 0.014467922574271413,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46446792257427144
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:10.591Z",
+    "audioLevel": 0.014866259723847149,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46486625972384715
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:11.390Z",
+    "audioLevel": 0.014845918195883254,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4648459181958833
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:12.190Z",
+    "audioLevel": 0.014215065615003077,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642150656150031
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:12.990Z",
+    "audioLevel": 0.014578895801965436,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46457889580196543
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:13.790Z",
+    "audioLevel": 0.013957628640373452,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4639576286403735
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:14.590Z",
+    "audioLevel": 0.014278699651330655,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4642786996513307
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:15.390Z",
+    "audioLevel": 0.01437712612185348,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.4643771261218535
+      }
+    ]
+  },
+  {
+    "source": "meta_glasses",
+    "timestamp": "2026-02-15T02:28:16.191Z",
+    "audioLevel": 0.01384895092678362,
+    "speakerHints": [
+      {
+        "personTag": "Me",
+        "speakingScore": 0.46384895092678363
+      }
+    ]
+  }
+]
