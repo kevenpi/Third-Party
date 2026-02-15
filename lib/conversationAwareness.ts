@@ -25,10 +25,6 @@ import { saveTimelineBubbleFromSession } from "@/lib/timelineStorage";
 const LEGIBLE_AUDIO_THRESHOLD = 0.03;
 const LEGIBLE_HINT_THRESHOLD = 0.35;
 const SEGMENT_SECONDS = 5;
-const START_WINDOW_SECONDS = 8;
-const STOP_WINDOW_SECONDS = 12;
-const START_CONSECUTIVE_WINDOWS = 2;
-const STOP_CONSECUTIVE_WINDOWS = 3;
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -173,10 +169,7 @@ type WindowEvaluation = {
   sustainedAudio: boolean;
 };
 
-function evaluateConversationWindow(
-  signals: AwarenessSignalEvent[],
-  mode: "start" | "continue" | "stop" = "continue"
-): WindowEvaluation {
+function evaluateConversationWindow(signals: AwarenessSignalEvent[]): WindowEvaluation {
   if (signals.length < 2) {
     return {
       isConversation: false,
@@ -225,29 +218,16 @@ function evaluateConversationWindow(
   ).size;
   const avgAudio =
     signals.reduce((sum, s) => sum + s.audioLevel, 0) / Math.max(1, signals.length);
-  const maxAudio = signals.reduce((peak, s) => Math.max(peak, s.audioLevel), 0);
 
-  const transcriptStrong = words >= 12 || (words >= 8 && avgConfidence >= 0.28);
+  const transcriptStrong = words >= 10 || (words >= 6 && avgConfidence >= 0.2);
   const multiSpeakerStrong = legibleFrames >= 4 && distinctSpeakers >= 2;
-  const audioSpeechBlend = avgAudio >= LEGIBLE_AUDIO_THRESHOLD && words >= 7;
+  const audioSpeechBlend = avgAudio >= LEGIBLE_AUDIO_THRESHOLD && words >= 5;
   // Fallback: sustained speech-level audio even without transcript
   // (covers iOS / browsers where SpeechRecognition is unavailable)
-  const sustainedAudio =
-    legibleFrames >= (mode === "start" ? 5 : 4) &&
-    avgAudio >= Math.max(LEGIBLE_AUDIO_THRESHOLD * 1.6, mode === "start" ? 0.055 : 0.05) &&
-    maxAudio >= (mode === "start" ? 0.09 : 0.08) &&
-    durationSec >= (mode === "start" ? 5 : 4);
+  const sustainedAudio = legibleFrames >= 4 && avgAudio >= 0.06 && durationSec >= 4;
   const enoughWindowSpan = durationSec >= SEGMENT_SECONDS * 0.8;
-  const stopShouldHold =
-    mode === "stop" &&
-    words <= 2 &&
-    legibleFrames <= 2 &&
-    avgAudio < 0.03 &&
-    distinctSpeakers <= 1;
   const isConversation =
-    enoughWindowSpan &&
-    !stopShouldHold &&
-    (transcriptStrong || multiSpeakerStrong || audioSpeechBlend || sustainedAudio);
+    enoughWindowSpan && (transcriptStrong || multiSpeakerStrong || audioSpeechBlend || sustainedAudio);
 
   return {
     isConversation,
@@ -267,13 +247,13 @@ function evaluateConversationWindow(
 
 function shouldStartRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): WindowEvaluation {
   const recentSignals = clampArray([...state.recentSignals, incoming], 36);
-  return evaluateConversationWindow(rollingWindowSignals(recentSignals, START_WINDOW_SECONDS), "start");
+  return evaluateConversationWindow(rollingWindowSignals(recentSignals, SEGMENT_SECONDS));
 }
 
 function shouldStopRecording(state: ConversationAwarenessState, incoming: AwarenessSignalEvent): WindowEvaluation {
   const recentSignals = clampArray([...state.recentSignals, incoming], 36);
-  const window = rollingWindowSignals(recentSignals, STOP_WINDOW_SECONDS);
-  const evaluation = evaluateConversationWindow(window, "stop");
+  const window = rollingWindowSignals(recentSignals, SEGMENT_SECONDS);
+  const evaluation = evaluateConversationWindow(window);
   return {
     ...evaluation,
     isConversation: !evaluation.isConversation
@@ -358,8 +338,6 @@ export async function setListeningEnabled(listeningEnabled: boolean): Promise<Co
     state.isRecording = false;
     state.activeSessionId = undefined;
     state.latestAction = "idle";
-    state.startCandidateCount = 0;
-    state.stopCandidateCount = 0;
     state.activeSpeakers = [];
     await recordDebugEvent({
       category: "listener",
@@ -370,8 +348,6 @@ export async function setListeningEnabled(listeningEnabled: boolean): Promise<Co
     });
   } else {
     state.latestAction = "awaiting_conversation";
-    state.startCandidateCount = 0;
-    state.stopCandidateCount = 0;
     await recordDebugEvent({
       category: "listener",
       message: "Listening enabled from UI",
@@ -407,14 +383,10 @@ export async function ingestAwarenessSignal(
   state.lastUpdatedAt = nowIso();
   state.rollingAudioLevels = clampArray([...state.rollingAudioLevels, signal.audioLevel], 20);
   state.recentSignals = clampArray([...state.recentSignals, signal], 20);
-  state.startCandidateCount = state.startCandidateCount ?? 0;
-  state.stopCandidateCount = state.stopCandidateCount ?? 0;
   state.activeSpeakers = topSpeakersFromRecentSignals(state.recentSignals);
 
   if (!state.listeningEnabled) {
     state.latestAction = "idle";
-    state.startCandidateCount = 0;
-    state.stopCandidateCount = 0;
     await recordDebugEvent({
       category: "decision",
       message: "Listening disabled, ignoring signal",
@@ -435,21 +407,13 @@ export async function ingestAwarenessSignal(
 
   if (!state.isRecording) {
     const startEvaluation = shouldStartRecording(state, signal);
-    const nextStartCandidateCount = startEvaluation.isConversation
-      ? Math.min(START_CONSECUTIVE_WINDOWS + 2, (state.startCandidateCount ?? 0) + 1)
-      : 0;
-    const canStartRecording = nextStartCandidateCount >= START_CONSECUTIVE_WINDOWS;
-    state.startCandidateCount = nextStartCandidateCount;
-    state.stopCandidateCount = 0;
     await recordDebugEvent({
       category: "decision",
-      message: canStartRecording
-        ? "Conversation confirmed, starting recording"
-        : startEvaluation.isConversation
-          ? "Conversation candidate detected, waiting for one more window"
+      message: startEvaluation.isConversation
+        ? "Conversation window detected, preparing to record"
         : "Conversation window below threshold",
-      level: canStartRecording || startEvaluation.isConversation ? "info" : "warn",
-      action: canStartRecording ? "start_recording" : "awaiting_conversation",
+      level: startEvaluation.isConversation ? "info" : "warn",
+      action: startEvaluation.isConversation ? "start_recording" : "awaiting_conversation",
       data: {
         audioLevel: signal.audioLevel,
         transcriptWords: signal.transcriptWords,
@@ -465,11 +429,10 @@ export async function ingestAwarenessSignal(
         transcriptStrong: startEvaluation.transcriptStrong,
         multiSpeakerStrong: startEvaluation.multiSpeakerStrong,
         audioSpeechBlend: startEvaluation.audioSpeechBlend,
-        verdict: canStartRecording,
-        reason: `start_candidates=${nextStartCandidateCount}/${START_CONSECUTIVE_WINDOWS}`
+        verdict: startEvaluation.isConversation
       }
     });
-    if (canStartRecording) {
+    if (startEvaluation.isConversation) {
       const newSession: RecordingSession = {
         id: buildSessionId(),
         startedAt: nowIso(),
@@ -484,8 +447,6 @@ export async function ingestAwarenessSignal(
       state.isRecording = true;
       state.activeSessionId = newSession.id;
       state.latestAction = "start_recording";
-      state.startCandidateCount = 0;
-      state.stopCandidateCount = 0;
       activeSession = newSession;
       await recordDebugEvent({
         category: "recording",
@@ -525,24 +486,14 @@ export async function ingestAwarenessSignal(
   }
 
   const stopEvaluation = shouldStopRecording(state, signal);
-  const nextStopCandidateCount = stopEvaluation.isConversation
-    ? Math.min(STOP_CONSECUTIVE_WINDOWS + 2, (state.stopCandidateCount ?? 0) + 1)
-    : 0;
-  const shouldStopNow = nextStopCandidateCount >= STOP_CONSECUTIVE_WINDOWS;
-  state.stopCandidateCount = nextStopCandidateCount;
-  if (!stopEvaluation.isConversation) {
-    state.startCandidateCount = 0;
-  }
   await recordDebugEvent({
     category: "decision",
-    message: shouldStopNow
-      ? "Conversation dropped repeatedly, stopping recording"
-      : stopEvaluation.isConversation
-        ? "Conversation weakened, waiting before stopping"
+    message: stopEvaluation.isConversation
+      ? "Conversation no longer coherent, stopping recording"
       : "Conversation still coherent, keep recording",
     level: "info",
     sessionId: state.activeSessionId,
-    action: shouldStopNow ? "stop_recording" : "continue_recording",
+    action: stopEvaluation.isConversation ? "stop_recording" : "continue_recording",
     data: {
       audioLevel: signal.audioLevel,
       transcriptWords: signal.transcriptWords,
@@ -558,18 +509,15 @@ export async function ingestAwarenessSignal(
       transcriptStrong: stopEvaluation.transcriptStrong,
       multiSpeakerStrong: stopEvaluation.multiSpeakerStrong,
       audioSpeechBlend: stopEvaluation.audioSpeechBlend,
-      verdict: shouldStopNow,
-      reason: `stop_candidates=${nextStopCandidateCount}/${STOP_CONSECUTIVE_WINDOWS}`
+      verdict: stopEvaluation.isConversation
     }
   });
-  if (shouldStopNow) {
+  if (stopEvaluation.isConversation) {
     const endedSessionId = state.activeSessionId;
     await stopActiveSession(state);
     state.isRecording = false;
     state.activeSessionId = undefined;
     state.latestAction = "stop_recording";
-    state.stopCandidateCount = 0;
-    state.startCandidateCount = 0;
     await saveAwarenessState(state);
     await recordDebugEvent({
       category: "recording",
@@ -592,7 +540,6 @@ export async function ingestAwarenessSignal(
   }
 
   state.latestAction = "continue_recording";
-  state.stopCandidateCount = 0;
   await saveAwarenessState(state);
   await recordDebugEvent({
     category: "recording",

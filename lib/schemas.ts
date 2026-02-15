@@ -244,8 +244,6 @@ export const ConversationAwarenessStateSchema = z.object({
   activeSpeakers: z.array(SpeakerWindowSchema).max(8),
   rollingAudioLevels: z.array(z.number().min(0).max(1)).max(20),
   recentSignals: z.array(AwarenessSignalEventSchema).max(20),
-  startCandidateCount: z.number().int().min(0).max(20).default(0),
-  stopCandidateCount: z.number().int().min(0).max(20).default(0),
   latestAction: z.enum([
     "idle",
     "awaiting_conversation",

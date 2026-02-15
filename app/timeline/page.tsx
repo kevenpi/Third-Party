@@ -430,7 +430,7 @@ export default function TimelinePage() {
               {liveState?.listeningEnabled ? "Detecting" : "Idle"} | {liveState?.latestAction?.replaceAll("_", " ") ?? "awaiting conversation"}
             </p>
             <p className="text-xs text-[rgba(255,255,255,0.55)] mt-1">
-              Rule: require repeated conversation windows to start, and repeated weak windows to stop.
+              Rule: classify rolling 5s segments; keep recording only while segment looks like a real conversation.
             </p>
             {latestEvent && (
               <div className="mt-3 text-xs text-[rgba(255,255,255,0.65)] space-y-1">

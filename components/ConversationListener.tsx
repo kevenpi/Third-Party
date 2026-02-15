@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Activity, X } from "lucide-react";
 import {
   startBiometricRecording,
   stopBiometricRecording,
@@ -64,12 +63,10 @@ export function ConversationListener() {
   const [listening, setListening] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
-  const [showOverlay, setShowOverlay] = useState(false);
-  const [liveTranscript, setLiveTranscript] = useState("");
-  const [transcriptFeed, setTranscriptFeed] = useState<{ id: string; text: string; ts: string }[]>([]);
-  const [isFinalizing, setIsFinalizing] = useState(false);
-  const [finalizeMessage, setFinalizeMessage] = useState<string | null>(null);
-  const [speechAvailable, setSpeechAvailable] = useState(true);
+  const [identifiedPerson, setIdentifiedPerson] = useState<FaceIdentification | null>(null);
+  const [faceScanning, setFaceScanning] = useState(false);
+  const [showCamera, setShowCamera] = useState(true);
+  const liveVideoRef = useRef<HTMLVideoElement | null>(null);
 
   // Audio
   const streamRef = useRef<MediaStream | null>(null);
@@ -87,9 +84,7 @@ export function ConversationListener() {
   const transcriptTextRef = useRef<string>("");
   const transcriptWordsRef = useRef<number>(0);
   const transcriptConfidenceRef = useRef<number>(0);
-  const finalizedTranscriptRef = useRef<string>("");
   const recognitionRef = useRef<any>(null);
-  const transcriptFeedRef = useRef<string[]>([]);
 
   // Camera / Face
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -108,35 +103,20 @@ export function ConversationListener() {
 
   const uploadClip = useCallback(async (sessionId: string) => {
     if (chunksRef.current.length === 0) return;
-    setIsFinalizing(true);
-    setFinalizeMessage("Finalizing recording...");
     const blob = new Blob(chunksRef.current, { type: mimeTypeRef.current });
     chunksRef.current = [];
     try {
       const audioBase64 = await blobToBase64(blob);
-      const response = await fetch("/api/conversationAwareness/uploadClip", {
+      await fetch("/api/conversationAwareness/uploadClip", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, audioBase64, mimeType: mimeTypeRef.current }),
       });
-      const payload = await response.json().catch(() => null);
-      const qualifies = payload?.classification?.qualifiesConversation === true;
-      if (response.ok) {
-        setFinalizeMessage(
-          qualifies
-            ? "Conversation qualifies. Bubble created."
-            : "Snippet did not qualify as a conversation."
-        );
-      } else {
-        setFinalizeMessage("Clip saved, but classification failed.");
-      }
       const form = new FormData();
       form.append("audio", blob, `clip_${sessionId}.webm`);
       void fetch("/api/voice/processOpenAI", { method: "POST", body: form });
     } catch {
-      setFinalizeMessage("Could not finalize clip upload.");
-    } finally {
-      setIsFinalizing(false);
+      /* ignore */
     }
   }, []);
 
@@ -151,6 +131,7 @@ export function ConversationListener() {
     const frame = captureFrame(video, canvas);
     if (!frame) return;
 
+    setFaceScanning(true);
     try {
       const res = await fetch("/api/face/identify", {
         method: "POST",
@@ -159,11 +140,15 @@ export function ConversationListener() {
       });
       const data = await res.json();
       if (data.person) {
-        identifiedPersonRef.current = {
+        const faceId: FaceIdentification = {
           personId: data.person.id,
           personName: data.person.name,
           confidence: data.person.confidence,
         };
+        identifiedPersonRef.current = faceId;
+        setIdentifiedPerson(faceId);
+      } else {
+        setIdentifiedPerson(null);
       }
       // If no match, also try saving as unknown face for later tagging
       if (!data.person && sessionIdRef.current) {
@@ -171,6 +156,8 @@ export function ConversationListener() {
       }
     } catch {
       /* ignore */
+    } finally {
+      setFaceScanning(false);
     }
   }, []);
 
@@ -190,6 +177,8 @@ export function ConversationListener() {
       faceCheckIntervalRef.current = null;
     }
     identifiedPersonRef.current = null;
+    setIdentifiedPerson(null);
+    setFaceScanning(false);
   }, []);
 
   // ------------------------------------------------------------------
@@ -337,7 +326,7 @@ export function ConversationListener() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          source: "microphone" as const,
+          source: "meta_glasses" as const,
           audioLevel,
           transcriptText: transcriptTextRef.current || undefined,
           transcriptWords: transcriptWordsRef.current || undefined,
@@ -354,9 +343,6 @@ export function ConversationListener() {
 
       const nowRecording = !!(state.isRecording && resolvedSessionId);
       setIsRecording(nowRecording);
-      if (nowRecording) {
-        setFinalizeMessage(null);
-      }
 
       if (nowRecording && resolvedSessionId) {
         startBrowserRecording(resolvedSessionId);
@@ -433,12 +419,6 @@ export function ConversationListener() {
       transcriptTextRef.current = "";
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
-      finalizedTranscriptRef.current = "";
-      transcriptFeedRef.current = [];
-      setLiveTranscript("");
-      setTranscriptFeed([]);
-      setSpeechAvailable(true);
-      setIsFinalizing(false);
       wasRecordingRef.current = false;
       return;
     }
@@ -466,57 +446,29 @@ export function ConversationListener() {
         // Browser speech recognition
         const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
         if (SpeechRec) {
-          setSpeechAvailable(true);
           const recognition = new SpeechRec();
           recognition.continuous = true;
           recognition.interimResults = true;
           recognition.lang = "en-US";
           recognition.onresult = (event: any) => {
-            let interimTranscript = "";
+            let transcript = "";
             let bestConfidence = 0;
             for (let i = event.resultIndex; i < event.results.length; i += 1) {
               const result = event.results[i];
               const alt = result?.[0];
               if (!alt?.transcript) continue;
-              if (result.isFinal) {
-                finalizedTranscriptRef.current = `${finalizedTranscriptRef.current} ${alt.transcript}`.trim();
-                if (finalizedTranscriptRef.current.length > 800) {
-                  finalizedTranscriptRef.current = finalizedTranscriptRef.current.slice(-800);
-                }
-              } else {
-                interimTranscript += ` ${alt.transcript}`;
-              }
+              transcript += ` ${alt.transcript}`;
               if (typeof alt.confidence === "number") {
                 bestConfidence = Math.max(bestConfidence, alt.confidence);
               }
             }
-            const transcript = `${finalizedTranscriptRef.current} ${interimTranscript}`.trim();
+            transcript = transcript.trim();
             if (!transcript) return;
             transcriptTextRef.current = transcript.slice(0, 500);
-            setLiveTranscript(transcriptTextRef.current);
             transcriptWordsRef.current = transcript.split(/\s+/).filter(Boolean).length;
             transcriptConfidenceRef.current = bestConfidence > 0 ? Math.min(1, bestConfidence) : 0.5;
-            const prev = transcriptFeedRef.current[transcriptFeedRef.current.length - 1];
-            if (!prev || prev !== transcriptTextRef.current) {
-              transcriptFeedRef.current = [...transcriptFeedRef.current, transcriptTextRef.current].slice(-8);
-              setTranscriptFeed(
-                transcriptFeedRef.current
-                  .slice()
-                  .reverse()
-                  .map((text, idx) => ({
-                    id: `${Date.now()}_${idx}`,
-                    text,
-                    ts: new Date().toISOString(),
-                  }))
-              );
-            }
           };
-          recognition.onerror = (event: any) => {
-            const code = String(event?.error ?? "");
-            if (code === "not-allowed" || code === "service-not-allowed") {
-              setSpeechAvailable(false);
-            }
-          };
+          recognition.onerror = () => {};
           recognition.onend = () => {
             if (listening && recognitionRef.current === recognition) {
               try { recognition.start(); } catch { /* ignore */ }
@@ -524,8 +476,6 @@ export function ConversationListener() {
           };
           recognitionRef.current = recognition;
           try { recognition.start(); } catch { /* ignore */ }
-        } else {
-          setSpeechAvailable(false);
         }
       })
       .catch(() => {});
@@ -540,7 +490,7 @@ export function ConversationListener() {
         }
         cameraStreamRef.current = cameraStream;
 
-        // Create hidden video element
+        // Create hidden video element for frame capture
         if (!videoRef.current) {
           const video = document.createElement("video");
           video.setAttribute("playsinline", "");
@@ -551,6 +501,12 @@ export function ConversationListener() {
         }
         videoRef.current.srcObject = cameraStream;
         void videoRef.current.play();
+
+        // Also feed the visible live preview
+        if (liveVideoRef.current) {
+          liveVideoRef.current.srcObject = cameraStream;
+          void liveVideoRef.current.play();
+        }
 
         // Create canvas for frame capture
         if (!canvasRef.current) {
@@ -590,24 +546,38 @@ export function ConversationListener() {
       transcriptTextRef.current = "";
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
-      finalizedTranscriptRef.current = "";
-      transcriptFeedRef.current = [];
-      setLiveTranscript("");
-      setTranscriptFeed([]);
-      setSpeechAvailable(true);
-      setIsFinalizing(false);
       wasRecordingRef.current = false;
     };
   }, [listening, ingestMic, stopBrowserRecording]);
+
+  // Attach camera stream to live preview when ref mounts
+  const attachCameraToPreview = useCallback(
+    (el: HTMLVideoElement | null) => {
+      liveVideoRef.current = el;
+      if (el && cameraStreamRef.current) {
+        el.srcObject = cameraStreamRef.current;
+        void el.play();
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [listening],
+  );
 
   if (!listening) return null;
 
   // Map audio level (0-1) to visual intensity
   const intensity = Math.min(1, audioLevel * 4);
-  const size = 18 + intensity * 8; // 18-26px
-  const color = isRecording ? "#EF4444" : "#7AB89E";
+  const size = 16 + intensity * 16; // 16-32px
+  const indicatorColor = isRecording ? "#EF4444" : "#7AB89E";
   const spread = 4 + intensity * 24;
   const opacity = 0.4 + intensity * 0.6;
+
+  const confidenceColor =
+    identifiedPerson?.confidence === "high"
+      ? "#7AB89E"
+      : identifiedPerson?.confidence === "medium"
+        ? "#D4B07A"
+        : "#B84A3A";
 
   return (
     <>
@@ -616,133 +586,235 @@ export function ConversationListener() {
           0%, 100% { transform: scale(1); }
           50% { transform: scale(1.15); }
         }
+        @keyframes face-scan {
+          0% { top: 0; }
+          50% { top: calc(100% - 2px); }
+          100% { top: 0; }
+        }
+        @keyframes face-glow {
+          0%, 100% { box-shadow: 0 0 8px rgba(122,184,158,0.4); }
+          50% { box-shadow: 0 0 18px rgba(122,184,158,0.7); }
+        }
       `}</style>
+
+      {/* ── Live Camera Preview (picture-in-picture) ── */}
       <div
         style={{
           position: "fixed",
-          top: 10,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 9999,
-          pointerEvents: "auto",
-          width: "min(92vw, 440px)",
+          top: 72,
+          right: 12,
+          zIndex: 9998,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: 0,
         }}
       >
+        {/* Toggle button */}
         <button
-          type="button"
-          onClick={() => setShowOverlay((v) => !v)}
+          onClick={() => setShowCamera((v) => !v)}
           style={{
-            width: "100%",
-            borderRadius: 999,
-            border: "1px solid rgba(255,255,255,0.12)",
-            background: "rgba(18,17,15,0.82)",
-            backdropFilter: "blur(10px)",
-            color: "rgba(255,255,255,0.92)",
+            background: "rgba(30,27,24,0.85)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: showCamera ? "8px 8px 0 0" : 8,
+            padding: "4px 10px",
+            fontSize: 10,
+            color: "rgba(255,255,255,0.5)",
+            cursor: "pointer",
+            fontFamily: "Plus Jakarta Sans, sans-serif",
+            letterSpacing: "0.04em",
+            textTransform: "uppercase",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
-            gap: 10,
-            padding: "8px 12px",
-            fontSize: 12,
+            gap: 5,
           }}
         >
-          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span
-              style={{
-                width: size,
-                height: size,
-                borderRadius: "50%",
-                backgroundColor: color,
-                opacity,
-                boxShadow: `0 0 ${spread}px ${Math.round(spread * 0.5)}px ${color}`,
-                transition:
-                  "width 0.15s ease-out, height 0.15s ease-out, opacity 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.3s ease",
-                animation: isRecording ? "listener-pulse 1.7s ease-in-out infinite" : "none",
-              }}
-            />
-            <Activity className="w-3.5 h-3.5" />
-            {isFinalizing
-              ? "Finalizing snippet..."
-              : isRecording
-                ? "Live conversation recording"
-                : "Live conversation listener"}
-          </span>
-          <span style={{ color: "rgba(255,255,255,0.6)" }}>
-            {showOverlay ? "Hide" : "Open"}
-          </span>
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              background: identifiedPerson ? confidenceColor : faceScanning ? "#D4B07A" : "rgba(255,255,255,0.25)",
+              boxShadow: identifiedPerson ? `0 0 6px ${confidenceColor}` : "none",
+              transition: "all 0.3s ease",
+            }}
+          />
+          {showCamera ? "hide" : "camera"}
         </button>
 
-        {showOverlay && (
+        {showCamera && (
           <div
             style={{
-              marginTop: 8,
-              borderRadius: 14,
-              border: "1px solid rgba(255,255,255,0.12)",
-              background: "rgba(18,17,15,0.94)",
-              color: "rgba(255,255,255,0.85)",
-              padding: 12,
-              boxShadow: "0 12px 28px rgba(0,0,0,0.35)",
+              width: 160,
+              borderRadius: "0 0 12px 12px",
+              overflow: "hidden",
+              border: identifiedPerson
+                ? `2px solid ${confidenceColor}`
+                : "1px solid rgba(255,255,255,0.1)",
+              background: "#000",
+              boxShadow: identifiedPerson
+                ? `0 4px 20px rgba(0,0,0,0.6), 0 0 12px ${confidenceColor}40`
+                : "0 4px 20px rgba(0,0,0,0.6)",
+              position: "relative",
+              transition: "border-color 0.4s ease, box-shadow 0.4s ease",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <p style={{ margin: 0, fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(255,255,255,0.58)" }}>
-                Live transcript monitor
-              </p>
-              <button
-                type="button"
-                onClick={() => setShowOverlay(false)}
+            {/* Video feed */}
+            <video
+              ref={attachCameraToPreview}
+              autoPlay
+              playsInline
+              muted
+              style={{
+                width: "100%",
+                height: 120,
+                objectFit: "cover",
+                display: "block",
+              }}
+            />
+
+            {/* Scanning line animation */}
+            {faceScanning && (
+              <div
                 style={{
-                  color: "rgba(255,255,255,0.56)",
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 2,
+                  background: "linear-gradient(90deg, transparent, #D4B07A, transparent)",
+                  animation: "face-scan 1.5s ease-in-out infinite",
+                  pointerEvents: "none",
                 }}
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
+              />
+            )}
+
+            {/* Corner brackets (face target) */}
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none" }}>
+              {/* Top-left */}
+              <div style={{ position: "absolute", top: 14, left: 14, width: 16, height: 16, borderTop: "2px solid rgba(255,255,255,0.3)", borderLeft: "2px solid rgba(255,255,255,0.3)", borderRadius: "2px 0 0 0" }} />
+              {/* Top-right */}
+              <div style={{ position: "absolute", top: 14, right: 14, width: 16, height: 16, borderTop: "2px solid rgba(255,255,255,0.3)", borderRight: "2px solid rgba(255,255,255,0.3)", borderRadius: "0 2px 0 0" }} />
+              {/* Bottom-left */}
+              <div style={{ position: "absolute", bottom: 40, left: 14, width: 16, height: 16, borderBottom: "2px solid rgba(255,255,255,0.3)", borderLeft: "2px solid rgba(255,255,255,0.3)", borderRadius: "0 0 0 2px" }} />
+              {/* Bottom-right */}
+              <div style={{ position: "absolute", bottom: 40, right: 14, width: 16, height: 16, borderBottom: "2px solid rgba(255,255,255,0.3)", borderRight: "2px solid rgba(255,255,255,0.3)", borderRadius: "0 0 2px 0" }} />
             </div>
-            <p style={{ margin: "6px 0 0", fontSize: 12 }}>
-              {isFinalizing
-                ? finalizeMessage ?? "Finalizing..."
-                : isRecording
-                  ? "Recording and streaming transcript in real time."
-                  : finalizeMessage ?? "Waiting for coherent conversation."}
-            </p>
-            <p style={{ margin: "6px 0 0", fontSize: 11, color: "rgba(255,255,255,0.56)" }}>
-              Current: {liveTranscript ? `"${liveTranscript.slice(0, 160)}"` : "No transcript yet"}
-            </p>
-            {!speechAvailable ? (
-              <p style={{ margin: "6px 0 0", fontSize: 11, color: "rgba(255,214,139,0.86)" }}>
-                Live transcript is limited on this browser/device (SpeechRecognition unavailable).
-              </p>
-            ) : null}
-            <div style={{ marginTop: 8, maxHeight: 180, overflowY: "auto", display: "grid", gap: 6 }}>
-              {transcriptFeed.length === 0 ? (
-                <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.5)" }}>
-                  Transcript chunks will appear here while listening.
-                </p>
-              ) : (
-                transcriptFeed.map((entry) => (
-                  <div
-                    key={entry.id}
+
+            {/* Identification result bar */}
+            <div
+              style={{
+                padding: "6px 10px",
+                background: "rgba(18,17,15,0.92)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 6,
+                minHeight: 28,
+              }}
+            >
+              {identifiedPerson ? (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <div
+                      style={{
+                        width: 8,
+                        height: 8,
+                        borderRadius: "50%",
+                        background: confidenceColor,
+                        boxShadow: `0 0 6px ${confidenceColor}`,
+                        animation: "face-glow 2s ease-in-out infinite",
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontSize: 12,
+                        fontWeight: 600,
+                        color: "rgba(255,255,255,0.95)",
+                        fontFamily: "Plus Jakarta Sans, sans-serif",
+                      }}
+                    >
+                      {identifiedPerson.personName}
+                    </span>
+                  </div>
+                  <span
                     style={{
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      borderRadius: 8,
-                      padding: "6px 8px",
-                      fontSize: 12,
-                      background: "rgba(255,255,255,0.03)",
+                      fontSize: 9,
+                      color: confidenceColor,
+                      fontFamily: "Plus Jakarta Sans, sans-serif",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.04em",
                     }}
                   >
-                    <span style={{ fontSize: 10, color: "rgba(255,255,255,0.48)", marginRight: 6 }}>
-                      {new Date(entry.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
-                    </span>
-                    {entry.text}
-                  </div>
-                ))
+                    {identifiedPerson.confidence}
+                  </span>
+                </>
+              ) : faceScanning ? (
+                <span
+                  style={{
+                    fontSize: 10,
+                    color: "#D4B07A",
+                    fontFamily: "Plus Jakarta Sans, sans-serif",
+                    letterSpacing: "0.03em",
+                  }}
+                >
+                  Scanning...
+                </span>
+              ) : (
+                <span
+                  style={{
+                    fontSize: 10,
+                    color: "rgba(255,255,255,0.3)",
+                    fontFamily: "Plus Jakarta Sans, sans-serif",
+                    letterSpacing: "0.03em",
+                  }}
+                >
+                  No face detected
+                </span>
               )}
             </div>
           </div>
         )}
+      </div>
+
+      {/* ── Audio indicator (bottom center) ── */}
+      <div
+        style={{
+          position: "fixed",
+          bottom: 76,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 9999,
+          pointerEvents: "none",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 4,
+        }}
+      >
+        <div
+          style={{
+            width: size,
+            height: size,
+            borderRadius: "50%",
+            backgroundColor: indicatorColor,
+            opacity,
+            boxShadow: `0 0 ${spread}px ${Math.round(spread * 0.5)}px ${indicatorColor}`,
+            transition: "width 0.15s ease-out, height 0.15s ease-out, opacity 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.3s ease",
+            animation: isRecording ? "listener-pulse 2s ease-in-out infinite" : "none",
+          }}
+        />
+        <span
+          style={{
+            fontSize: 9,
+            color: "rgba(255,255,255,0.4)",
+            fontFamily: "Plus Jakarta Sans, sans-serif",
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+          }}
+        >
+          {isRecording ? "recording" : "listening"}
+        </span>
       </div>
     </>
   );
