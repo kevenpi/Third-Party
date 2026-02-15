@@ -47,6 +47,24 @@ function captureFrame(
   return dataUrl.split(",")[1] ?? null;
 }
 
+async function getBestAvailableCameraStream(): Promise<MediaStream> {
+  const attempts: MediaStreamConstraints[] = [
+    { video: { facingMode: { ideal: "environment" } } },
+    { video: { facingMode: { ideal: "user" } } },
+    { video: true },
+  ];
+  let lastErr: unknown = null;
+  for (const constraints of attempts) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      return await navigator.mediaDevices.getUserMedia(constraints);
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr ?? new Error("No camera available");
+}
+
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -709,8 +727,7 @@ export function ConversationListener() {
     }, 400);
 
     // Request camera (back camera as Meta glasses proxy)
-    navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: "environment" } })
+    getBestAvailableCameraStream()
       .then((cameraStream) => {
         if (cancelled) {
           cameraStream.getTracks().forEach((t) => t.stop());

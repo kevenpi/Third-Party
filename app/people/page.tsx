@@ -32,6 +32,24 @@ function formatLastTalked(date: string | null): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
+async function getBestAvailableCameraStream(): Promise<MediaStream> {
+  const attempts: MediaStreamConstraints[] = [
+    { video: { facingMode: { ideal: "environment" } } },
+    { video: { facingMode: { ideal: "user" } } },
+    { video: true },
+  ];
+  let lastErr: unknown = null;
+  for (const constraints of attempts) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      return await navigator.mediaDevices.getUserMedia(constraints);
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr ?? new Error("No camera available");
+}
+
 function gradientForPerson(colors: string[]): string {
   if (colors.length === 0) return "from-[#C4B496] to-[#6AAAB4]";
   const first = colors[0];
@@ -79,9 +97,7 @@ export default function PeoplePage() {
     setShowEnrollModal(true);
     setEnrollName("");
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" },
-      });
+      const stream = await getBestAvailableCameraStream();
       cameraStreamRef.current = stream;
       // Wait for the video ref to be attached in next render
       setTimeout(() => {

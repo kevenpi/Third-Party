@@ -68,6 +68,24 @@ function getBubbleSize(size: "small" | "medium" | "large"): string {
   }
 }
 
+async function getBestAvailableCameraStream(): Promise<MediaStream> {
+  const attempts: MediaStreamConstraints[] = [
+    { video: { facingMode: { ideal: "environment" } } },
+    { video: { facingMode: { ideal: "user" } } },
+    { video: true },
+  ];
+  let lastErr: unknown = null;
+  for (const constraints of attempts) {
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      return await navigator.mediaDevices.getUserMedia(constraints);
+    } catch (err) {
+      lastErr = err;
+    }
+  }
+  throw lastErr ?? new Error("No camera available");
+}
+
 export default function GlazePage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
@@ -198,7 +216,7 @@ export default function GlazePage() {
   const openFaceEnroll = useCallback(async () => {
     setShowFaceEnroll(true);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+      const stream = await getBestAvailableCameraStream();
       faceCameraRef.current = stream;
       setTimeout(() => {
         if (faceVideoRef.current) {
