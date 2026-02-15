@@ -65,8 +65,10 @@ export function ConversationListener() {
   const [isRecording, setIsRecording] = useState(false);
   const [identifiedPerson, setIdentifiedPerson] = useState<FaceIdentification | null>(null);
   const [faceScanning, setFaceScanning] = useState(false);
+  const [faceError, setFaceError] = useState<string | null>(null);
   const [showCamera, setShowCamera] = useState(true);
   const liveVideoRef = useRef<HTMLVideoElement | null>(null);
+  const cameraReadyRef = useRef(false);
 
   // Audio
   const streamRef = useRef<MediaStream | null>(null);
@@ -132,6 +134,7 @@ export function ConversationListener() {
     if (!frame) return;
 
     setFaceScanning(true);
+    setFaceError(null);
     try {
       const res = await fetch("/api/face/identify", {
         method: "POST",
@@ -139,6 +142,12 @@ export function ConversationListener() {
         body: JSON.stringify({ frameBase64: frame }),
       });
       const data = await res.json();
+      if (!res.ok) {
+        const errMsg = data?.error ?? `API ${res.status}`;
+        setFaceError(errMsg.length > 50 ? errMsg.slice(0, 50) + "…" : errMsg);
+        setIdentifiedPerson(null);
+        return;
+      }
       if (data.person) {
         const faceId: FaceIdentification = {
           personId: data.person.id,
@@ -147,27 +156,32 @@ export function ConversationListener() {
         };
         identifiedPersonRef.current = faceId;
         setIdentifiedPerson(faceId);
+        setFaceError(null);
       } else {
         setIdentifiedPerson(null);
+        // No enrolled faces at all?
+        if (data.noEnrolledFaces) {
+          setFaceError("No faces enrolled");
+        }
       }
       // If no match, also try saving as unknown face for later tagging
       if (!data.person && sessionIdRef.current) {
         void fetch("/api/face/identify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ frameBase64: frame, saveUnknown: true, sessionId: sessionIdRef.current }) }).catch(() => {});
       }
-    } catch {
-      /* ignore */
+    } catch (err) {
+      setFaceError("Connection failed");
     } finally {
       setFaceScanning(false);
     }
   }, []);
 
   const startFaceChecks = useCallback(() => {
-    // Immediately identify, then every 10s
+    // Immediately identify, then every 6s
     void identifyFaceFromCamera();
     if (faceCheckIntervalRef.current !== null) return;
     faceCheckIntervalRef.current = window.setInterval(
       () => void identifyFaceFromCamera(),
-      10_000
+      6_000
     );
   }, [identifyFaceFromCamera]);
 
@@ -398,6 +412,8 @@ export function ConversationListener() {
         intervalRef.current = null;
       }
       stopBrowserRecording();
+      stopFaceChecks();
+      cameraReadyRef.current = false;
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((t) => t.stop());
         streamRef.current = null;
@@ -512,6 +528,10 @@ export function ConversationListener() {
         if (!canvasRef.current) {
           canvasRef.current = document.createElement("canvas");
         }
+
+        // Start face identification immediately (don't wait for recording)
+        cameraReadyRef.current = true;
+        startFaceChecks();
       })
       .catch(() => {
         // Camera not available — face identification disabled, app still works
@@ -548,7 +568,7 @@ export function ConversationListener() {
       transcriptConfidenceRef.current = 0;
       wasRecordingRef.current = false;
     };
-  }, [listening, ingestMic, stopBrowserRecording]);
+  }, [listening, ingestMic, stopBrowserRecording, startFaceChecks, stopFaceChecks]);
 
   // Attach camera stream to live preview when ref mounts
   const attachCameraToPreview = useCallback(
@@ -634,8 +654,8 @@ export function ConversationListener() {
               width: 6,
               height: 6,
               borderRadius: "50%",
-              background: identifiedPerson ? confidenceColor : faceScanning ? "#D4B07A" : "rgba(255,255,255,0.25)",
-              boxShadow: identifiedPerson ? `0 0 6px ${confidenceColor}` : "none",
+              background: identifiedPerson ? confidenceColor : faceError ? "#B84A3A" : faceScanning ? "#D4B07A" : "rgba(255,255,255,0.25)",
+              boxShadow: identifiedPerson ? `0 0 6px ${confidenceColor}` : faceError ? "0 0 6px #B84A3A" : "none",
               transition: "all 0.3s ease",
             }}
           />
@@ -749,6 +769,17 @@ export function ConversationListener() {
                     {identifiedPerson.confidence}
                   </span>
                 </>
+              ) : faceError ? (
+                <span
+                  style={{
+                    fontSize: 10,
+                    color: "#B84A3A",
+                    fontFamily: "Plus Jakarta Sans, sans-serif",
+                    letterSpacing: "0.03em",
+                  }}
+                >
+                  {faceError}
+                </span>
               ) : faceScanning ? (
                 <span
                   style={{

@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       if (saveUnknown && sessionId) {
         unknownFramePath = await saveUnknownFace(sessionId, frameBase64);
       }
-      return NextResponse.json({ person: null, unknownFramePath });
+      return NextResponse.json({ person: null, unknownFramePath, noEnrolledFaces: false });
     }
 
     // Update lastSeenAt
