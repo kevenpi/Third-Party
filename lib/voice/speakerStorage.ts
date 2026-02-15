@@ -94,6 +94,24 @@ export function getConversation(conversationId: string, uid?: string): Conversat
   return JSON.parse(fs.readFileSync(p, "utf-8"));
 }
 
+export function listConversations(uid?: string): Conversation[] {
+  initDirs();
+  const u = uid ?? userId();
+  const userDir = path.join(CONVOS_DIR, u);
+  if (!fs.existsSync(userDir)) return [];
+  const files = fs.readdirSync(userDir).filter((f) => f.endsWith(".json"));
+  return files
+    .map((f) => {
+      try {
+        return JSON.parse(fs.readFileSync(path.join(userDir, f), "utf-8")) as Conversation;
+      } catch {
+        return null;
+      }
+    })
+    .filter((c): c is Conversation => c !== null)
+    .sort((a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime());
+}
+
 export function getSpeakerCandidates(uid: string): { speakerId: string; centroid: Embedding }[] {
   initDirs();
   const userFile = path.join(SPEAKERS_DIR, `${uid}.json`);

@@ -44,14 +44,15 @@ const staticData = biometricsData as {
 /**
  * Get biometric data for a conversation.
  * Tries live data first (data/biometrics/{id}.json), falls back to static demo data.
+ * NOTE: Only call this function from server components / API routes.
  */
 export async function getBiometricDataAsync(
   conversationId: string
 ): Promise<BiometricData | null> {
   // Try live data first (dynamic import to avoid SSR issues with fs)
   try {
-    const { loadBiometricData } = await import("@/lib/biometricStorage");
-    const live = await loadBiometricData(conversationId);
+    const mod = await import(/* webpackIgnore: true */ "@/lib/biometricStorage");
+    const live = await mod.loadBiometricData(conversationId);
     if (live) return live;
   } catch {
     // Not in server context or file not found — fall through
@@ -157,14 +158,35 @@ export function getAnnotationBorderColor(type: string): string {
 }
 
 export function getDailySummary() {
-  const convIds = Object.keys(data.conversations);
-  const all = convIds.map((id) => data.conversations[id]);
+  const convIds = Object.keys(staticData.conversations);
+  if (convIds.length === 0) {
+    return {
+      avgHr: 68,
+      stressMomentCount: 0,
+      peakStress: 0,
+      peakPerson: "",
+      peakTime: "",
+    };
+  }
+
+  const all = convIds.map((id) => staticData.conversations[id]).filter(Boolean);
+  if (all.length === 0) {
+    return {
+      avgHr: 68,
+      stressMomentCount: 0,
+      peakStress: 0,
+      peakPerson: "",
+      peakTime: "",
+    };
+  }
 
   const avgHr = Math.round(
     all.reduce(
       (sum, c) =>
         sum +
-        c.hrTimeline.reduce((s, p) => s + p.hr, 0) / c.hrTimeline.length,
+        (c.hrTimeline.length > 0
+          ? c.hrTimeline.reduce((s, p) => s + p.hr, 0) / c.hrTimeline.length
+          : 68),
       0
     ) / all.length
   );
@@ -188,6 +210,6 @@ export function getDailySummary() {
 }
 
 export function getConversationPeakStress(conversationId: string): number {
-  const conv = data.conversations[conversationId];
+  const conv = staticData.conversations[conversationId];
   return conv?.peak?.stress ?? 0;
 }

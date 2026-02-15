@@ -1,22 +1,29 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, MoreVertical, Play, Pause, Camera } from "lucide-react";
+import { ArrowLeft, MoreVertical, Play, Pause } from "lucide-react";
 import BiometricChart from "@/components/BiometricChart";
 import MessageCorrelationCard from "@/components/MessageCorrelationCard";
-import { getBiometricData, getStressColor, interpolateHR, formatBiometricChange, formatElapsed } from "@/lib/biometrics";
+import { getStressColor, formatBiometricChange, interpolateHR, formatElapsed } from "@/lib/biometrics";
 import type { BiometricData } from "@/lib/biometrics";
 
 interface KeyMoment {
   id: string;
-  timestamp: number; // seconds
+  timestamp: number;
   timeDisplay: string;
   description: string;
   color: string;
 }
 
-const CONVERSATION_DATA: Record<string, {
+interface TranscriptSegment {
+  speaker: string;
+  text: string;
+  startMs: number;
+  endMs: number;
+}
+
+interface ConversationData {
   person: string;
   date: string;
   time: string;
@@ -24,95 +31,17 @@ const CONVERSATION_DATA: Record<string, {
   color: string;
   aiNarrative: string;
   keyMoments: KeyMoment[];
-}> = {
-  "1": {
-    person: "Arthur",
-    date: "2026-02-14",
-    time: "7:08 AM",
-    duration: 180,
-    color: "#7AB89E",
-    aiNarrative: "A gentle morning check-in. You both woke up early and found each other in the kitchen. The conversation was light, mostly about sleep and plans for the day. There was laughter when you both reached for the same coffee cup. Short but warm.",
-    keyMoments: [
-      { id: "1", timestamp: 30, timeDisplay: "0:30", description: "Shared laughter", color: "#7AB89E" },
-    ],
-  },
-  "2": {
-    person: "Kevin",
-    date: "2026-02-14",
-    time: "9:12 AM",
-    duration: 480,
-    color: "#C4B496",
-    aiNarrative: "A brief work call. Task-oriented and efficient. You discussed project deadlines and next steps. Neutral energy throughout — professional and clear.",
-    keyMoments: [
-      { id: "1", timestamp: 120, timeDisplay: "2:00", description: "Project deadline discussed", color: "#C4B496" },
-    ],
-  },
-  "3": {
-    person: "Tane",
-    date: "2026-02-14",
-    time: "10:30 AM",
-    duration: 1320,
-    color: "#6AAAB4",
-    aiNarrative: "A long, easy conversation with your closest friend. You caught up on life, shared stories, laughed a lot. The energy was consistently warm and relaxed. This is the kind of conversation that fills you up.",
-    keyMoments: [
-      { id: "1", timestamp: 180, timeDisplay: "3:00", description: "Shared laughter", color: "#6AAAB4" },
-      { id: "2", timestamp: 600, timeDisplay: "10:00", description: "Deep personal story", color: "#7AB89E" },
-    ],
-  },
-  "4": {
-    person: "Arthur",
-    date: "2026-02-14",
-    time: "12:45 PM",
-    duration: 1080, // 18 minutes
-    color: "#B84A3A",
-    aiNarrative: "This started warmly — you were both laughing about something from yesterday. Around the 4-minute mark, the topic shifted to weekend plans and the energy changed. You spoke with a lot of conviction and held most of the conversation from that point. Arthur got quieter, responses shorter. By the end, something was left unfinished. There was a brief repair attempt around 15 minutes, but it felt incomplete.",
-    keyMoments: [
-      { id: "1", timestamp: 30, timeDisplay: "0:30", description: "Warm start", color: "#D4B07A" },
-      { id: "2", timestamp: 225, timeDisplay: "3:45", description: "Topic shifted to weekend plans", color: "#D4806A" },
-      { id: "3", timestamp: 440, timeDisplay: "7:20", description: "You raised voice slightly", color: "#C4684A" },
-      { id: "4", timestamp: 550, timeDisplay: "9:10", description: "Alex went quiet", color: "#B84A3A" },
-      { id: "5", timestamp: 940, timeDisplay: "15:40", description: "Brief repair attempt", color: "#7AB89E" },
-    ],
-  },
-  "5": {
-    person: "Kevin",
-    date: "2026-02-14",
-    time: "2:15 PM",
-    duration: 120,
-    color: "#C4B496",
-    aiNarrative: "A very brief check-in. Quick question and answer. Neutral and efficient.",
-    keyMoments: [],
-  },
-  "6": {
-    person: "Kevin",
-    date: "2026-02-14",
-    time: "4:30 PM",
-    duration: 840,
-    color: "#D4B07A",
-    aiNarrative: "A practical call with Kevin. You both reviewed updates and checked assumptions. There was a moment where concern showed up about timeline risk. You reassured each other and ended with clear next steps.",
-    keyMoments: [
-      { id: "1", timestamp: 300, timeDisplay: "5:00", description: "She expressed worry", color: "#D4B07A" },
-      { id: "2", timestamp: 480, timeDisplay: "8:00", description: "You reassured her", color: "#7AB89E" },
-    ],
-  },
-  "7": {
-    person: "Arthur",
-    date: "2026-02-14",
-    time: "8:00 PM",
-    duration: 2100,
-    color: "#7AB89E",
-    aiNarrative: "A long, peaceful evening conversation. You both decompressed from the day. The earlier tension was gone. You talked about dreams, plans, small moments. The conversation flowed easily. This is what repair looks like — not a big gesture, just time together, talking.",
-    keyMoments: [
-      { id: "1", timestamp: 600, timeDisplay: "10:00", description: "Shared a dream", color: "#7AB89E" },
-      { id: "2", timestamp: 1200, timeDisplay: "20:00", description: "Moment of connection", color: "#6AAAB4" },
-    ],
-  },
-};
+  transcriptSegments?: TranscriptSegment[];
+  biometricData?: BiometricData;
+  faceIdentification?: { personId: string; personName: string; confidence: string };
+  unknownFaceFramePath?: string;
+}
 
 export default function ConversationDrillInPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const [conversation, setConversation] = useState<typeof CONVERSATION_DATA[string] | null>(null);
+  const [conversation, setConversation] = useState<ConversationData | null>(null);
+  const [bioData, setBioData] = useState<BiometricData | null>(null);
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -121,30 +50,23 @@ export default function ConversationDrillInPage() {
   const [showReflectionInput, setShowReflectionInput] = useState(false);
   const [showTagInput, setShowTagInput] = useState(false);
   const [tagName, setTagName] = useState("");
-
-  const bioData = useMemo(() => getBiometricData(params.id as string), [params.id]);
+  const [showTranscript, setShowTranscript] = useState(false);
 
   const handleTagPerson = useCallback(() => {
     if (!tagName.trim() || !conversation) return;
     const name = tagName.trim();
-    const personId = name.toLowerCase().replace(/\s+/g, "_");
-    // Update conversation in-place
+    const personId = name.toLowerCase().replace(/\s+/g, "-");
     setConversation({ ...conversation, person: name });
     setIsTagged(true);
     setShowTagInput(false);
     setTagName("");
-    // Persist in sessionStorage for navigation
     try { sessionStorage.setItem(`conv-person-${params.id}`, name); } catch {}
     // If there was an unknown face frame, enroll it
-    if (conversation && (conversation as any).unknownFaceFramePath) {
+    if (conversation.unknownFaceFramePath) {
       void fetch("/api/face/enroll", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          personId,
-          name,
-          imageBase64: "", // The frame is already saved on disk via the unknown flow
-        }),
+        body: JSON.stringify({ personId, name, imageBase64: "" }),
       }).catch(() => {});
     }
   }, [tagName, conversation, params.id]);
@@ -152,31 +74,23 @@ export default function ConversationDrillInPage() {
   useEffect(() => {
     const id = params.id as string;
 
-    // Read person override stashed by the timeline / glaze page before navigation
     let personOverride: string | null = null;
     try { personOverride = sessionStorage.getItem(`conv-person-${id}`); } catch {}
-
-    const applyPerson = (data: typeof CONVERSATION_DATA[string]): typeof CONVERSATION_DATA[string] =>
-      personOverride ? { ...data, person: personOverride } : data;
-
-    const local = CONVERSATION_DATA[id];
-    if (local) {
-      const resolved = applyPerson(local);
-      setConversation(resolved);
-      setLoading(false);
-      setIsTagged(resolved.person !== "Untagged");
-      const saved = localStorage.getItem(`reflection-${id}`);
-      if (saved) setReflection(saved);
-      return;
-    }
 
     fetch(`/api/timeline/conversation?id=${encodeURIComponent(id)}`)
       .then((r) => r.json())
       .then((payload) => {
         if (payload?.conversation) {
-          const conv = applyPerson(payload.conversation);
+          const conv: ConversationData = payload.conversation;
+          if (personOverride) conv.person = personOverride;
           setConversation(conv);
-          setIsTagged(conv.person !== "Untagged");
+          setIsTagged(conv.person !== "Conversation" && conv.person !== "Untagged");
+
+          // Use biometric data from the API response
+          if (conv.biometricData) {
+            setBioData(conv.biometricData);
+          }
+
           const saved = localStorage.getItem(`reflection-${id}`);
           if (saved) setReflection(saved);
         } else {
@@ -206,26 +120,35 @@ export default function ConversationDrillInPage() {
     setShowReflectionInput(false);
   };
 
-  // Generate waveform data (simplified - in real app this would come from audio analysis)
+  // Generate waveform from biometric data if available, else synthetic
   const generateWaveform = (duration: number, moments: KeyMoment[]) => {
     const points = 200;
     const data: { x: number; y: number; color: string }[] = [];
     for (let i = 0; i < points; i++) {
       const x = (i / points) * 100;
       const time = (i / points) * duration;
-      
-      // Find closest moment to determine color
-      let color = "#C4B496"; // neutral
-      if (time < 240) color = "#D4B07A"; // warm start
-      else if (time < 550) color = "#D4806A"; // tense
-      else if (time < 940) color = "#B84A3A"; // stress
-      else color = "#7AB89E"; // repair
-      
-      // Generate organic wave shape
+
+      // Color from biometric stress if available
+      let color = "#C4B496";
+      if (bioData?.hrTimeline?.length) {
+        const bio = interpolateHR(bioData.hrTimeline, time);
+        color = getStressColor(bio.stress);
+      } else {
+        // Try to color based on nearby key moments
+        let nearestDist = Infinity;
+        for (const m of moments) {
+          const dist = Math.abs(time - m.timestamp);
+          if (dist < nearestDist) {
+            nearestDist = dist;
+            color = m.color;
+          }
+        }
+      }
+
       const baseY = 50;
       const amplitude = 20 + Math.sin(time * 0.1) * 15;
       const y = baseY + amplitude * Math.sin(i * 0.3);
-      
+
       data.push({ x, y, color });
     }
     return data;
@@ -326,13 +249,17 @@ export default function ConversationDrillInPage() {
               className="w-3 h-3 rounded-full"
               style={{ backgroundColor: conversation.color }}
             />
-            <span className="text-xs text-[rgba(255,255,255,0.4)]">Conversation</span>
+            <span className="text-xs text-[rgba(255,255,255,0.4)]">
+              {conversation.faceIdentification
+                ? `Identified: ${conversation.faceIdentification.personName} (${conversation.faceIdentification.confidence})`
+                : "Conversation"
+              }
+            </span>
           </div>
         </div>
 
-        {/* Audio Player */}
+        {/* Audio Waveform */}
         <div className="warm-card space-y-4">
-          {/* Waveform Visualization */}
           <div className="relative h-32 bg-[#12110F] rounded-lg overflow-hidden">
             <svg className="w-full h-full" viewBox="0 0 400 100" preserveAspectRatio="none">
               <defs>
@@ -356,8 +283,6 @@ export default function ConversationDrillInPage() {
                 fill="url(#waveGradient)"
                 opacity="0.6"
               />
-              
-              {/* AI Highlight Markers */}
               {conversation.keyMoments.map((moment) => {
                 const x = (moment.timestamp / conversation.duration) * 400;
                 return (
@@ -367,7 +292,7 @@ export default function ConversationDrillInPage() {
                       cy={50}
                       r="5"
                       fill={moment.color}
-                      className="cursor-pointer hover:r-7 transition-all"
+                      className="cursor-pointer"
                       style={{ filter: `drop-shadow(0 0 4px ${moment.color})` }}
                       onClick={() => handleMomentClick(moment)}
                     />
@@ -377,7 +302,6 @@ export default function ConversationDrillInPage() {
             </svg>
           </div>
 
-          {/* Playback Controls */}
           <div className="flex items-center justify-between">
             <span className="text-sm text-[rgba(255,255,255,0.5)]">{formatTime(currentTime)}</span>
             <button
@@ -395,7 +319,6 @@ export default function ConversationDrillInPage() {
           <div className="space-y-4 fade-up">
             <p className="text-xs uppercase tracking-wider text-[#8A7E72] font-light">Biometric Response</p>
 
-            {/* Summary Stats */}
             <div className="flex items-center gap-3 flex-wrap" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
               {[
                 { label: "Peak HR", value: `${bioData.peak.hr}`, color: getStressColor(bioData.peak.stress) },
@@ -410,7 +333,6 @@ export default function ConversationDrillInPage() {
               ))}
             </div>
 
-            {/* Charts Card */}
             <div className="warm-card" style={{ padding: 16 }}>
               <BiometricChart
                 data={bioData.hrTimeline}
@@ -419,7 +341,6 @@ export default function ConversationDrillInPage() {
               />
             </div>
 
-            {/* Message Correlation Cards */}
             {bioData.messageCorrelations.length > 0 && (
               <div className="space-y-3">
                 {bioData.messageCorrelations.map((corr, idx) => (
@@ -439,6 +360,48 @@ export default function ConversationDrillInPage() {
             </p>
           </div>
         </div>
+
+        {/* Transcript Section */}
+        {conversation.transcriptSegments && conversation.transcriptSegments.length > 0 && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <p className="text-xs uppercase tracking-wider text-[#8A7E72] font-light">Transcript</p>
+              <button
+                onClick={() => setShowTranscript(!showTranscript)}
+                className="text-xs text-[#D4B07A]"
+              >
+                {showTranscript ? "Collapse" : "Show"}
+              </button>
+            </div>
+            {showTranscript && (
+              <div className="warm-card space-y-3 max-h-96 overflow-y-auto">
+                {conversation.transcriptSegments.map((seg, idx) => {
+                  const timeStr = formatTime(Math.round(seg.startMs / 1000));
+                  const isMe = seg.speaker.toLowerCase() === "me" || seg.speaker === "S0";
+                  return (
+                    <div key={idx} className={`flex gap-3 ${isMe ? "flex-row-reverse" : ""}`}>
+                      <div
+                        className={`flex-1 rounded-lg px-3 py-2 ${
+                          isMe
+                            ? "bg-[#D4B07A]/15 text-[rgba(255,255,255,0.9)]"
+                            : "bg-[rgba(255,255,255,0.05)] text-[rgba(255,255,255,0.8)]"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-medium" style={{ color: isMe ? "#D4B07A" : "#6AAAB4" }}>
+                            {seg.speaker}
+                          </span>
+                          <span className="text-[10px] text-[rgba(255,255,255,0.3)]">{timeStr}</span>
+                        </div>
+                        <p className="text-sm leading-relaxed">{seg.text}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Key Moments Mini-Timeline */}
         <div className="space-y-4">

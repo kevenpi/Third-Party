@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Settings, Power } from "lucide-react";
-import { getDailySummary, getConversationPeakStress, getStressColor } from "@/lib/biometrics";
+import { getStressColor } from "@/lib/biometrics";
 
 interface Conversation {
   id: string;
@@ -59,9 +59,6 @@ interface LiveDebugEvent {
   };
 }
 
-const PEOPLE = ["Arthur", "Tane", "Kevin"] as const;
-const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"] as const;
-
 function getRecentDates(count: number): string[] {
   const out: string[] = [];
   const today = new Date();
@@ -71,31 +68,6 @@ function getRecentDates(count: number): string[] {
     out.push(d.toISOString().slice(0, 10));
   }
   return out;
-}
-
-function archiveConversationsForDate(date: string): Conversation[] {
-  const hash = [...date].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  const longMoment = hash % 3;
-  return TIMES.map((time, idx) => {
-    const person = PEOPLE[(hash + idx) % PEOPLE.length];
-    const isHighStress = idx === (hash + 2) % TIMES.length;
-    const isRepair = idx === (hash + 4) % TIMES.length;
-    const durationMin = isHighStress
-      ? 16 + ((hash + idx) % 11)
-      : isRepair
-        ? 20 + ((hash + idx) % 12)
-        : 4 + ((hash * 2 + idx) % 8);
-    return {
-      id: String((idx % 7) + 1),
-      time,
-      person,
-      durationSec: durationMin * 60,
-      size: idx === longMoment || isRepair ? "large" : durationMin > 10 ? "medium" : "small",
-      color: isHighStress ? "#B84A3A" : isRepair ? "#7AB89E" : idx % 2 === 0 ? "#6AAAB4" : "#C4B496",
-      colorName: isHighStress ? "stress-red" : isRepair ? "repair-sage" : "steady",
-      date
-    };
-  });
 }
 
 function getBubbleSize(size: "small" | "medium" | "large"): string {
@@ -235,11 +207,7 @@ export default function TimelinePage() {
     }
   }, [appOn]);
 
-  const displayConversations =
-    conversations.length === 0 && selectedDate !== today
-      ? archiveConversationsForDate(selectedDate)
-      : conversations;
-  const orderedConversations = [...displayConversations].sort((a, b) => timeToMinutes(b.time) - timeToMinutes(a.time));
+  const orderedConversations = [...conversations].sort((a, b) => timeToMinutes(b.time) - timeToMinutes(a.time));
   const todayDisplay = formatDateDisplay(selectedDate);
   const isToday = selectedDate === today;
   const latestEvent = recentEvents.length > 0 ? recentEvents[0] : null;
@@ -314,48 +282,49 @@ export default function TimelinePage() {
         </div>
       </div>
 
-      {/* Daily Biometric Summary */}
-      {(() => {
-        const summary = getDailySummary();
-        return (
-          <div className="max-w-md mx-auto px-4 pt-4">
-            <div
+      {/* Daily Summary */}
+      {conversations.length > 0 && (
+        <div className="max-w-md mx-auto px-4 pt-4">
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: 16,
+              padding: '14px 18px',
+              position: 'relative',
+              zIndex: 1,
+            }}
+          >
+            <p
               style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                borderRadius: 16,
-                padding: '14px 18px',
-                position: 'relative',
-                zIndex: 1,
+                fontSize: 13,
+                fontWeight: 500,
+                color: 'rgba(255,255,255,0.7)',
+                marginBottom: 4,
+                fontFamily: 'Fraunces, serif',
               }}
             >
-              <p
-                style={{
-                  fontSize: 13,
-                  fontWeight: 500,
-                  color: 'rgba(255,255,255,0.7)',
-                  marginBottom: 4,
-                  fontFamily: 'Fraunces, serif',
-                }}
-              >
-                Your Day
-              </p>
-              <p
-                style={{
-                  fontSize: 12,
-                  color: 'rgba(255,255,255,0.4)',
-                  fontFamily: 'Plus Jakarta Sans, sans-serif',
-                  lineHeight: 1.5,
-                }}
-              >
-                Avg HR {summary.avgHr} · {summary.stressMomentCount} stress moment{summary.stressMomentCount !== 1 ? 's' : ''} · Peak stress:{' '}
-                <span style={{ color: '#D4B07A', fontWeight: 500 }}>{summary.peakStress}</span>{' '}
-                ({summary.peakPerson}, {summary.peakTime})
-              </p>
-            </div>
+              Your Day
+            </p>
+            <p
+              style={{
+                fontSize: 12,
+                color: 'rgba(255,255,255,0.4)',
+                fontFamily: 'Plus Jakarta Sans, sans-serif',
+                lineHeight: 1.5,
+              }}
+            >
+              {conversations.length} conversation{conversations.length !== 1 ? 's' : ''} · {Math.round(conversations.reduce((s, c) => s + c.durationSec, 0) / 60)} min total
+              {(() => {
+                const stressConvs = conversations.filter(c => c.colorName === "stress-red");
+                return stressConvs.length > 0
+                  ? ` · ${stressConvs.length} stress moment${stressConvs.length !== 1 ? 's' : ''}`
+                  : '';
+              })()}
+            </p>
           </div>
-        );
-      })()}
+        </div>
+      )}
 
       {/* Timeline */}
       <div className="max-w-md mx-auto px-4 py-8 relative">
@@ -447,7 +416,7 @@ export default function TimelinePage() {
           <div className="flex flex-col items-center justify-center min-h-[40vh]">
             <p className="text-[rgba(255,255,255,0.5)]">Loading…</p>
           </div>
-        ) : displayConversations.length === 0 ? (
+        ) : conversations.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
             <div 
               className="w-24 h-24 rounded-full pulse-glow"
@@ -490,14 +459,9 @@ export default function TimelinePage() {
                     {/* Bubble */}
                     <div className="absolute left-1/2 -translate-x-1/2 z-10">
                       {(() => {
-                        const peakStress = getConversationPeakStress(conv.id);
-                        const stressGlowColor = peakStress > 70
-                          ? "#D4806A"
-                          : peakStress < 30
-                          ? "#7AB89E"
-                          : conv.color;
-                        const stressRing = peakStress > 70
-                          ? `0 0 20px ${stressGlowColor}, 0 0 40px ${stressGlowColor}, 0 0 8px rgba(212,128,106,0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)`
+                        const isStress = conv.colorName === "stress-red";
+                        const stressRing = isStress
+                          ? `0 0 20px ${conv.color}, 0 0 40px ${conv.color}, 0 0 8px rgba(212,128,106,0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)`
                           : undefined;
                         return (
                           <button
@@ -527,7 +491,7 @@ export default function TimelinePage() {
             </div>
 
             {/* Timeline End Label */}
-            {displayConversations.length > 0 && (
+            {conversations.length > 0 && (
               <div className="mt-12 relative text-center">
                 <p className="text-xs text-[rgba(255,255,255,0.2)] italic">Start of your day</p>
               </div>
