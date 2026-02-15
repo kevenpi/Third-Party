@@ -51,6 +51,16 @@ export default function ConversationDrillInPage() {
   const [showTagInput, setShowTagInput] = useState(false);
   const [tagName, setTagName] = useState("");
   const [showTranscript, setShowTranscript] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  const TAG_OPTIONS = [
+    { id: "important", label: "Important", emoji: "\u2B50" },
+    { id: "insightful", label: "Insightful", emoji: "\uD83D\uDCA1" },
+    { id: "heated", label: "Heated", emoji: "\uD83D\uDD25" },
+    { id: "emotional", label: "Emotional", emoji: "\uD83D\uDE22" },
+    { id: "recurring", label: "Recurring Issue", emoji: "\uD83D\uDD01" },
+    { id: "growth", label: "Growth Moment", emoji: "\uD83C\uDF31" },
+  ];
 
   const handleTagPerson = useCallback(() => {
     if (!tagName.trim() || !conversation) return;
@@ -93,6 +103,11 @@ export default function ConversationDrillInPage() {
 
           const saved = localStorage.getItem(`reflection-${id}`);
           if (saved) setReflection(saved);
+
+          const savedTags = localStorage.getItem(`tags-${id}`);
+          if (savedTags) {
+            try { setSelectedTags(JSON.parse(savedTags)); } catch {}
+          }
         } else {
           setConversation(null);
         }
@@ -113,6 +128,16 @@ export default function ConversationDrillInPage() {
   const handleMomentClick = (moment: KeyMoment) => {
     setCurrentTime(moment.timestamp);
     setIsPlaying(true);
+  };
+
+  const handleToggleTag = (tagId: string) => {
+    setSelectedTags((prev) => {
+      const next = prev.includes(tagId)
+        ? prev.filter((t) => t !== tagId)
+        : [...prev, tagId];
+      localStorage.setItem(`tags-${params.id}`, JSON.stringify(next));
+      return next;
+    });
   };
 
   const handleSaveReflection = () => {
@@ -256,6 +281,26 @@ export default function ConversationDrillInPage() {
               }
             </span>
           </div>
+        </div>
+
+        {/* Tag Pills */}
+        <div className="flex flex-wrap gap-2" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          {TAG_OPTIONS.map((tag) => {
+            const active = selectedTags.includes(tag.id);
+            return (
+              <button
+                key={tag.id}
+                onClick={() => handleToggleTag(tag.id)}
+                className={`px-3 py-1 rounded-full text-sm transition-all active:scale-95 ${
+                  active
+                    ? "bg-[rgba(255,255,255,0.1)] border border-[#C4B496] text-[#C4B496]"
+                    : "bg-transparent border border-[rgba(255,255,255,0.12)] text-[rgba(255,255,255,0.4)]"
+                }`}
+              >
+                {tag.emoji} {tag.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Audio Waveform */}

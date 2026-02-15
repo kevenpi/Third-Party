@@ -155,6 +155,16 @@ export default function TimelinePage() {
   const [debugEvents, setDebugEvents] = useState<LiveDebugEvent[]>([]);
   const [showLiveTranscript, setShowLiveTranscript] = useState(false);
   const dateScrollerRef = useRef<HTMLDivElement | null>(null);
+  const [convTags, setConvTags] = useState<Record<string, string[]>>({});
+
+  const TAG_EMOJI: Record<string, string> = {
+    important: "\u2B50",
+    insightful: "\uD83D\uDCA1",
+    heated: "\uD83D\uDD25",
+    emotional: "\uD83D\uDE22",
+    recurring: "\uD83D\uDD01",
+    growth: "\uD83C\uDF31",
+  };
 
   const loadBubbles = useCallback(async (date: string) => {
     try {
@@ -198,6 +208,20 @@ export default function TimelinePage() {
       })
       .catch(() => {});
   }, [today]);
+
+  useEffect(() => {
+    const tagMap: Record<string, string[]> = {};
+    for (const conv of conversations) {
+      try {
+        const raw = localStorage.getItem(`tags-${conv.id}`);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) tagMap[conv.id] = parsed;
+        }
+      } catch {}
+    }
+    setConvTags(tagMap);
+  }, [conversations]);
 
   useEffect(() => {
     if (!dateScrollerRef.current) return;
@@ -644,6 +668,9 @@ export default function TimelinePage() {
                         <p className="text-sm font-medium text-[rgba(255,255,255,0.95)] truncate">{conv.person}</p>
                         <p className="text-xs text-[rgba(255,255,255,0.5)]">{conv.time}</p>
                         <p className="text-xs text-[rgba(255,255,255,0.4)]">{formatDuration(conv.durationSec)}</p>
+                        {convTags[conv.id] && (
+                          <p className="text-xs mt-0.5">{convTags[conv.id].map((t) => TAG_EMOJI[t] || "").join(" ")}</p>
+                        )}
                       </div>
                     )}
 
@@ -674,6 +701,9 @@ export default function TimelinePage() {
                         <p className="text-sm font-medium text-[rgba(255,255,255,0.95)] truncate">{conv.person}</p>
                         <p className="text-xs text-[rgba(255,255,255,0.5)]">{conv.time}</p>
                         <p className="text-xs text-[rgba(255,255,255,0.4)]">{formatDuration(conv.durationSec)}</p>
+                        {convTags[conv.id] && (
+                          <p className="text-xs mt-0.5">{convTags[conv.id].map((t) => TAG_EMOJI[t] || "").join(" ")}</p>
+                        )}
                       </div>
                     )}
                   </div>
