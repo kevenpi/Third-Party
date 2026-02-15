@@ -266,9 +266,22 @@ export async function seedSampleConversations(): Promise<boolean> {
     { sessionId: "seed_arthur_1", time: "7:08 AM", person: "Arthur", durationSec: 180, durationMin: 3, size: "small", color: "#7AB89E", colorName: "calm-sage", date: dateStr(0), score: 0.4, cortisol: 0.2, heartRate: 0.4, meaningfulness: 0.7 },
     { sessionId: "seed_arthur_2", time: "12:45 PM", person: "Arthur", durationSec: 1080, durationMin: 18, size: "large", color: "#B84A3A", colorName: "stress-red", date: dateStr(0), score: 0.8, cortisol: 0.75, heartRate: 0.7, meaningfulness: 0.6 },
     { sessionId: "seed_arthur_3", time: "8:00 PM", person: "Arthur", durationSec: 2100, durationMin: 35, size: "large", color: "#7AB89E", colorName: "repair-sage", date: dateStr(0), score: 0.9, cortisol: 0.3, heartRate: 0.45, meaningfulness: 0.85 },
-    // Arthur — yesterday
-    { sessionId: "seed_arthur_4", time: "9:30 AM", person: "Arthur", durationSec: 600, durationMin: 10, size: "medium", color: "#6AAAB4", colorName: "steady", date: dateStr(1), score: 0.5, cortisol: 0.3, heartRate: 0.4, meaningfulness: 0.6 },
-    { sessionId: "seed_arthur_5", time: "7:15 PM", person: "Arthur", durationSec: 1500, durationMin: 25, size: "large", color: "#D4B07A", colorName: "warm-amber", date: dateStr(1), score: 0.7, cortisol: 0.5, heartRate: 0.55, meaningfulness: 0.7 },
+    // ---------------------------------------------------------------
+    // DEMO DATA - Yesterday's conversations (demo day for judges)
+    // Each person has 1-2 conversations with full biometric data
+    // Biometric files: data/biometrics/seed_demo_*.json
+    // ---------------------------------------------------------------
+    // Arthur - yesterday (escalation + repair)
+    { sessionId: "seed_demo_arthur_1", time: "12:40 PM", person: "Arthur", durationSec: 1200, durationMin: 20, size: "large", color: "#B84A3A", colorName: "stress-red", date: dateStr(1), score: 0.8, cortisol: 0.78, heartRate: 0.75, meaningfulness: 0.5 },
+    { sessionId: "seed_demo_arthur_2", time: "9:05 PM", person: "Arthur", durationSec: 300, durationMin: 5, size: "small", color: "#7AB89E", colorName: "repair-sage", date: dateStr(1), score: 0.45, cortisol: 0.25, heartRate: 0.4, meaningfulness: 0.75 },
+    // Tane - yesterday (calm catch-up + empathic listening)
+    { sessionId: "seed_demo_tane_1", time: "10:30 AM", person: "Tane", durationSec: 1320, durationMin: 22, size: "large", color: "#7AB89E", colorName: "calm-sage", date: dateStr(1), score: 0.85, cortisol: 0.12, heartRate: 0.35, meaningfulness: 0.9 },
+    { sessionId: "seed_demo_tane_2", time: "3:15 PM", person: "Tane", durationSec: 660, durationMin: 11, size: "medium", color: "#6AAAB4", colorName: "steady", date: dateStr(1), score: 0.5, cortisol: 0.35, heartRate: 0.45, meaningfulness: 0.6 },
+    // Kevin - yesterday (expense friction + neutral logistics)
+    { sessionId: "seed_demo_kevin_1", time: "9:25 AM", person: "Kevin", durationSec: 540, durationMin: 9, size: "medium", color: "#D4B07A", colorName: "warm-amber", date: dateStr(1), score: 0.55, cortisol: 0.45, heartRate: 0.55, meaningfulness: 0.4 },
+    { sessionId: "seed_demo_kevin_2", time: "6:45 PM", person: "Kevin", durationSec: 240, durationMin: 4, size: "small", color: "#C4B496", colorName: "neutral-sand", date: dateStr(1), score: 0.25, cortisol: 0.15, heartRate: 0.35, meaningfulness: 0.3 },
+    // Jessica - yesterday (slow-burn trip planning tension)
+    { sessionId: "seed_demo_jessica_1", time: "8:30 PM", person: "Jessica", durationSec: 600, durationMin: 10, size: "large", color: "#E8A0BF", colorName: "warm-rose", date: dateStr(1), score: 0.65, cortisol: 0.55, heartRate: 0.55, meaningfulness: 0.5 },
     // Arthur — 3 days ago
     { sessionId: "seed_arthur_6", time: "6:45 PM", person: "Arthur", durationSec: 420, durationMin: 7, size: "small", color: "#7AB89E", colorName: "calm-sage", date: dateStr(3), score: 0.4, cortisol: 0.2, heartRate: 0.35, meaningfulness: 0.65 },
     // Arthur — 5 days ago

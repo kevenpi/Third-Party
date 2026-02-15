@@ -198,7 +198,7 @@ export default function PeoplePage() {
             {filteredPeople.map((person) => (
               <button
                 key={person.id}
-                onClick={() => router.push(`/glaze/${person.id}`)}
+                onClick={() => router.push(`/people/${person.id}`)}
                 className="w-full warm-card flex items-center gap-4 hover:bg-[#2A2623] transition-all text-left"
               >
                 {/* Avatar */}

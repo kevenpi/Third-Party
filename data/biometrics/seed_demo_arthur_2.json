@@ -1,0 +1,78 @@
+{
+  "participant": "Arthur",
+  "startTime": "2026-02-13T21:05:00",
+  "duration": "5 min",
+  "hrTimeline": [
+    { "elapsed": 0, "hr": 70, "hrv": 44, "stress": 25 },
+    { "elapsed": 10, "hr": 70, "hrv": 44, "stress": 25 },
+    { "elapsed": 20, "hr": 71, "hrv": 44, "stress": 25 },
+    { "elapsed": 30, "hr": 71, "hrv": 43, "stress": 26 },
+    { "elapsed": 40, "hr": 70, "hrv": 44, "stress": 25 },
+    { "elapsed": 50, "hr": 70, "hrv": 44, "stress": 25 },
+    { "elapsed": 60, "hr": 69, "hrv": 44, "stress": 24 },
+    { "elapsed": 70, "hr": 68, "hrv": 45, "stress": 23 },
+    { "elapsed": 80, "hr": 68, "hrv": 45, "stress": 23 },
+    { "elapsed": 90, "hr": 69, "hrv": 44, "stress": 24 },
+    { "elapsed": 100, "hr": 70, "hrv": 44, "stress": 25 },
+    { "elapsed": 110, "hr": 70, "hrv": 43, "stress": 26 },
+    { "elapsed": 120, "hr": 71, "hrv": 43, "stress": 26 },
+    { "elapsed": 130, "hr": 72, "hrv": 43, "stress": 27 },
+    { "elapsed": 140, "hr": 72, "hrv": 42, "stress": 27 },
+    { "elapsed": 150, "hr": 73, "hrv": 42, "stress": 28 },
+    { "elapsed": 160, "hr": 73, "hrv": 42, "stress": 28 },
+    { "elapsed": 170, "hr": 74, "hrv": 42, "stress": 28 },
+    { "elapsed": 180, "hr": 73, "hrv": 42, "stress": 27 },
+    { "elapsed": 190, "hr": 72, "hrv": 43, "stress": 27 },
+    { "elapsed": 200, "hr": 71, "hrv": 43, "stress": 26 },
+    { "elapsed": 210, "hr": 71, "hrv": 43, "stress": 26 },
+    { "elapsed": 220, "hr": 70, "hrv": 43, "stress": 25 },
+    { "elapsed": 230, "hr": 70, "hrv": 43, "stress": 25 },
+    { "elapsed": 240, "hr": 71, "hrv": 43, "stress": 26 },
+    { "elapsed": 250, "hr": 71, "hrv": 42, "stress": 26 },
+    { "elapsed": 260, "hr": 72, "hrv": 42, "stress": 27 },
+    { "elapsed": 270, "hr": 72, "hrv": 42, "stress": 27 },
+    { "elapsed": 280, "hr": 71, "hrv": 42, "stress": 26 },
+    { "elapsed": 290, "hr": 71, "hrv": 43, "stress": 26 },
+    { "elapsed": 300, "hr": 70, "hrv": 43, "stress": 25 }
+  ],
+  "baseline": { "hr": 70, "hrv": 44, "stress": 25 },
+  "peak": { "hr": 74, "hrv": 42, "elapsedAt": 170, "stress": 28 },
+  "recovery": { "minutes": 0 },
+  "messageCorrelations": [
+    {
+      "elapsed": 60,
+      "messagePreview": "Hey, sorry about earlier. I was being pushy",
+      "sender": "Arthur",
+      "hrBefore": 70,
+      "hrAfter": 68,
+      "hrvBefore": 44,
+      "hrvAfter": 45,
+      "stressBefore": 25,
+      "stressAfter": 23,
+      "annotation": {
+        "type": "positive",
+        "label": "Relief response",
+        "text": "Your HR dipped 2 bpm and HRV rose slightly to 45ms the moment Arthur apologized. Stress dropped from 25 to 23. This is a small but genuine relief signature - your body recognized the repair bid and responded with a parasympathetic nudge. Even a modest 2 bpm shift matters when your system was already carrying tension from the earlier conversation.",
+        "icon": "+"
+      }
+    },
+    {
+      "elapsed": 180,
+      "messagePreview": "It's fine. I just need more time with stuff like that",
+      "sender": "You",
+      "hrBefore": 74,
+      "hrAfter": 72,
+      "hrvBefore": 42,
+      "hrvAfter": 43,
+      "stressBefore": 28,
+      "stressAfter": 27,
+      "annotation": {
+        "type": "positive",
+        "label": "Genuine connection",
+        "text": "Your HR settled from its minor peak of 74 back toward 72 as you expressed your needs calmly. HRV held steady at 42-43ms throughout. Stress stayed low at 27-28 the entire time. This is what healthy repair looks like biometrically - no defensive spikes, no HRV collapse. Your body stayed in a safe, regulated zone while you communicated a boundary.",
+        "icon": "+"
+      }
+    }
+  ],
+  "overallInsight": "This brief 5-minute check-in was a quiet but meaningful repair moment. Your HR stayed within a narrow 68-74 bpm range and HRV held between 42-45ms throughout - a remarkably flat profile compared to the sharp escalation pattern in your earlier conversation with Arthur. Stress never exceeded 28, compared to the peak of 78 from earlier in the day. The most telling moment was Arthur's apology at 1:00, which triggered an immediate 2 bpm HR dip and slight HRV recovery. Your body trusted the repair. When you set a boundary at 3:00 saying you need more time, your HR barely moved - suggesting you felt safe enough with Arthur to express a need without activating a defensive response. This conversation did not fully resolve the earlier tension (your baseline of 70 bpm was still elevated above your morning 66), but it moved the needle in the right direction."
+}

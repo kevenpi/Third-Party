@@ -46,6 +46,11 @@ const PERSON_INSIGHTS: Record<string, Insight[]> = {
     { text: "Late-afternoon conversations show the highest chance of defensive tone.", color: "#B84A3A" },
     { text: "When you reflect back his point first, the conversation stays collaborative.", color: "#7AB89E" },
   ],
+  jessica: [
+    { text: "Jessica uses humor to redirect when conversations approach real preferences. Your body relaxes briefly but the underlying tension stays unresolved.", color: "#D4B07A" },
+    { text: "You tend to concede during planning conversations with Jessica rather than naming what you actually want. Your HR rises when you say 'whatever works.'", color: "#D4806A" },
+    { text: "Your calmest moments with Jessica happen when the conversation is unstructured - no agenda, no decisions to make.", color: "#7AB89E" },
+  ],
 };
 
 // ---------------------------------------------------------------------------
