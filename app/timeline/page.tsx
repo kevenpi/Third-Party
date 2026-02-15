@@ -29,6 +29,10 @@ interface LiveAwarenessEvent {
   transcriptWords?: number;
   transcriptConfidence?: number;
   transcriptText?: string;
+  speakerHints?: Array<{
+    personTag: string;
+    speakingScore: number;
+  }>;
 }
 
 interface LiveDebugEvent {
@@ -56,6 +60,12 @@ interface LiveDebugEvent {
     audioSpeechBlend?: boolean;
     verdict?: boolean;
     reason?: string;
+    speakerLabel?: string;
+    speakerConfidence?: number;
+    diarizationBackend?: "openai" | "pyannote";
+    segmentStartMs?: number;
+    segmentEndMs?: number;
+    conversationId?: string;
   };
 }
 
@@ -244,7 +254,34 @@ export default function TimelinePage() {
         .slice(0, 5),
     [recentEvents]
   );
-  const recentDebug = useMemo(() => debugEvents.slice(0, 8), [debugEvents]);
+  const liveSpeakerFeed = useMemo(
+    () =>
+      recentEvents
+        .map((event) => ({
+          timestamp: event.timestamp,
+          transcriptText: event.transcriptText ?? "",
+          speakerHints: [...(event.speakerHints ?? [])]
+            .sort((a, b) => b.speakingScore - a.speakingScore)
+            .slice(0, 2),
+        }))
+        .filter((event) => event.speakerHints.length > 0 || event.transcriptText.trim().length > 0)
+        .slice(0, 8),
+    [recentEvents]
+  );
+  const diarizationFeed = useMemo(
+    () =>
+      debugEvents
+        .filter((event) => event.category === "pipeline" && !!event.data?.speakerLabel && !!event.data?.transcriptText)
+        .slice(0, 12),
+    [debugEvents]
+  );
+  const recentDebug = useMemo(
+    () =>
+      debugEvents
+        .filter((event) => !(event.category === "pipeline" && !!event.data?.speakerLabel))
+        .slice(0, 8),
+    [debugEvents]
+  );
   const liveCoherent = latestEvent
     ? latestEvent.audioLevel >= 0.05 && ((latestEvent.transcriptWords ?? 0) >= 2)
     : false;
@@ -448,17 +485,66 @@ export default function TimelinePage() {
               </div>
 
               <div className="space-y-2">
-                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">What is being heard right now</p>
-                {transcriptStream.length === 0 ? (
-                  <p className="text-xs text-[rgba(255,255,255,0.4)]">No transcript chunks yet</p>
+                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Live turn hints (Me vs contact)</p>
+                {liveSpeakerFeed.length === 0 ? (
+                  <p className="text-xs text-[rgba(255,255,255,0.4)]">No live speaker hints yet</p>
                 ) : (
-                  <div className="space-y-1.5">
-                    {transcriptStream.map((event) => (
-                      <div key={event.timestamp} className="text-xs text-[rgba(255,255,255,0.68)] bg-[rgba(255,255,255,0.03)] rounded px-2 py-1.5">
-                        <span className="text-[rgba(255,255,255,0.45)] mr-2">
-                          {new Date(event.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
-                        </span>
-                        "{event.transcriptText}"
+                  <div className="space-y-1.5 max-h-40 overflow-auto pr-1">
+                    {liveSpeakerFeed.map((event) => (
+                      <div key={event.timestamp} className="text-xs text-[rgba(255,255,255,0.72)] bg-[rgba(255,255,255,0.03)] rounded px-2 py-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[rgba(255,255,255,0.45)]">
+                            {new Date(event.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                          </span>
+                          <div className="flex items-center gap-1">
+                            {event.speakerHints.map((hint) => (
+                              <span
+                                key={`${event.timestamp}-${hint.personTag}`}
+                                className="rounded-full border border-[rgba(255,255,255,0.14)] px-1.5 py-0.5 text-[10px] text-[rgba(255,255,255,0.82)]"
+                              >
+                                {hint.personTag} {Math.round(hint.speakingScore * 100)}%
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        {event.transcriptText.trim().length > 0 ? (
+                          <p className="mt-1 text-[rgba(255,255,255,0.58)] line-clamp-2">
+                            "{event.transcriptText}"
+                          </p>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Diarized turns (latest processed clips)</p>
+                {diarizationFeed.length === 0 ? (
+                  <p className="text-xs text-[rgba(255,255,255,0.4)]">No diarized turns yet. Speak for a bit, then pause to process.</p>
+                ) : (
+                  <div className="space-y-1.5 max-h-48 overflow-auto pr-1">
+                    {diarizationFeed.map((event) => (
+                      <div key={event.id} className="rounded border border-[rgba(255,255,255,0.1)] bg-[rgba(0,0,0,0.2)] px-2 py-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[11px] font-medium text-[#D4B07A]">
+                            {event.data?.speakerLabel ?? "Speaker"}
+                          </span>
+                          <span className="text-[10px] text-[rgba(255,255,255,0.45)]">
+                            {event.data?.diarizationBackend ?? "openai"} · {new Date(event.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-xs text-[rgba(255,255,255,0.75)] line-clamp-3">
+                          {event.data?.transcriptText ?? event.message}
+                        </p>
+                        <p className="mt-1 text-[10px] text-[rgba(255,255,255,0.45)]">
+                          {typeof event.data?.segmentStartMs === "number" && typeof event.data?.segmentEndMs === "number"
+                            ? `${(event.data.segmentStartMs / 1000).toFixed(1)}s → ${(event.data.segmentEndMs / 1000).toFixed(1)}s`
+                            : "segment time unavailable"}
+                          {typeof event.data?.speakerConfidence === "number"
+                            ? ` | conf ${event.data.speakerConfidence.toFixed(2)}`
+                            : ""}
+                        </p>
                       </div>
                     ))}
                   </div>

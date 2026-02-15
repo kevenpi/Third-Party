@@ -14,6 +14,7 @@ interface PersonSummary {
   lastTalked: string | null;
   dominantColors: string[];
   photoCount: number;
+  avatarUrl: string | null;
 }
 
 /**
@@ -38,6 +39,7 @@ export async function GET() {
         lastTalked: person.lastSeenAt ?? null,
         dominantColors: [],
         photoCount: person.photoCount,
+        avatarUrl: `/api/people/${encodeURIComponent(person.id)}/avatar${person.avatarUpdatedAt ? `?v=${encodeURIComponent(person.avatarUpdatedAt)}` : ""}`,
       });
     }
 
@@ -75,6 +77,7 @@ export async function GET() {
             lastTalked: bubble.date,
             dominantColors: [bubble.color],
             photoCount: 0,
+            avatarUrl: null,
           });
         }
       }

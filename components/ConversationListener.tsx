@@ -64,6 +64,7 @@ export function ConversationListener() {
   const [audioLevel, setAudioLevel] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
   const [identifiedPerson, setIdentifiedPerson] = useState<FaceIdentification | null>(null);
+  const [uncertainCandidate, setUncertainCandidate] = useState<FaceIdentification | null>(null);
   const [faceScanning, setFaceScanning] = useState(false);
   const [faceError, setFaceError] = useState<string | null>(null);
   const [showCamera, setShowCamera] = useState(true);
@@ -86,6 +87,7 @@ export function ConversationListener() {
   const transcriptTextRef = useRef<string>("");
   const transcriptWordsRef = useRef<number>(0);
   const transcriptConfidenceRef = useRef<number>(0);
+  const transcriptUpdatedAtRef = useRef<number>(0);
   const recognitionRef = useRef<any>(null);
 
   // Camera / Face
@@ -94,6 +96,7 @@ export function ConversationListener() {
   const cameraStreamRef = useRef<MediaStream | null>(null);
   const identifiedPersonRef = useRef<FaceIdentification | null>(null);
   const faceCheckIntervalRef = useRef<number | null>(null);
+  const uncertainDismissUntilRef = useRef<number>(0);
 
   // Biometrics
   const bioIntervalRef = useRef<number | null>(null);
@@ -114,9 +117,6 @@ export function ConversationListener() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, audioBase64, mimeType: mimeTypeRef.current }),
       });
-      const form = new FormData();
-      form.append("audio", blob, `clip_${sessionId}.webm`);
-      void fetch("/api/voice/processOpenAI", { method: "POST", body: form });
     } catch {
       /* ignore */
     }
@@ -156,12 +156,34 @@ export function ConversationListener() {
         };
         identifiedPersonRef.current = faceId;
         setIdentifiedPerson(faceId);
+        setUncertainCandidate(null);
         setFaceError(null);
       } else {
+        identifiedPersonRef.current = null;
         setIdentifiedPerson(null);
-        // No enrolled faces at all?
+        const uncertain = data?.uncertainCandidate as
+          | { id: string; name: string; confidence: "high" | "medium" | "low" }
+          | null
+          | undefined;
+        if (
+          uncertain &&
+          Date.now() > uncertainDismissUntilRef.current &&
+          uncertain.id &&
+          uncertain.name
+        ) {
+          setUncertainCandidate({
+            personId: uncertain.id,
+            personName: uncertain.name,
+            confidence: uncertain.confidence,
+          });
+          setFaceError(null);
+        } else {
+          setUncertainCandidate(null);
+        }
         if (data.noEnrolledFaces) {
           setFaceError("No faces enrolled");
+        } else if (!uncertain) {
+          setFaceError(null);
         }
       }
       // If no match, also try saving as unknown face for later tagging
@@ -192,7 +214,36 @@ export function ConversationListener() {
     }
     identifiedPersonRef.current = null;
     setIdentifiedPerson(null);
+    setUncertainCandidate(null);
     setFaceScanning(false);
+    setFaceError(null);
+  }, []);
+
+  const confirmUncertainCandidate = useCallback(() => {
+    const candidate = uncertainCandidate;
+    if (!candidate) return;
+    const confirmed: FaceIdentification = {
+      personId: candidate.personId,
+      personName: candidate.personName,
+      confidence: "high",
+    };
+    identifiedPersonRef.current = confirmed;
+    setIdentifiedPerson(confirmed);
+    setUncertainCandidate(null);
+    setFaceError(null);
+    void fetch("/api/face/identify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        confirmPersonId: confirmed.personId,
+        confirmPersonName: confirmed.personName,
+      }),
+    }).catch(() => {});
+  }, [uncertainCandidate]);
+
+  const dismissUncertainCandidate = useCallback(() => {
+    setUncertainCandidate(null);
+    uncertainDismissUntilRef.current = Date.now() + 20_000;
   }, []);
 
   // ------------------------------------------------------------------
@@ -330,10 +381,22 @@ export function ConversationListener() {
     // Build speaker hints — include face-identified person if available
     const speakerHints: { personTag: string; speakingScore: number }[] = [];
     const faceId = identifiedPersonRef.current;
+    const hasSpeechNow = audioLevel >= 0.05;
+    const transcriptFresh = Date.now() - transcriptUpdatedAtRef.current < 1_800;
+    const meScore = hasSpeechNow
+      ? Math.min(1, 0.45 + (transcriptFresh ? 0.45 : 0.15) + audioLevel * 0.35)
+      : 0.08;
+
+    speakerHints.push({ personTag: "Me", speakingScore: meScore });
+
     if (faceId) {
-      speakerHints.push({ personTag: faceId.personName, speakingScore: 0.95 });
+      const otherScore = hasSpeechNow
+        ? transcriptFresh
+          ? Math.min(1, 0.2 + audioLevel * 0.2)
+          : Math.min(1, 0.62 + audioLevel * 0.35)
+        : 0.08;
+      speakerHints.push({ personTag: faceId.personName, speakingScore: otherScore });
     }
-    speakerHints.push({ personTag: "Me", speakingScore: Math.min(1, audioLevel + 0.45) });
 
     try {
       const response = await fetch("/api/conversationAwareness/ingestSignal", {
@@ -435,6 +498,7 @@ export function ConversationListener() {
       transcriptTextRef.current = "";
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
+      transcriptUpdatedAtRef.current = 0;
       wasRecordingRef.current = false;
       return;
     }
@@ -483,6 +547,7 @@ export function ConversationListener() {
             transcriptTextRef.current = transcript.slice(0, 500);
             transcriptWordsRef.current = transcript.split(/\s+/).filter(Boolean).length;
             transcriptConfidenceRef.current = bestConfidence > 0 ? Math.min(1, bestConfidence) : 0.5;
+            transcriptUpdatedAtRef.current = Date.now();
           };
           recognition.onerror = () => {};
           recognition.onend = () => {
@@ -566,6 +631,7 @@ export function ConversationListener() {
       transcriptTextRef.current = "";
       transcriptWordsRef.current = 0;
       transcriptConfidenceRef.current = 0;
+      transcriptUpdatedAtRef.current = 0;
       wasRecordingRef.current = false;
     };
   }, [listening, ingestMic, stopBrowserRecording, startFaceChecks, stopFaceChecks]);
@@ -592,10 +658,11 @@ export function ConversationListener() {
   const spread = 4 + intensity * 24;
   const opacity = 0.4 + intensity * 0.6;
 
+  const faceState = identifiedPerson ?? uncertainCandidate;
   const confidenceColor =
-    identifiedPerson?.confidence === "high"
+    faceState?.confidence === "high"
       ? "#7AB89E"
-      : identifiedPerson?.confidence === "medium"
+      : faceState?.confidence === "medium"
         ? "#D4B07A"
         : "#B84A3A";
 
@@ -654,8 +721,8 @@ export function ConversationListener() {
               width: 6,
               height: 6,
               borderRadius: "50%",
-              background: identifiedPerson ? confidenceColor : faceError ? "#B84A3A" : faceScanning ? "#D4B07A" : "rgba(255,255,255,0.25)",
-              boxShadow: identifiedPerson ? `0 0 6px ${confidenceColor}` : faceError ? "0 0 6px #B84A3A" : "none",
+              background: faceState ? confidenceColor : faceError ? "#B84A3A" : faceScanning ? "#D4B07A" : "rgba(255,255,255,0.25)",
+              boxShadow: faceState ? `0 0 6px ${confidenceColor}` : faceError ? "0 0 6px #B84A3A" : "none",
               transition: "all 0.3s ease",
             }}
           />
@@ -668,11 +735,11 @@ export function ConversationListener() {
               width: 160,
               borderRadius: "0 0 12px 12px",
               overflow: "hidden",
-              border: identifiedPerson
+              border: faceState
                 ? `2px solid ${confidenceColor}`
                 : "1px solid rgba(255,255,255,0.1)",
               background: "#000",
-              boxShadow: identifiedPerson
+              boxShadow: faceState
                 ? `0 4px 20px rgba(0,0,0,0.6), 0 0 12px ${confidenceColor}40`
                 : "0 4px 20px rgba(0,0,0,0.6)",
               position: "relative",
@@ -727,10 +794,9 @@ export function ConversationListener() {
                 padding: "6px 10px",
                 background: "rgba(18,17,15,0.92)",
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 6,
-                minHeight: 28,
+                flexDirection: "column",
+                gap: 7,
+                minHeight: uncertainCandidate ? 60 : 28,
               }}
             >
               {identifiedPerson ? (
@@ -768,6 +834,68 @@ export function ConversationListener() {
                   >
                     {identifiedPerson.confidence}
                   </span>
+                </>
+              ) : uncertainCandidate ? (
+                <>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        color: "#D4B07A",
+                        fontFamily: "Plus Jakarta Sans, sans-serif",
+                        letterSpacing: "0.03em",
+                      }}
+                    >
+                      Not fully sure. Is this {uncertainCandidate.personName}?
+                    </span>
+                    <span
+                      style={{
+                        fontSize: 9,
+                        color: confidenceColor,
+                        fontFamily: "Plus Jakarta Sans, sans-serif",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.04em",
+                      }}
+                    >
+                      {uncertainCandidate.confidence}
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", gap: 6 }}>
+                    <button
+                      type="button"
+                      onClick={confirmUncertainCandidate}
+                      style={{
+                        flex: 1,
+                        borderRadius: 8,
+                        border: "1px solid rgba(122,184,158,0.45)",
+                        background: "rgba(122,184,158,0.15)",
+                        color: "#7AB89E",
+                        fontSize: 10,
+                        fontWeight: 600,
+                        padding: "5px 0",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      type="button"
+                      onClick={dismissUncertainCandidate}
+                      style={{
+                        flex: 1,
+                        borderRadius: 8,
+                        border: "1px solid rgba(255,255,255,0.16)",
+                        background: "rgba(255,255,255,0.03)",
+                        color: "rgba(255,255,255,0.7)",
+                        fontSize: 10,
+                        fontWeight: 600,
+                        padding: "5px 0",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Not sure
+                    </button>
+                  </div>
                 </>
               ) : faceError ? (
                 <span

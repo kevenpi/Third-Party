@@ -12,6 +12,7 @@ interface PersonSummary {
   lastTalked: string | null;
   dominantColors: string[];
   photoCount: number;
+  avatarUrl?: string | null;
 }
 
 // No hardcoded fallback — sample data is seeded into the timeline by the API.
@@ -202,13 +203,23 @@ export default function PeoplePage() {
                 className="w-full warm-card flex items-center gap-4 hover:bg-[#2A2623] transition-all text-left"
               >
                 {/* Avatar */}
-                <div
-                  className="w-14 h-14 rounded-full flex items-center justify-center text-[#12110F] font-semibold shrink-0"
-                  style={{
-                    background: `linear-gradient(135deg, ${person.dominantColors[0] ?? "#C4B496"}, ${person.dominantColors[1] ?? "#6AAAB4"})`,
-                  }}
-                >
-                  {getInitials(person.name)}
+                <div className="w-14 h-14 rounded-full shrink-0 overflow-hidden">
+                  {person.avatarUrl ? (
+                    <img
+                      src={person.avatarUrl}
+                      alt={person.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div
+                      className="w-full h-full rounded-full flex items-center justify-center text-[#12110F] font-semibold"
+                      style={{
+                        background: `linear-gradient(135deg, ${person.dominantColors[0] ?? "#C4B496"}, ${person.dominantColors[1] ?? "#6AAAB4"})`,
+                      }}
+                    >
+                      {getInitials(person.name)}
+                    </div>
+                  )}
                 </div>
 
                 {/* Content */}

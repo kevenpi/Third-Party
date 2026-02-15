@@ -26,6 +26,7 @@ interface PersonProfile {
   photoCount: number;
   isEnrolled: boolean;
   totalDurationMin: number;
+  avatarUrl?: string | null;
 }
 
 interface ConvEntry {
@@ -390,13 +391,23 @@ export default function PersonComparisonPage() {
       <div className="max-w-md mx-auto px-4 py-6 space-y-8">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div
-            className="w-20 h-20 rounded-full flex items-center justify-center text-[#12110F] text-2xl font-semibold mx-auto"
-            style={{
-              background: `linear-gradient(135deg, ${personColor}, ${personColor}88)`,
-            }}
-          >
-            {getInitials(displayName)}
+          <div className="w-20 h-20 rounded-full mx-auto overflow-hidden">
+            {profile?.avatarUrl ? (
+              <img
+                src={profile.avatarUrl}
+                alt={displayName}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div
+                className="w-full h-full rounded-full flex items-center justify-center text-[#12110F] text-2xl font-semibold"
+                style={{
+                  background: `linear-gradient(135deg, ${personColor}, ${personColor}88)`,
+                }}
+              >
+                {getInitials(displayName)}
+              </div>
+            )}
           </div>
           <h1
             className="text-3xl font-normal text-[rgba(255,255,255,0.95)]"

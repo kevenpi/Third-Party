@@ -94,6 +94,9 @@ export async function GET(
         : `${personName} appeared in ${convCount} conversation${convCount === 1 ? "" : "s"} on your timeline.`,
       stats,
       colorBand: colorBand.length > 0 ? colorBand : ["#C4B496"],
+      avatarUrl: enrolled
+        ? `/api/people/${encodeURIComponent(id)}/avatar${enrolled.avatarUpdatedAt ? `?v=${encodeURIComponent(enrolled.avatarUpdatedAt)}` : ""}`
+        : null,
       conversations: conversations.slice(0, 20).map((c) => ({
         id: c.id,
         sessionId: c.sessionId,

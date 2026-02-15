@@ -66,7 +66,7 @@ export default function ConversationDrillInPage() {
       void fetch("/api/face/enroll", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ personId, name, imageBase64: "" }),
+        body: JSON.stringify({ personId, name, unknownFramePath: conversation.unknownFaceFramePath }),
       }).catch(() => {});
     }
   }, [tagName, conversation, params.id]);

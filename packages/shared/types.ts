@@ -156,6 +156,12 @@ export interface AwarenessDebugEvent {
     audioSpeechBlend?: boolean;
     verdict?: boolean;
     reason?: string;
+    speakerLabel?: string;
+    speakerConfidence?: number;
+    diarizationBackend?: "openai" | "pyannote";
+    segmentStartMs?: number;
+    segmentEndMs?: number;
+    conversationId?: string;
   };
 }
 
@@ -223,6 +229,12 @@ export interface AwarenessDebugEvent {
     audioSpeechBlend?: boolean;
     verdict?: boolean;
     reason?: string;
+    speakerLabel?: string;
+    speakerConfidence?: number;
+    diarizationBackend?: "openai" | "pyannote";
+    segmentStartMs?: number;
+    segmentEndMs?: number;
+    conversationId?: string;
   };
 }
 
@@ -258,4 +270,6 @@ export interface EnrolledPerson {
   photoCount: number;
   createdAt: string;
   lastSeenAt?: string;
+  avatarPath?: string;
+  avatarUpdatedAt?: string;
 }

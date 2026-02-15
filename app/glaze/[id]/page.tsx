@@ -27,7 +27,7 @@ function setEnrolledSpeakers(list: { profileId: string; personId: string; name?:
 
 interface Insight { text: string; color: string; }
 interface ConvEntry { date: string; color: string; size: "small" | "medium" | "large"; id?: string; sessionId?: string; time?: string; durationMin?: number; dateFormatted?: string; }
-interface GlazeData { name: string; description: string; stats: string; colorBand: string[]; insights: Insight[]; conversations: ConvEntry[]; photoCount: number; isEnrolled: boolean; }
+interface GlazeData { name: string; description: string; stats: string; colorBand: string[]; insights: Insight[]; conversations: ConvEntry[]; photoCount: number; isEnrolled: boolean; avatarUrl?: string | null; }
 
 // Insights generated per-person from seeded/real timeline data
 const PERSON_INSIGHTS: Record<string, Insight[]> = {
@@ -109,6 +109,7 @@ export default function GlazePage() {
             conversations: p.conversations,
             photoCount: p.photoCount,
             isEnrolled: p.isEnrolled,
+            avatarUrl: p.avatarUrl ?? null,
           });
         } else {
           setGlaze(null);
@@ -235,7 +236,16 @@ export default function GlazePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ personId, name: glaze.name, imageBase64 }),
       });
-      setGlaze((prev) => prev ? { ...prev, photoCount: prev.photoCount + 1, isEnrolled: true } : prev);
+      setGlaze((prev) =>
+        prev
+          ? {
+              ...prev,
+              photoCount: prev.photoCount + 1,
+              isEnrolled: true,
+              avatarUrl: `/api/people/${encodeURIComponent(personId)}/avatar?v=${Date.now()}`,
+            }
+          : prev
+      );
       closeFaceEnroll();
     } catch { /* ignore */ }
     finally { setFaceEnrolling(false); }
@@ -284,8 +294,14 @@ export default function GlazePage() {
       <div className="max-w-md mx-auto px-4 py-6 space-y-8">
         {/* Person Header */}
         <div className="text-center space-y-4">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7AB89E] to-[#6AAAB4] flex items-center justify-center text-[#12110F] text-2xl font-semibold mx-auto">
-            {getInitials(glaze.name)}
+          <div className="w-20 h-20 rounded-full mx-auto overflow-hidden">
+            {glaze.avatarUrl ? (
+              <img src={glaze.avatarUrl} alt={glaze.name} className="w-full h-full object-cover" />
+            ) : (
+              <div className="w-full h-full rounded-full bg-gradient-to-br from-[#7AB89E] to-[#6AAAB4] flex items-center justify-center text-[#12110F] text-2xl font-semibold">
+                {getInitials(glaze.name)}
+              </div>
+            )}
           </div>
           <h1 className="text-3xl font-normal text-[rgba(255,255,255,0.95)]" style={{ fontFamily: "Fraunces, serif" }}>
             {glaze.name}

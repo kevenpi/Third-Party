@@ -11,7 +11,11 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const people = await listEnrolledPeople();
-    return NextResponse.json({ people });
+    const enriched = people.map((person) => ({
+      ...person,
+      avatarUrl: `/api/people/${encodeURIComponent(person.id)}/avatar${person.avatarUpdatedAt ? `?v=${encodeURIComponent(person.avatarUpdatedAt)}` : ""}`,
+    }));
+    return NextResponse.json({ people: enriched });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to list people" },

@@ -1,25 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { enrollFace } from "@/lib/faceRecognition";
+import { enrollFace, tagUnknownFace } from "@/lib/faceRecognition";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
  * POST /api/face/enroll
- * Body: { personId: string, name: string, imageBase64: string }
+ * Body:
+ *   - { personId: string, name: string, imageBase64: string }
+ *   - { personId: string, name: string, unknownFramePath: string }
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { personId, name, imageBase64 } = body as {
+    const { personId, name, imageBase64, unknownFramePath } = body as {
       personId?: string;
       name?: string;
       imageBase64?: string;
+      unknownFramePath?: string;
     };
 
-    if (!personId || !name || !imageBase64) {
+    if (!personId || !name || (!imageBase64 && !unknownFramePath)) {
       return NextResponse.json(
-        { error: "Missing personId, name, or imageBase64" },
+        { error: "Missing personId, name, and enrollment image source" },
         { status: 400 }
       );
     }
@@ -32,7 +35,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const person = await enrollFace(personId, name.trim(), imageBase64);
+    const person = unknownFramePath
+      ? await tagUnknownFace(unknownFramePath, personId, name.trim())
+      : await enrollFace(personId, name.trim(), imageBase64!);
     return NextResponse.json({ person });
   } catch (err) {
     return NextResponse.json(

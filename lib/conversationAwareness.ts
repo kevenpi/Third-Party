@@ -87,16 +87,21 @@ function topSpeakersFromRecentSignals(signals: AwarenessSignalEvent[]): SpeakerW
   const scoreMap = new Map<string, number>();
 
   for (const signal of signals) {
-    // If this signal has a face identification, boost that person
+    // Face ID is a tie-breaker only when hints also indicate that person may be speaking.
     if (signal.faceIdentification && signal.faceIdentification.confidence !== "low") {
       const faceTag = signal.faceIdentification.personName;
-      const current = scoreMap.get(faceTag) ?? 0;
-      scoreMap.set(faceTag, clamp01(current + 0.5)); // 2x weight for face-identified
+      const faceHint = signal.speakerHints.find((hint) => hint.personTag === faceTag);
+      if (!faceHint || faceHint.speakingScore < 0.6) {
+        // Presence alone should not dominate speaker attribution.
+      } else {
+        const current = scoreMap.get(faceTag) ?? 0;
+        scoreMap.set(faceTag, clamp01(current + 0.12));
+      }
     }
 
     for (const hint of signal.speakerHints) {
-      const current = scoreMap.get(hint.personTag) ?? 0;
-      scoreMap.set(hint.personTag, clamp01(current + hint.speakingScore * 0.25));
+      const currentHint = scoreMap.get(hint.personTag) ?? 0;
+      scoreMap.set(hint.personTag, clamp01(currentHint + hint.speakingScore * 0.25));
     }
   }
 

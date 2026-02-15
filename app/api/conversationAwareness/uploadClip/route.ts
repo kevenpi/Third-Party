@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { UploadRecordedClipSchema } from "@/lib/schemas";
 import { attachRecordedClip } from "@/lib/conversationAwareness";
-import { resolveRecordedClipPath } from "@/lib/awarenessStorage";
+import { appendAwarenessDebugEvent, resolveRecordedClipPath } from "@/lib/awarenessStorage";
 import * as voiceStorage from "@/lib/voice/speakerStorage";
 import { processConversation } from "@/lib/voice/processConversation";
 import { toWav16kMono } from "@/lib/voice/audioConvert";
@@ -112,6 +112,58 @@ export async function POST(request: Request) {
             transcriptSnippet,
             highlights,
           };
+
+          const segmentEvents = processed.segments
+            .filter((seg) => seg.text.trim().length > 0)
+            .slice(-10);
+          const nowIso = new Date().toISOString();
+          for (const seg of segmentEvents) {
+            const label = speakerLabel(seg.speaker_global_id, seg.speaker_local);
+            const text = seg.text.trim().slice(0, 220);
+            const confidenceValue =
+              typeof seg.confidence === "number"
+                ? Math.max(0, Math.min(1, seg.confidence))
+                : undefined;
+            await appendAwarenessDebugEvent({
+              id: `dbg_${Date.now()}_${randomUUID().slice(0, 8)}`,
+              timestamp: nowIso,
+              category: "pipeline",
+              message: `${label}: ${text}`,
+              level: "info",
+              sessionId: session.id,
+              action: "continue_recording",
+              data: {
+                transcriptText: text,
+                words: text.split(/\s+/).filter(Boolean).length,
+                speakerLabel: label,
+                speakerConfidence: confidenceValue,
+                diarizationBackend: activeDiarizationBackend(),
+                segmentStartMs: seg.start_ms,
+                segmentEndMs: seg.end_ms,
+                conversationId: convo.id,
+              },
+            });
+          }
+
+          await appendAwarenessDebugEvent({
+            id: `dbg_${Date.now()}_${randomUUID().slice(0, 8)}`,
+            timestamp: nowIso,
+            category: "pipeline",
+            message: `Diarization ready (${processed.segments.length} segments)`,
+            level: "info",
+            sessionId: session.id,
+            action: "continue_recording",
+            data: {
+              diarizationBackend: activeDiarizationBackend(),
+              conversationId: convo.id,
+              words: processed.segments
+                .map((seg) => seg.text)
+                .join(" ")
+                .split(/\s+/)
+                .filter(Boolean).length,
+              reason: "diarization_complete",
+            },
+          });
         }
       }
     } catch (e) {

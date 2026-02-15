@@ -209,7 +209,13 @@ export const AwarenessDebugEventSchema = z.object({
       multiSpeakerStrong: z.boolean().optional(),
       audioSpeechBlend: z.boolean().optional(),
       verdict: z.boolean().optional(),
-      reason: z.string().max(200).optional()
+      reason: z.string().max(200).optional(),
+      speakerLabel: z.string().max(120).optional(),
+      speakerConfidence: z.number().min(0).max(1).optional(),
+      diarizationBackend: z.enum(["openai", "pyannote"]).optional(),
+      segmentStartMs: z.number().int().min(0).max(3_600_000).optional(),
+      segmentEndMs: z.number().int().min(0).max(3_600_000).optional(),
+      conversationId: z.string().max(120).optional()
     })
     .optional()
 });
@@ -233,7 +239,30 @@ export const RecordingSessionSchema = z.object({
       transcriptWords: z.number().int().min(0).max(100000),
       transcriptConfidenceSum: z.number().min(0).max(100000)
     })
-    .optional()
+    .optional(),
+  biometricSamples: z
+    .array(
+      z.object({
+        elapsed: z.number().int().min(0).max(100000),
+        hr: z.number().int().min(20).max(240),
+        hrv: z.number().int().min(1).max(500),
+        stress: z.number().int().min(0).max(100),
+        voicePitch: z.number().int().min(0).max(1200),
+        speechRate: z.number().int().min(0).max(400),
+        audioEnergy: z.number().min(0).max(2),
+        source: z.enum(["voice", "watch", "combined"])
+      })
+    )
+    .max(2000)
+    .optional(),
+  faceIdentification: z
+    .object({
+      personId: z.string().min(1),
+      personName: z.string().min(1),
+      confidence: z.enum(["high", "medium", "low"])
+    })
+    .optional(),
+  unknownFaceFramePath: z.string().min(1).optional()
 });
 
 export const ConversationAwarenessStateSchema = z.object({
