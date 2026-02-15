@@ -166,6 +166,7 @@ type WindowEvaluation = {
   transcriptStrong: boolean;
   multiSpeakerStrong: boolean;
   audioSpeechBlend: boolean;
+  sustainedAudio: boolean;
 };
 
 function evaluateConversationWindow(signals: AwarenessSignalEvent[]): WindowEvaluation {
@@ -181,7 +182,8 @@ function evaluateConversationWindow(signals: AwarenessSignalEvent[]): WindowEval
       avgAudio: signals.length > 0 ? signals.reduce((sum, s) => sum + s.audioLevel, 0) / signals.length : 0,
       transcriptStrong: false,
       multiSpeakerStrong: false,
-      audioSpeechBlend: false
+      audioSpeechBlend: false,
+      sustainedAudio: false
     };
   }
   const startMs = Date.parse(signals[0].timestamp);
@@ -198,7 +200,8 @@ function evaluateConversationWindow(signals: AwarenessSignalEvent[]): WindowEval
       avgAudio: 0,
       transcriptStrong: false,
       multiSpeakerStrong: false,
-      audioSpeechBlend: false
+      audioSpeechBlend: false,
+      sustainedAudio: false
     };
   }
   const durationSec = Math.max(0, (endMs - startMs) / 1000);
@@ -219,9 +222,12 @@ function evaluateConversationWindow(signals: AwarenessSignalEvent[]): WindowEval
   const transcriptStrong = words >= 10 || (words >= 6 && avgConfidence >= 0.2);
   const multiSpeakerStrong = legibleFrames >= 4 && distinctSpeakers >= 2;
   const audioSpeechBlend = avgAudio >= LEGIBLE_AUDIO_THRESHOLD && words >= 5;
+  // Fallback: sustained speech-level audio even without transcript
+  // (covers iOS / browsers where SpeechRecognition is unavailable)
+  const sustainedAudio = legibleFrames >= 4 && avgAudio >= 0.06 && durationSec >= 4;
   const enoughWindowSpan = durationSec >= SEGMENT_SECONDS * 0.8;
   const isConversation =
-    enoughWindowSpan && (transcriptStrong || multiSpeakerStrong || audioSpeechBlend);
+    enoughWindowSpan && (transcriptStrong || multiSpeakerStrong || audioSpeechBlend || sustainedAudio);
 
   return {
     isConversation,
@@ -234,7 +240,8 @@ function evaluateConversationWindow(signals: AwarenessSignalEvent[]): WindowEval
     avgAudio,
     transcriptStrong,
     multiSpeakerStrong,
-    audioSpeechBlend
+    audioSpeechBlend,
+    sustainedAudio
   };
 }
 

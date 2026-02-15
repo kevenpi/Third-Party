@@ -1,5 +1,68 @@
 [
   {
+    "id": "rec_1771122431398_71e2579f",
+    "startedAt": "2026-02-15T02:27:11.398Z",
+    "endedAt": "2026-02-15T02:27:12.198Z",
+    "createdBy": "detector",
+    "speakerWindows": [
+      {
+        "personTag": "Me",
+        "score": 0.8123420386213648
+      }
+    ],
+    "clipPaths": [
+      "data/awareness/clips/rec_1771122431398_71e2579f_1771122432207.webm"
+    ],
+    "evidence": {
+      "samples": 2,
+      "legibleFrames": 1,
+      "transcriptWords": 0,
+      "transcriptConfidenceSum": 0
+    }
+  },
+  {
+    "id": "rec_1771122424996_db907811",
+    "startedAt": "2026-02-15T02:27:04.996Z",
+    "endedAt": "2026-02-15T02:27:10.597Z",
+    "createdBy": "detector",
+    "speakerWindows": [
+      {
+        "personTag": "Me",
+        "score": 0.5043256223913782
+      }
+    ],
+    "clipPaths": [
+      "data/awareness/clips/rec_1771122424996_db907811_1771122430621.webm"
+    ],
+    "evidence": {
+      "samples": 8,
+      "legibleFrames": 5,
+      "transcriptWords": 0,
+      "transcriptConfidenceSum": 0
+    }
+  },
+  {
+    "id": "rec_1771122399396_cdbd3d2e",
+    "startedAt": "2026-02-15T02:26:39.396Z",
+    "endedAt": "2026-02-15T02:26:40.997Z",
+    "createdBy": "detector",
+    "speakerWindows": [
+      {
+        "personTag": "Me",
+        "score": 0.7853327013796066
+      }
+    ],
+    "clipPaths": [
+      "data/awareness/clips/rec_1771122399396_cdbd3d2e_1771122401289.webm"
+    ],
+    "evidence": {
+      "samples": 3,
+      "legibleFrames": 2,
+      "transcriptWords": 0,
+      "transcriptConfidenceSum": 0
+    }
+  },
+  {
     "id": "rec_1771101823512_baa2c0c6",
     "startedAt": "2026-02-14T20:43:43.512Z",
     "endedAt": "2026-02-14T20:44:04.266Z",

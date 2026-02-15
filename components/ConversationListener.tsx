@@ -61,6 +61,8 @@ function captureFrame(
  */
 export function ConversationListener() {
   const [listening, setListening] = useState(false);
+  const [audioLevel, setAudioLevel] = useState(0);
+  const [isRecording, setIsRecording] = useState(false);
 
   // Audio
   const streamRef = useRef<MediaStream | null>(null);
@@ -296,6 +298,7 @@ export function ConversationListener() {
       sum += n * n;
     }
     const audioLevel = Math.min(1, Math.sqrt(sum / buffer.length) * 2.6);
+    setAudioLevel(audioLevel);
 
     // Build speaker hints — include face-identified person if available
     const speakerHints: { personTag: string; speakingScore: number }[] = [];
@@ -326,6 +329,7 @@ export function ConversationListener() {
         state.activeSessionId ?? (payload?.session?.id as string | undefined) ?? null;
 
       const nowRecording = !!(state.isRecording && resolvedSessionId);
+      setIsRecording(nowRecording);
 
       if (nowRecording && resolvedSessionId) {
         startBrowserRecording(resolvedSessionId);
@@ -527,5 +531,40 @@ export function ConversationListener() {
     };
   }, [listening, ingestMic, stopBrowserRecording]);
 
-  return null;
+  if (!listening) return null;
+
+  // Map audio level (0-1) to visual intensity
+  const intensity = Math.min(1, audioLevel * 3); // amplify for visual effect
+  const baseSize = 12;
+  const glowSize = baseSize + intensity * 8; // 12-20px
+  const glowOpacity = 0.3 + intensity * 0.7; // 0.3-1.0
+  const glowSpread = intensity * 20; // 0-20px
+  const color = isRecording ? "#EF4444" : "#7AB89E"; // red when recording, sage green when listening
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        top: 16,
+        right: 16,
+        zIndex: 9999,
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        pointerEvents: "none",
+      }}
+    >
+      <div
+        style={{
+          width: glowSize,
+          height: glowSize,
+          borderRadius: "50%",
+          backgroundColor: color,
+          opacity: glowOpacity,
+          boxShadow: `0 0 ${glowSpread}px ${Math.round(glowSpread * 0.6)}px ${color}`,
+          transition: "all 0.15s ease-out",
+        }}
+      />
+    </div>
+  );
 }
