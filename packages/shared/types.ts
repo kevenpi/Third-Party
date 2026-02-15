@@ -126,41 +126,6 @@ export interface AwarenessSignalEvent {
   faceIdentification?: FaceIdentification;
 }
 
-export type AwarenessDebugCategory =
-  | "listener"
-  | "ingest"
-  | "decision"
-  | "recording"
-  | "pipeline";
-
-export interface AwarenessDebugEvent {
-  id: string;
-  timestamp: string;
-  category: AwarenessDebugCategory;
-  message: string;
-  level?: "info" | "warn" | "error";
-  sessionId?: string;
-  action?: ConversationAwarenessState["latestAction"];
-  data?: {
-    audioLevel?: number;
-    transcriptWords?: number;
-    transcriptConfidence?: number;
-    transcriptText?: string;
-    windowSamples?: number;
-    windowDurationSec?: number;
-    legibleFrames?: number;
-    distinctSpeakers?: number;
-    avgAudio?: number;
-    avgConfidence?: number;
-    words?: number;
-    transcriptStrong?: boolean;
-    multiSpeakerStrong?: boolean;
-    audioSpeechBlend?: boolean;
-    verdict?: boolean;
-    reason?: string;
-  };
-}
-
 export interface SpeakerWindow {
   personTag: string;
   score: number;
