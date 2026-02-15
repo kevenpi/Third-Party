@@ -21,7 +21,8 @@ export async function POST(request: Request) {
       transcriptWords: body.data.transcriptWords,
       transcriptConfidence: body.data.transcriptConfidence,
       speakerHints: body.data.speakerHints,
-      deviceId: body.data.deviceId
+      deviceId: body.data.deviceId,
+      faceIdentification: body.data.faceIdentification
     });
 
     return NextResponse.json({ state, session });

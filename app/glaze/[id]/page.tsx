@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, MoreVertical, Mic, Upload, Loader2 } from "lucide-react";
+import { ArrowLeft, MoreVertical, Mic, Camera, Loader2 } from "lucide-react";
 
 const VOICE_STORAGE_KEY = "thirdparty_enrolled_speakers";
 const VOICE_PROFILE_KEY = (id: string) => `thirdparty_voice_profile_${id}`;
@@ -21,43 +21,35 @@ function setEnrolledSpeakers(list: { profileId: string; personId: string; name?:
   localStorage.setItem(VOICE_STORAGE_KEY, JSON.stringify(list));
 }
 
-interface Insight {
-  text: string;
-  color: string;
-}
+// ---------------------------------------------------------------------------
+// Hardcoded fallback data (used when API has no data for this person)
+// ---------------------------------------------------------------------------
 
-interface Conversation {
-  date: string;
-  color: string;
-  size: "small" | "medium" | "large";
-}
+interface Insight { text: string; color: string; }
+interface ConvEntry { date: string; color: string; size: "small" | "medium" | "large"; id?: string; sessionId?: string; time?: string; durationMin?: number; dateFormatted?: string; }
+interface GlazeData { name: string; description: string; stats: string; colorBand: string[]; insights: Insight[]; conversations: ConvEntry[]; photoCount: number; isEnrolled: boolean; }
 
-const GLAZE_DATA: Record<string, {
-  name: string;
-  description: string;
-  stats: string;
-  colorBand: string[];
-  insights: Insight[];
-  conversations: Conversation[];
-}> = {
+const FALLBACK_GLAZE: Record<string, GlazeData> = {
   arthur: {
     name: "Arthur",
-    description: "Arthur has become one of your closest daily anchors. Conversations are direct and emotionally honest, with strong follow-through after conflict.",
-    stats: "2 weeks · 46 conversations · talked today",
-    colorBand: ["#6AAAB4", "#C4B496", "#B84A3A", "#7AB89E", "#6AAAB4", "#7AB89E", "#D4B07A"],
+    description: "Arthur is the most frequent conversation partner. Patterns show repair language appearing consistently after tension points.",
+    stats: "2 weeks · 42 conversations · talked today",
+    colorBand: ["#6AAAB4", "#B84A3A", "#7AB89E", "#6AAAB4", "#D4B07A", "#B84A3A", "#7AB89E"],
     insights: [
-      { text: "You and Arthur recover quickly after tense moments when either of you names one concrete need.", color: "#7AB89E" },
-      { text: "Midday conversations tend to carry the most stress load across the past week.", color: "#B84A3A" },
-      { text: "Evening check-ins have become a consistent repair ritual.", color: "#6AAAB4" },
+      { text: "Morning conversations are the calmest; stress patterns emerge most often after 6 PM.", color: "#6AAAB4" },
+      { text: "When tension rises, you tend to speak faster and hold the floor longer.", color: "#B84A3A" },
+      { text: "Repair language appears within 10-15 minutes of stress peaks — this is a strong pattern.", color: "#7AB89E" },
     ],
     conversations: [
       { date: "2026-02-14", color: "#7AB89E", size: "large" },
+      { date: "2026-02-14", color: "#B84A3A", size: "large" },
       { date: "2026-02-13", color: "#6AAAB4", size: "medium" },
-      { date: "2026-02-11", color: "#B84A3A", size: "large" },
-      { date: "2026-02-08", color: "#D4B07A", size: "small" },
-      { date: "2026-02-05", color: "#7AB89E", size: "medium" },
-      { date: "2026-02-01", color: "#6AAAB4", size: "small" },
+      { date: "2026-02-12", color: "#7AB89E", size: "small" },
+      { date: "2026-02-10", color: "#D4B07A", size: "medium" },
+      { date: "2026-02-08", color: "#6AAAB4", size: "small" },
     ],
+    photoCount: 0,
+    isEnrolled: false,
   },
   tane: {
     name: "Tane",
@@ -74,9 +66,9 @@ const GLAZE_DATA: Record<string, {
       { date: "2026-02-12", color: "#7AB89E", size: "large" },
       { date: "2026-02-10", color: "#B84A3A", size: "medium" },
       { date: "2026-02-07", color: "#C4B496", size: "small" },
-      { date: "2026-02-04", color: "#6AAAB4", size: "medium" },
-      { date: "2026-02-02", color: "#7AB89E", size: "small" },
     ],
+    photoCount: 0,
+    isEnrolled: false,
   },
   kevin: {
     name: "Kevin",
@@ -92,30 +84,13 @@ const GLAZE_DATA: Record<string, {
       { date: "2026-02-13", color: "#D4B07A", size: "large" },
       { date: "2026-02-11", color: "#C4B496", size: "small" },
       { date: "2026-02-09", color: "#B84A3A", size: "medium" },
-      { date: "2026-02-06", color: "#7AB89E", size: "medium" },
-      { date: "2026-02-03", color: "#6AAAB4", size: "small" },
-      { date: "2026-02-01", color: "#D4B07A", size: "small" },
     ],
-  },
-  jessica: {
-    name: "Jessica",
-    description: "Jessica is a close friend you travel with. Conversations are warm and easy on the surface, but planning discussions reveal quiet tensions neither of you addresses directly.",
-    stats: "2 weeks · 18 conversations · talked yesterday",
-    colorBand: ["#E8A0BF", "#C4B496", "#D4B07A", "#E8A0BF", "#D4806A", "#C4B496", "#E8A0BF"],
-    insights: [
-      { text: "Jessica uses humor to redirect when conversations approach real preferences. Your body relaxes but the underlying tension stays unresolved.", color: "#D4B07A" },
-      { text: "You tend to concede during planning conversations with Jessica rather than naming what you actually want.", color: "#D4806A" },
-      { text: "Your calmest moments with Jessica happen when the conversation is unstructured - no agenda, no decisions to make.", color: "#7AB89E" },
-    ],
-    conversations: [
-      { date: "2026-02-13", color: "#E8A0BF", size: "large" },
-      { date: "2026-02-10", color: "#C4B496", size: "medium" },
-      { date: "2026-02-07", color: "#D4B07A", size: "small" },
-      { date: "2026-02-04", color: "#E8A0BF", size: "medium" },
-      { date: "2026-02-02", color: "#7AB89E", size: "small" },
-    ],
+    photoCount: 0,
+    isEnrolled: false,
   },
 };
+
+// ---------------------------------------------------------------------------
 
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
@@ -134,14 +109,54 @@ export default function GlazePage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
   const personId = params.id as string;
-  const [glaze] = useState(GLAZE_DATA[personId] || null);
+  const [glaze, setGlaze] = useState<GlazeData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"recent" | "significant" | "stressful">("recent");
+
+  // Voice enrollment
   const [enrollFile, setEnrollFile] = useState<File | null>(null);
   const [enrollRecording, setEnrollRecording] = useState<Blob | null>(null);
   const [enrollLoading, setEnrollLoading] = useState(false);
   const [enrollMessage, setEnrollMessage] = useState<{ type: "ok" | "error"; text: string } | null>(null);
   const [savedProfileId, setSavedProfileId] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+
+  // Face enrollment
+  const [showFaceEnroll, setShowFaceEnroll] = useState(false);
+  const [faceEnrolling, setFaceEnrolling] = useState(false);
+  const faceVideoRef = useRef<HTMLVideoElement | null>(null);
+  const faceCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const faceCameraRef = useRef<MediaStream | null>(null);
+
+  // Fetch profile from API
+  useEffect(() => {
+    fetch(`/api/people/${personId}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.profile) {
+          const p = data.profile;
+          setGlaze({
+            name: p.name,
+            description: p.description,
+            stats: p.stats,
+            colorBand: p.colorBand,
+            insights: FALLBACK_GLAZE[personId]?.insights ?? [
+              { text: `You have had ${p.conversations.length} recorded conversations with ${p.name}.`, color: "#C4B496" },
+            ],
+            conversations: p.conversations,
+            photoCount: p.photoCount,
+            isEnrolled: p.isEnrolled,
+          });
+        } else {
+          setGlaze(FALLBACK_GLAZE[personId] ?? null);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setGlaze(FALLBACK_GLAZE[personId] ?? null);
+        setLoading(false);
+      });
+  }, [personId]);
 
   useEffect(() => {
     try {
@@ -151,21 +166,9 @@ export default function GlazePage() {
     }
   }, [personId]);
 
-  if (!glaze) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#12110F]">
-        <p className="text-[rgba(255,255,255,0.7)]">Person not found</p>
-      </div>
-    );
-  }
-
-  const getInitials = (name: string): string => {
-    return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
-  };
-
-  // Get oldest and newest dates for color band labels
-  const oldestDate = glaze.conversations[glaze.conversations.length - 1]?.date || "";
-  const newestDate = glaze.conversations[0]?.date || "";
+  // ------------------------------------------------------------------
+  // Voice enrollment
+  // ------------------------------------------------------------------
 
   const startEnrollRecording = async () => {
     try {
@@ -180,7 +183,7 @@ export default function GlazePage() {
       };
       recorder.start();
       setEnrollMessage(null);
-    } catch (e) {
+    } catch {
       setEnrollMessage({ type: "error", text: "Microphone access denied." });
     }
   };
@@ -191,7 +194,7 @@ export default function GlazePage() {
 
   const runEnroll = async () => {
     const audio = enrollFile || enrollRecording;
-    if (!audio) {
+    if (!audio || !glaze) {
       setEnrollMessage({ type: "error", text: "Record or upload audio first." });
       return;
     }
@@ -199,24 +202,20 @@ export default function GlazePage() {
     setEnrollMessage(null);
     try {
       const form = new FormData();
-      form.append("audio", audio, enrollFile?.name || "recording.webm");
-      const existingProfileId = typeof window !== "undefined" ? localStorage.getItem(VOICE_PROFILE_KEY(personId)) : null;
-      if (existingProfileId) form.append("profileId", existingProfileId);
-      form.append("shortAudio", "true");
-
+      form.append("audio", audio, "enroll.webm");
+      form.append("personId", personId);
+      const profiles = getEnrolledSpeakers();
+      const existing = profiles.find((p) => p.personId === personId);
+      if (existing?.profileId) form.append("profileId", existing.profileId);
       const res = await fetch("/api/voice/enroll", { method: "POST", body: form });
+      if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
-      if (!res.ok) {
-        setEnrollMessage({ type: "error", text: data.error || "Enrollment failed" });
-        return;
-      }
-      const profileId = data.profileId;
-      if (profileId && typeof window !== "undefined") {
+      const profileId: string = data.profileId ?? existing?.profileId ?? "";
+      if (profileId) {
         localStorage.setItem(VOICE_PROFILE_KEY(personId), profileId);
         setSavedProfileId(profileId);
-        const list = getEnrolledSpeakers();
-        const without = list.filter((e) => e.personId !== personId);
-        setEnrolledSpeakers([...without, { profileId, personId, name: glaze.name }]);
+        const list = profiles.filter((e) => e.personId !== personId);
+        setEnrolledSpeakers([...list, { profileId, personId, name: glaze.name }]);
       }
       setEnrollMessage({ type: "ok", text: `Voice enrolled. (${data.enrollmentStatus ?? "Enrolled"})` });
       setEnrollFile(null);
@@ -228,6 +227,82 @@ export default function GlazePage() {
     }
   };
 
+  // ------------------------------------------------------------------
+  // Face enrollment
+  // ------------------------------------------------------------------
+
+  const openFaceEnroll = useCallback(async () => {
+    setShowFaceEnroll(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+      faceCameraRef.current = stream;
+      setTimeout(() => {
+        if (faceVideoRef.current) {
+          faceVideoRef.current.srcObject = stream;
+          void faceVideoRef.current.play();
+        }
+      }, 100);
+    } catch { /* camera unavailable */ }
+  }, []);
+
+  const closeFaceEnroll = useCallback(() => {
+    setShowFaceEnroll(false);
+    if (faceCameraRef.current) {
+      faceCameraRef.current.getTracks().forEach((t) => t.stop());
+      faceCameraRef.current = null;
+    }
+  }, []);
+
+  const captureFace = useCallback(async () => {
+    if (!glaze) return;
+    const video = faceVideoRef.current;
+    const canvas = faceCanvasRef.current;
+    if (!video || !canvas || video.readyState < 2) return;
+    setFaceEnrolling(true);
+    canvas.width = Math.min(512, video.videoWidth);
+    canvas.height = Math.round((canvas.width / video.videoWidth) * video.videoHeight);
+    const ctx = canvas.getContext("2d");
+    if (!ctx) { setFaceEnrolling(false); return; }
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+    const imageBase64 = dataUrl.split(",")[1] ?? "";
+    try {
+      await fetch("/api/face/enroll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ personId, name: glaze.name, imageBase64 }),
+      });
+      setGlaze((prev) => prev ? { ...prev, photoCount: prev.photoCount + 1, isEnrolled: true } : prev);
+      closeFaceEnroll();
+    } catch { /* ignore */ }
+    finally { setFaceEnrolling(false); }
+  }, [glaze, personId, closeFaceEnroll]);
+
+  // ------------------------------------------------------------------
+  // Render
+  // ------------------------------------------------------------------
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#12110F]">
+        <p className="text-[rgba(255,255,255,0.7)]">Loading...</p>
+      </div>
+    );
+  }
+
+  if (!glaze) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#12110F]">
+        <p className="text-[rgba(255,255,255,0.7)]">Person not found</p>
+      </div>
+    );
+  }
+
+  const getInitials = (name: string): string =>
+    name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
+
+  const oldestDate = glaze.conversations[glaze.conversations.length - 1]?.date || "";
+
   return (
     <div className="min-h-screen bg-[#12110F] pb-20">
       {/* Navigation Bar */}
@@ -236,7 +311,7 @@ export default function GlazePage() {
           <button onClick={() => router.back()} className="p-2 -ml-2 text-[rgba(255,255,255,0.9)]">
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h2 className="text-lg font-normal" style={{ fontFamily: 'Fraunces, serif' }}>{glaze.name}</h2>
+          <h2 className="text-lg font-normal" style={{ fontFamily: "Fraunces, serif" }}>{glaze.name}</h2>
           <button className="p-2 -mr-2 text-[rgba(255,255,255,0.5)]">
             <MoreVertical className="w-5 h-5" />
           </button>
@@ -249,13 +324,16 @@ export default function GlazePage() {
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#7AB89E] to-[#6AAAB4] flex items-center justify-center text-[#12110F] text-2xl font-semibold mx-auto">
             {getInitials(glaze.name)}
           </div>
-          <h1 className="text-3xl font-normal text-[rgba(255,255,255,0.95)]" style={{ fontFamily: 'Fraunces, serif' }}>
+          <h1 className="text-3xl font-normal text-[rgba(255,255,255,0.95)]" style={{ fontFamily: "Fraunces, serif" }}>
             {glaze.name}
           </h1>
-          <p className="text-[rgba(255,255,255,0.8)] leading-relaxed px-4" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+          <p className="text-[rgba(255,255,255,0.8)] leading-relaxed px-4" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
             {glaze.description}
           </p>
           <p className="text-sm text-[rgba(255,255,255,0.4)]">{glaze.stats}</p>
+          {glaze.isEnrolled && (
+            <p className="text-xs text-[#D4B07A]">{glaze.photoCount} face photo{glaze.photoCount !== 1 ? "s" : ""} enrolled</p>
+          )}
         </div>
 
         {/* Emotional Color Band */}
@@ -266,19 +344,37 @@ export default function GlazePage() {
             ))}
           </div>
           <div className="flex justify-between text-xs text-[rgba(255,255,255,0.3)]">
-            <span>{oldestDate ? formatDate(oldestDate) : "Oct 2025"}</span>
+            <span>{oldestDate ? formatDate(oldestDate) : ""}</span>
             <span>Today</span>
           </div>
         </div>
 
-        {/* Enroll voice for speaker identification */}
+        {/* Face Enrollment */}
+        <div className="space-y-4">
+          <p className="text-xs uppercase tracking-wider text-[#8A7E72] font-light">Face for identification</p>
+          <div className="warm-card space-y-3">
+            {glaze.isEnrolled ? (
+              <p className="text-sm text-[#7AB89E]">Face enrolled ({glaze.photoCount} photo{glaze.photoCount !== 1 ? "s" : ""}). Add more to improve accuracy.</p>
+            ) : (
+              <p className="text-sm text-[rgba(255,255,255,0.6)]">Enroll {glaze.name}&apos;s face so they can be identified automatically via the glasses camera.</p>
+            )}
+            <button
+              onClick={openFaceEnroll}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-[#D4B07A]/30 to-[#E8C97A]/30 text-[#D4B07A] font-medium flex items-center justify-center gap-2"
+            >
+              <Camera className="w-4 h-4" /> {glaze.isEnrolled ? "Add another photo" : "Enroll face"}
+            </button>
+          </div>
+        </div>
+
+        {/* Voice Enrollment */}
         <div className="space-y-4">
           <p className="text-xs uppercase tracking-wider text-[#8A7E72] font-light">Voice for identification</p>
           <div className="warm-card space-y-4">
             {savedProfileId ? (
               <p className="text-sm text-[#7AB89E]">Voice profile saved. Add more audio to improve recognition.</p>
             ) : (
-              <p className="text-sm text-[rgba(255,255,255,0.6)]">Enroll {glaze.name}&apos;s voice so they can be identified in Voice transcripts.</p>
+              <p className="text-sm text-[rgba(255,255,255,0.6)]">Enroll {glaze.name}&apos;s voice so they can be identified in transcripts.</p>
             )}
             <input
               type="file"
@@ -291,23 +387,13 @@ export default function GlazePage() {
               }}
             />
             {!enrollRecording ? (
-              <button
-                type="button"
-                onClick={startEnrollRecording}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[rgba(255,255,255,0.2)] text-sm text-[rgba(255,255,255,0.8)]"
-              >
+              <button type="button" onClick={startEnrollRecording} className="flex items-center gap-2 px-4 py-2 rounded-lg border border-[rgba(255,255,255,0.2)] text-sm text-[rgba(255,255,255,0.8)]">
                 <Mic className="w-4 h-4" /> Record instead
               </button>
             ) : (
               <div className="flex items-center gap-2">
                 <span className="text-sm text-[#7AB89E]">Recording ready</span>
-                <button
-                  type="button"
-                  onClick={() => { setEnrollRecording(null); setEnrollMessage(null); }}
-                  className="text-xs text-[rgba(255,255,255,0.5)] underline"
-                >
-                  Clear
-                </button>
+                <button type="button" onClick={() => { setEnrollRecording(null); setEnrollMessage(null); }} className="text-xs text-[rgba(255,255,255,0.5)] underline">Clear</button>
               </div>
             )}
             <button
@@ -315,14 +401,11 @@ export default function GlazePage() {
               disabled={enrollLoading || (!enrollFile && !enrollRecording)}
               className="w-full py-3 rounded-xl bg-gradient-to-r from-[#D4B07A]/30 to-[#E8C97A]/30 text-[#D4B07A] font-medium flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {enrollLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Enrolling…</> : "Enroll voice"}
+              {enrollLoading ? <><Loader2 className="w-4 h-4 animate-spin" /> Enrolling...</> : "Enroll voice"}
             </button>
             {enrollMessage && (
-              <p className={`text-sm ${enrollMessage.type === "ok" ? "text-[#7AB89E]" : "text-[#B84A3A]"}`}>
-                {enrollMessage.text}
-              </p>
+              <p className={`text-sm ${enrollMessage.type === "ok" ? "text-[#7AB89E]" : "text-[#B84A3A]"}`}>{enrollMessage.text}</p>
             )}
-            <p className="text-xs text-[rgba(255,255,255,0.4)]">WAV 16kHz mono works best. You can enroll multiple times to improve accuracy.</p>
           </div>
         </div>
 
@@ -331,12 +414,8 @@ export default function GlazePage() {
           <p className="text-xs uppercase tracking-wider text-[#8A7E72] font-light">Patterns</p>
           <div className="space-y-3">
             {glaze.insights.map((insight, idx) => (
-              <div
-                key={idx}
-                className="warm-card border-l-4"
-                style={{ borderLeftColor: insight.color }}
-              >
-                <p className="text-[rgba(255,255,255,0.8)] leading-relaxed italic" style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+              <div key={idx} className="warm-card border-l-4" style={{ borderLeftColor: insight.color }}>
+                <p className="text-[rgba(255,255,255,0.8)] leading-relaxed italic" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>
                   {insight.text}
                 </p>
               </div>
@@ -350,7 +429,7 @@ export default function GlazePage() {
             <p className="text-xs uppercase tracking-wider text-[#8A7E72] font-light">All Conversations</p>
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value as any)}
+              onChange={(e) => setFilter(e.target.value as "recent" | "significant" | "stressful")}
               className="bg-[#1E1B18] border border-[rgba(255,255,255,0.06)] rounded-lg px-3 py-1 text-xs text-[rgba(255,255,255,0.7)] focus:outline-none focus:ring-2 focus:ring-[rgba(212,176,122,0.3)]"
             >
               <option value="recent">Most recent</option>
@@ -359,16 +438,17 @@ export default function GlazePage() {
             </select>
           </div>
           <div className="relative pl-6">
-            <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-[rgba(255,255,255,0.06)]"></div>
+            <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-[rgba(255,255,255,0.06)]" />
             <div className="space-y-4">
               {glaze.conversations.map((conv, idx) => {
                 const sizeClass = getBubbleSize(conv.size);
+                const convId = conv.id ?? conv.sessionId ?? conv.date;
                 return (
                   <button
                     key={idx}
                     onClick={() => {
-                      try { sessionStorage.setItem(`conv-person-${conv.date}`, glaze.name); } catch {}
-                      router.push(`/conversation/${conv.date}`);
+                      try { sessionStorage.setItem(`conv-person-${convId}`, glaze.name); } catch {}
+                      router.push(`/conversation/${convId}`);
                     }}
                     className="relative flex items-center gap-4 group w-full text-left"
                   >
@@ -376,12 +456,17 @@ export default function GlazePage() {
                       className={`${sizeClass} rounded-full -ml-8 transition-all group-hover:scale-125 z-10`}
                       style={{
                         backgroundColor: conv.color,
-                        color: conv.color,
-                        boxShadow: `0 0 8px ${conv.color}, inset 0 0 4px rgba(255, 255, 255, 0.1)`
+                        boxShadow: `0 0 8px ${conv.color}, inset 0 0 4px rgba(255, 255, 255, 0.1)`,
                       }}
                     />
                     <div className="flex-1">
-                      <p className="text-sm text-[rgba(255,255,255,0.5)]">{formatDate(conv.date)}</p>
+                      <p className="text-sm text-[rgba(255,255,255,0.5)]">
+                        {conv.dateFormatted ?? formatDate(conv.date)}
+                        {conv.time && <span className="ml-2 text-[rgba(255,255,255,0.3)]">{conv.time}</span>}
+                      </p>
+                      {conv.durationMin != null && (
+                        <p className="text-xs text-[rgba(255,255,255,0.3)]">{Math.round(conv.durationMin)} min</p>
+                      )}
                     </div>
                   </button>
                 );
@@ -390,6 +475,35 @@ export default function GlazePage() {
           </div>
         </div>
       </div>
+
+      {/* Face Enroll Modal */}
+      {showFaceEnroll && (
+        <div className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+          <div className="w-full max-w-sm bg-[#1E1B18] rounded-2xl overflow-hidden">
+            <div className="p-4 border-b border-[rgba(255,255,255,0.06)]">
+              <h2 className="text-lg font-normal text-[rgba(255,255,255,0.95)]" style={{ fontFamily: "Fraunces, serif" }}>
+                Enroll {glaze.name}&apos;s Face
+              </h2>
+            </div>
+            <div className="relative bg-black aspect-[4/3]">
+              <video ref={faceVideoRef} autoPlay playsInline muted className="w-full h-full object-cover" />
+              <canvas ref={faceCanvasRef} className="hidden" />
+            </div>
+            <div className="p-4 flex gap-3">
+              <button
+                onClick={captureFace}
+                disabled={faceEnrolling}
+                className="flex-1 py-3 bg-gradient-to-r from-[#D4B07A] to-[#E8C97A] text-[#12110F] rounded-lg font-medium disabled:opacity-50"
+              >
+                {faceEnrolling ? "Enrolling..." : "Capture"}
+              </button>
+              <button onClick={closeFaceEnroll} className="px-6 py-3 border border-[rgba(255,255,255,0.06)] rounded-lg text-[rgba(255,255,255,0.5)]">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

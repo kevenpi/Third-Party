@@ -1,13 +1,12 @@
 "use client";
 
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, MoreVertical, Play, Pause } from "lucide-react";
+import { ArrowLeft, MoreVertical, Play, Pause, Camera } from "lucide-react";
 import BiometricChart from "@/components/BiometricChart";
 import MessageCorrelationCard from "@/components/MessageCorrelationCard";
-import SpikeAnalysisPanel from "@/components/SpikeAnalysisPanel";
 import { getBiometricData, getStressColor, interpolateHR, formatBiometricChange, formatElapsed } from "@/lib/biometrics";
-import type { BiometricData, MessageCorrelation } from "@/lib/biometrics";
+import type { BiometricData } from "@/lib/biometrics";
 
 interface KeyMoment {
   id: string;
@@ -108,19 +107,6 @@ const CONVERSATION_DATA: Record<string, {
       { id: "2", timestamp: 1200, timeDisplay: "20:00", description: "Moment of connection", color: "#6AAAB4" },
     ],
   },
-  "8": {
-    person: "Jessica",
-    date: "2026-02-13",
-    time: "3:20 PM",
-    duration: 720,
-    color: "#E8A0BF",
-    aiNarrative: "A trip-planning conversation that started with excitement but gradually shifted as logistics surfaced unspoken tensions. You both wanted different things from the trip but neither of you named it directly. Jessica used humor to deflect twice, you conceded at the end without saying what you actually preferred. The conversation ended politely but something was left unsaid.",
-    keyMoments: [
-      { id: "1", timestamp: 180, timeDisplay: "3:00", description: "Avoidance through humor", color: "#D4B07A" },
-      { id: "2", timestamp: 390, timeDisplay: "6:30", description: "Unspoken tension", color: "#D4806A" },
-      { id: "3", timestamp: 540, timeDisplay: "9:00", description: "Quiet concession", color: "#C4684A" },
-    ],
-  },
 };
 
 export default function ConversationDrillInPage() {
@@ -133,36 +119,35 @@ export default function ConversationDrillInPage() {
   const [isTagged, setIsTagged] = useState(true);
   const [reflection, setReflection] = useState("");
   const [showReflectionInput, setShowReflectionInput] = useState(false);
-  const [selectedSpike, setSelectedSpike] = useState<MessageCorrelation | null>(null);
-  const [spikeIndex, setSpikeIndex] = useState(0);
+  const [showTagInput, setShowTagInput] = useState(false);
+  const [tagName, setTagName] = useState("");
 
   const bioData = useMemo(() => getBiometricData(params.id as string), [params.id]);
 
-  const handleSpikeClick = useCallback((correlation: MessageCorrelation) => {
-    setSelectedSpike(correlation);
-    if (bioData) {
-      const idx = bioData.messageCorrelations.findIndex((c) => c.elapsed === correlation.elapsed);
-      setSpikeIndex(idx >= 0 ? idx : 0);
+  const handleTagPerson = useCallback(() => {
+    if (!tagName.trim() || !conversation) return;
+    const name = tagName.trim();
+    const personId = name.toLowerCase().replace(/\s+/g, "_");
+    // Update conversation in-place
+    setConversation({ ...conversation, person: name });
+    setIsTagged(true);
+    setShowTagInput(false);
+    setTagName("");
+    // Persist in sessionStorage for navigation
+    try { sessionStorage.setItem(`conv-person-${params.id}`, name); } catch {}
+    // If there was an unknown face frame, enroll it
+    if (conversation && (conversation as any).unknownFaceFramePath) {
+      void fetch("/api/face/enroll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          personId,
+          name,
+          imageBase64: "", // The frame is already saved on disk via the unknown flow
+        }),
+      }).catch(() => {});
     }
-  }, [bioData]);
-
-  const handleSpikeClose = useCallback(() => {
-    setSelectedSpike(null);
-  }, []);
-
-  const handleSpikePrev = useCallback(() => {
-    if (!bioData || spikeIndex <= 0) return;
-    const newIdx = spikeIndex - 1;
-    setSpikeIndex(newIdx);
-    setSelectedSpike(bioData.messageCorrelations[newIdx]);
-  }, [bioData, spikeIndex]);
-
-  const handleSpikeNext = useCallback(() => {
-    if (!bioData || spikeIndex >= bioData.messageCorrelations.length - 1) return;
-    const newIdx = spikeIndex + 1;
-    setSpikeIndex(newIdx);
-    setSelectedSpike(bioData.messageCorrelations[newIdx]);
-  }, [bioData, spikeIndex]);
+  }, [tagName, conversation, params.id]);
 
   useEffect(() => {
     const id = params.id as string;
@@ -283,11 +268,43 @@ export default function ConversationDrillInPage() {
       </div>
 
       <div className="max-w-md mx-auto px-4 py-6 space-y-8">
-        {/* Person Tag */}
+        {/* Person Tag — with face enrollment for untagged conversations */}
         {!isTagged && (
-          <button className="w-full py-4 px-6 bg-[#1E1B18] border border-[rgba(255,255,255,0.06)] rounded-2xl text-[rgba(255,255,255,0.9)] font-medium hover:bg-[#2A2623] transition-all">
-            Who was this with?
-          </button>
+          <div className="space-y-3">
+            {!showTagInput ? (
+              <button
+                onClick={() => setShowTagInput(true)}
+                className="w-full py-4 px-6 bg-[#1E1B18] border border-[rgba(255,255,255,0.06)] rounded-2xl text-[rgba(255,255,255,0.9)] font-medium hover:bg-[#2A2623] transition-all"
+              >
+                Who was this with?
+              </button>
+            ) : (
+              <div className="warm-card space-y-3">
+                <input
+                  type="text"
+                  value={tagName}
+                  onChange={(e) => setTagName(e.target.value)}
+                  placeholder="Person's name..."
+                  className="w-full px-4 py-3 bg-[#12110F] border border-[rgba(255,255,255,0.06)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[rgba(212,176,122,0.3)] text-[rgba(255,255,255,0.9)] placeholder-[rgba(255,255,255,0.4)]"
+                />
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleTagPerson}
+                    disabled={!tagName.trim()}
+                    className="flex-1 py-3 bg-gradient-to-r from-[#D4B07A] to-[#E8C97A] text-[#12110F] rounded-lg font-medium disabled:opacity-50"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={() => setShowTagInput(false)}
+                    className="px-6 py-3 border border-[rgba(255,255,255,0.06)] rounded-lg text-[rgba(255,255,255,0.5)]"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Conversation Info */}
@@ -399,8 +416,6 @@ export default function ConversationDrillInPage() {
                 data={bioData.hrTimeline}
                 messageCorrelations={bioData.messageCorrelations}
                 baseline={bioData.baseline}
-                selectedElapsed={selectedSpike?.elapsed ?? null}
-                onSpikeClick={handleSpikeClick}
               />
             </div>
 
@@ -408,13 +423,7 @@ export default function ConversationDrillInPage() {
             {bioData.messageCorrelations.length > 0 && (
               <div className="space-y-3">
                 {bioData.messageCorrelations.map((corr, idx) => (
-                  <div
-                    key={idx}
-                    onClick={() => handleSpikeClick(corr)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <MessageCorrelationCard correlation={corr} />
-                  </div>
+                  <MessageCorrelationCard key={idx} correlation={corr} />
                 ))}
               </div>
             )}
@@ -526,21 +535,6 @@ export default function ConversationDrillInPage() {
           )}
         </div>
       </div>
-
-      {/* Spike Analysis Side Panel */}
-      {bioData && selectedSpike && (
-        <SpikeAnalysisPanel
-          correlation={selectedSpike}
-          hrTimeline={bioData.hrTimeline}
-          baseline={bioData.baseline}
-          isOpen={!!selectedSpike}
-          onClose={handleSpikeClose}
-          onPrev={spikeIndex > 0 ? handleSpikePrev : null}
-          onNext={spikeIndex < bioData.messageCorrelations.length - 1 ? handleSpikeNext : null}
-          currentIndex={spikeIndex}
-          totalCount={bioData.messageCorrelations.length}
-        />
-      )}
     </div>
   );
 }

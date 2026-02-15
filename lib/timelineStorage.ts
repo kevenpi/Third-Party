@@ -98,17 +98,39 @@ export async function saveTimelineBubbleFromSession(session: RecordingSession): 
     hour12: true
   });
 
+  // Compute real biometric values from session samples if available
+  let realCortisol = DEFAULT_CORTISOL;
+  let realHeartRate = DEFAULT_HEART_RATE;
+  let realMeaningfulness = DEFAULT_MEANINGFULNESS;
+  if (session.biometricSamples && session.biometricSamples.length > 0) {
+    const avgStress =
+      session.biometricSamples.reduce((s, b) => s + b.stress, 0) /
+      session.biometricSamples.length;
+    const avgHr =
+      session.biometricSamples.reduce((s, b) => s + b.hr, 0) /
+      session.biometricSamples.length;
+    realCortisol = Math.min(1, avgStress / 100);
+    realHeartRate = Math.min(1, avgHr / 120);
+    // Meaningfulness = inverse of stress (calm = meaningful)
+    realMeaningfulness = Math.min(1, Math.max(0, 1 - realCortisol + 0.2));
+  }
+
   const { score, size, color, colorName } = scoreAndStyle(
     durationMin,
-    DEFAULT_CORTISOL,
-    DEFAULT_HEART_RATE,
-    DEFAULT_MEANINGFULNESS
+    realCortisol,
+    realHeartRate,
+    realMeaningfulness
   );
 
+  // Prefer face-identified person, then speaker windows, then generic
   const person =
-    session.speakerWindows?.length > 0
-      ? session.speakerWindows.map((w) => w.personTag).join(", ")
-      : "Conversation";
+    session.faceIdentification?.personName
+      ?? (session.speakerWindows?.length > 0
+        ? session.speakerWindows
+            .filter((w) => w.personTag !== "Me")
+            .map((w) => w.personTag)
+            .join(", ") || session.speakerWindows.map((w) => w.personTag).join(", ")
+        : "Conversation");
 
   const bubble: TimelineBubble = {
     id: `bubble_${session.id}`,
@@ -122,9 +144,9 @@ export async function saveTimelineBubbleFromSession(session: RecordingSession): 
     colorName,
     date,
     score,
-    cortisol: DEFAULT_CORTISOL,
-    heartRate: DEFAULT_HEART_RATE,
-    meaningfulness: DEFAULT_MEANINGFULNESS
+    cortisol: realCortisol,
+    heartRate: realHeartRate,
+    meaningfulness: realMeaningfulness
   };
 
   await ensureTimelineDir();

@@ -2,11 +2,13 @@ import { promises as fs } from "fs";
 import path from "path";
 import { getDataRoot } from "@/lib/runtimePaths";
 import {
+  AwarenessDebugEvent,
   AwarenessSignalEvent,
   ConversationAwarenessState,
   RecordingSession
 } from "@shared/types";
 import {
+  AwarenessDebugEventSchema,
   AwarenessSignalEventSchema,
   ConversationAwarenessStateSchema,
   RecordingSessionSchema
@@ -15,6 +17,7 @@ import {
 const DATA_ROOT = getDataRoot();
 const AWARENESS_ROOT = path.join(DATA_ROOT, "awareness");
 const EVENTS_DIR = path.join(AWARENESS_ROOT, "events");
+const DEBUG_EVENTS_PATH = path.join(AWARENESS_ROOT, "debugEvents.json");
 const CLIPS_DIR = path.join(AWARENESS_ROOT, "clips");
 const STATE_PATH = path.join(AWARENESS_ROOT, "state.json");
 const SESSIONS_PATH = path.join(AWARENESS_ROOT, "sessions.json");
@@ -142,6 +145,14 @@ export async function appendAwarenessEvent(event: AwarenessSignalEvent): Promise
   await writeJson(filePath, next);
 }
 
+export async function appendAwarenessDebugEvent(event: AwarenessDebugEvent): Promise<void> {
+  await ensureAwarenessDirs();
+  const parsed = AwarenessDebugEventSchema.parse(event);
+  const existing = (await readJsonOrNull<AwarenessDebugEvent[]>(DEBUG_EVENTS_PATH)) ?? [];
+  const next = [...existing, parsed].slice(-1500);
+  await writeJson(DEBUG_EVENTS_PATH, next);
+}
+
 export async function listRecentAwarenessEvents(limit = 80): Promise<AwarenessSignalEvent[]> {
   await ensureAwarenessDirs();
   const filenames = (await fs.readdir(EVENTS_DIR))
@@ -175,6 +186,17 @@ export async function listRecentAwarenessEvents(limit = 80): Promise<AwarenessSi
   }
 
   return collected.sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+}
+
+export async function listRecentAwarenessDebugEvents(limit = 120): Promise<AwarenessDebugEvent[]> {
+  await ensureAwarenessDirs();
+  const raw = (await readJsonOrNull<AwarenessDebugEvent[]>(DEBUG_EVENTS_PATH)) ?? [];
+  const valid = raw
+    .map((item) => AwarenessDebugEventSchema.safeParse(item))
+    .filter((result): result is { success: true; data: AwarenessDebugEvent } => result.success)
+    .map((result) => result.data)
+    .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  return valid.slice(0, limit);
 }
 
 export async function saveRecordedClip(

@@ -107,6 +107,12 @@ export interface SpeakerHint {
   speakingScore: number;
 }
 
+export interface FaceIdentification {
+  personId: string;
+  personName: string;
+  confidence: "high" | "medium" | "low";
+}
+
 export interface AwarenessSignalEvent {
   source: AwarenessSource;
   timestamp: string;
@@ -117,11 +123,58 @@ export interface AwarenessSignalEvent {
   transcriptConfidence?: number;
   speakerHints: SpeakerHint[];
   deviceId?: string;
+  faceIdentification?: FaceIdentification;
+}
+
+export type AwarenessDebugCategory =
+  | "listener"
+  | "ingest"
+  | "decision"
+  | "recording"
+  | "pipeline";
+
+export interface AwarenessDebugEvent {
+  id: string;
+  timestamp: string;
+  category: AwarenessDebugCategory;
+  message: string;
+  level?: "info" | "warn" | "error";
+  sessionId?: string;
+  action?: ConversationAwarenessState["latestAction"];
+  data?: {
+    audioLevel?: number;
+    transcriptWords?: number;
+    transcriptConfidence?: number;
+    transcriptText?: string;
+    windowSamples?: number;
+    windowDurationSec?: number;
+    legibleFrames?: number;
+    distinctSpeakers?: number;
+    avgAudio?: number;
+    avgConfidence?: number;
+    words?: number;
+    transcriptStrong?: boolean;
+    multiSpeakerStrong?: boolean;
+    audioSpeechBlend?: boolean;
+    verdict?: boolean;
+    reason?: string;
+  };
 }
 
 export interface SpeakerWindow {
   personTag: string;
   score: number;
+}
+
+export interface BiometricSample {
+  elapsed: number;
+  hr: number;
+  hrv: number;
+  stress: number;
+  voicePitch: number;
+  speechRate: number;
+  audioEnergy: number;
+  source: "voice" | "watch" | "combined";
 }
 
 export interface RecordingSession {
@@ -137,6 +190,9 @@ export interface RecordingSession {
     transcriptWords: number;
     transcriptConfidenceSum: number;
   };
+  biometricSamples?: BiometricSample[];
+  faceIdentification?: FaceIdentification;
+  unknownFaceFramePath?: string;
 }
 
 export interface ConversationAwarenessState {
@@ -160,4 +216,13 @@ export interface MetaGlassesSignalPayload {
   timestamp?: string;
   audioLevel?: number;
   speakerHints?: SpeakerHint[];
+  faceFrameBase64?: string;
+}
+
+export interface EnrolledPerson {
+  id: string;
+  name: string;
+  photoCount: number;
+  createdAt: string;
+  lastSeenAt?: string;
 }

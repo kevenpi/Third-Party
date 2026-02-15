@@ -22,14 +22,6 @@ export interface MessageCorrelation {
     label: string;
     text: string;
     icon: string;
-    shortText?: string;
-    longText?: string;
-    humanComparison?: string;
-    pattern?: {
-      description: string;
-      avgRecovery: string;
-      relatedConversations: string[];
-    };
   };
 }
 
@@ -45,14 +37,36 @@ export interface BiometricData {
   overallInsight: string;
 }
 
-const data = biometricsData as {
+const staticData = biometricsData as {
   conversations: Record<string, BiometricData>;
 };
 
+/**
+ * Get biometric data for a conversation.
+ * Tries live data first (data/biometrics/{id}.json), falls back to static demo data.
+ */
+export async function getBiometricDataAsync(
+  conversationId: string
+): Promise<BiometricData | null> {
+  // Try live data first (dynamic import to avoid SSR issues with fs)
+  try {
+    const { loadBiometricData } = await import("@/lib/biometricStorage");
+    const live = await loadBiometricData(conversationId);
+    if (live) return live;
+  } catch {
+    // Not in server context or file not found — fall through
+  }
+  // Fall back to static demo data
+  return staticData.conversations[conversationId] ?? null;
+}
+
+/**
+ * Synchronous fallback for client-side rendering (static data only).
+ */
 export function getBiometricData(
   conversationId: string
 ): BiometricData | null {
-  return data.conversations[conversationId] ?? null;
+  return staticData.conversations[conversationId] ?? null;
 }
 
 export function getStressColor(stress: number): string {
@@ -143,62 +157,33 @@ export function getAnnotationBorderColor(type: string): string {
 }
 
 export function getDailySummary() {
-  const today = new Date().toISOString().slice(0, 10);
-  return getDailySummaryForDate(today);
-}
+  const convIds = Object.keys(data.conversations);
+  const all = convIds.map((id) => data.conversations[id]);
 
-export function getDailySummaryForDate(date: string) {
-  const today = new Date().toISOString().slice(0, 10);
+  const avgHr = Math.round(
+    all.reduce(
+      (sum, c) =>
+        sum +
+        c.hrTimeline.reduce((s, p) => s + p.hr, 0) / c.hrTimeline.length,
+      0
+    ) / all.length
+  );
 
-  if (date === today) {
-    // Use real biometric data for today
-    const convIds = Object.keys(data.conversations);
-    const all = convIds.map((id) => data.conversations[id]);
+  const stressMoments = all.filter((c) => c.peak.stress > 50);
 
-    const avgHr = Math.round(
-      all.reduce(
-        (sum, c) =>
-          sum +
-          c.hrTimeline.reduce((s, p) => s + p.hr, 0) / c.hrTimeline.length,
-        0
-      ) / all.length
-    );
-
-    const stressMoments = all.filter((c) => c.peak.stress > 50);
-
-    const peakConv = all.reduce((best, c) =>
-      c.peak.stress > best.peak.stress ? c : best
-    );
-
-    return {
-      avgHr,
-      stressMomentCount: stressMoments.length,
-      peakStress: peakConv.peak.stress,
-      peakPerson: peakConv.participant,
-      peakTime: new Date(peakConv.startTime).toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-      }),
-    };
-  }
-
-  // Generate deterministic-but-varied summary for past dates
-  const hash = [...date].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
-  const PEOPLE = ["Arthur", "Tane", "Kevin", "Jessica"];
-  const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"];
-
-  const avgHr = 66 + (hash % 12);
-  const stressMomentCount = (hash % 4);
-  const peakStress = 35 + (hash % 50);
-  const peakPerson = PEOPLE[(hash + 1) % PEOPLE.length];
-  const peakTime = TIMES[(hash + 2) % TIMES.length];
+  const peakConv = all.reduce((best, c) =>
+    c.peak.stress > best.peak.stress ? c : best
+  );
 
   return {
     avgHr,
-    stressMomentCount,
-    peakStress,
-    peakPerson,
-    peakTime,
+    stressMomentCount: stressMoments.length,
+    peakStress: peakConv.peak.stress,
+    peakPerson: peakConv.participant,
+    peakTime: new Date(peakConv.startTime).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    }),
   };
 }
 

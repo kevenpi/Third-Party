@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Settings, Power } from "lucide-react";
-import { getDailySummary, getDailySummaryForDate, getConversationPeakStress, getStressColor } from "@/lib/biometrics";
+import { getDailySummary, getConversationPeakStress, getStressColor } from "@/lib/biometrics";
 
 interface Conversation {
   id: string;
@@ -31,7 +31,35 @@ interface LiveAwarenessEvent {
   transcriptText?: string;
 }
 
-const PEOPLE = ["Arthur", "Tane", "Kevin", "Jessica"] as const;
+interface LiveDebugEvent {
+  id: string;
+  timestamp: string;
+  category: "listener" | "ingest" | "decision" | "recording" | "pipeline";
+  message: string;
+  level?: "info" | "warn" | "error";
+  sessionId?: string;
+  action?: string;
+  data?: {
+    audioLevel?: number;
+    transcriptWords?: number;
+    transcriptConfidence?: number;
+    transcriptText?: string;
+    windowSamples?: number;
+    windowDurationSec?: number;
+    legibleFrames?: number;
+    distinctSpeakers?: number;
+    avgAudio?: number;
+    avgConfidence?: number;
+    words?: number;
+    transcriptStrong?: boolean;
+    multiSpeakerStrong?: boolean;
+    audioSpeechBlend?: boolean;
+    verdict?: boolean;
+    reason?: string;
+  };
+}
+
+const PEOPLE = ["Arthur", "Tane", "Kevin"] as const;
 const TIMES = ["7:10 AM", "9:25 AM", "12:40 PM", "3:15 PM", "6:45 PM", "9:05 PM"] as const;
 
 function getRecentDates(count: number): string[] {
@@ -48,15 +76,7 @@ function getRecentDates(count: number): string[] {
 function archiveConversationsForDate(date: string): Conversation[] {
   const hash = [...date].reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
   const longMoment = hash % 3;
-
-  // Check if yesterday - inject Jessica's conversation
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().slice(0, 10);
-  const isYesterday = date === yesterdayStr;
-
-  const base: Conversation[] = TIMES.map((time, idx) => {
+  return TIMES.map((time, idx) => {
     const person = PEOPLE[(hash + idx) % PEOPLE.length];
     const isHighStress = idx === (hash + 2) % TIMES.length;
     const isRepair = idx === (hash + 4) % TIMES.length;
@@ -76,21 +96,6 @@ function archiveConversationsForDate(date: string): Conversation[] {
       date
     };
   });
-
-  if (isYesterday) {
-    base.push({
-      id: "8",
-      time: "3:20 PM",
-      person: "Jessica",
-      durationSec: 720,
-      size: "large",
-      color: "#E8A0BF",
-      colorName: "warm-rose",
-      date,
-    });
-  }
-
-  return base;
 }
 
 function getBubbleSize(size: "small" | "medium" | "large"): string {
@@ -148,6 +153,7 @@ export default function TimelinePage() {
   const [toggleBusy, setToggleBusy] = useState(false);
   const [liveState, setLiveState] = useState<LiveAwarenessState | null>(null);
   const [recentEvents, setRecentEvents] = useState<LiveAwarenessEvent[]>([]);
+  const [debugEvents, setDebugEvents] = useState<LiveDebugEvent[]>([]);
 
   const loadBubbles = useCallback(async (date: string) => {
     try {
@@ -202,6 +208,7 @@ export default function TimelinePage() {
           setAppOn(data?.state?.listeningEnabled === true);
           setLiveState(data?.state ?? null);
           setRecentEvents((data?.recentEvents ?? []) as LiveAwarenessEvent[]);
+          setDebugEvents((data?.debugEvents ?? []) as LiveDebugEvent[]);
         })
         .catch(() => {});
     };
@@ -236,6 +243,14 @@ export default function TimelinePage() {
   const todayDisplay = formatDateDisplay(selectedDate);
   const isToday = selectedDate === today;
   const latestEvent = recentEvents.length > 0 ? recentEvents[0] : null;
+  const transcriptStream = useMemo(
+    () =>
+      recentEvents
+        .filter((event) => (event.transcriptText ?? "").trim().length > 0)
+        .slice(0, 5),
+    [recentEvents]
+  );
+  const recentDebug = useMemo(() => debugEvents.slice(0, 8), [debugEvents]);
   const liveCoherent = latestEvent
     ? latestEvent.audioLevel >= 0.05 && ((latestEvent.transcriptWords ?? 0) >= 2)
     : false;
@@ -301,7 +316,7 @@ export default function TimelinePage() {
 
       {/* Daily Biometric Summary */}
       {(() => {
-        const summary = getDailySummaryForDate(selectedDate);
+        const summary = getDailySummary();
         return (
           <div className="max-w-md mx-auto px-4 pt-4">
             <div
@@ -365,6 +380,67 @@ export default function TimelinePage() {
                 {latestEvent.transcriptText ? <p className="text-[rgba(255,255,255,0.45)] line-clamp-2">"{latestEvent.transcriptText}"</p> : null}
               </div>
             )}
+            <div className="mt-4 border-t border-[rgba(255,255,255,0.08)] pt-3 space-y-3">
+              <div className="flex items-center justify-between">
+                <p className="text-xs uppercase tracking-wider text-[#8A7E72]">Live Voice Debug</p>
+                <span className="text-[10px] text-[rgba(255,255,255,0.55)]">
+                  Session: {liveState?.activeSessionId ? liveState.activeSessionId.slice(-8) : "none"}
+                </span>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">What is being heard right now</p>
+                {transcriptStream.length === 0 ? (
+                  <p className="text-xs text-[rgba(255,255,255,0.4)]">No transcript chunks yet</p>
+                ) : (
+                  <div className="space-y-1.5">
+                    {transcriptStream.map((event) => (
+                      <div key={event.timestamp} className="text-xs text-[rgba(255,255,255,0.68)] bg-[rgba(255,255,255,0.03)] rounded px-2 py-1.5">
+                        <span className="text-[rgba(255,255,255,0.45)] mr-2">
+                          {new Date(event.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                        </span>
+                        "{event.transcriptText}"
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-[11px] text-[rgba(255,255,255,0.5)]">Engine trace (why start/stop happened)</p>
+                {recentDebug.length === 0 ? (
+                  <p className="text-xs text-[rgba(255,255,255,0.4)]">No debug trace yet</p>
+                ) : (
+                  <div className="space-y-2 max-h-52 overflow-auto pr-1">
+                    {recentDebug.map((event) => (
+                      <div key={event.id} className="text-xs rounded border border-[rgba(255,255,255,0.08)] bg-[rgba(0,0,0,0.15)] p-2">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-[rgba(255,255,255,0.82)]">{event.message}</span>
+                          <span className="text-[rgba(255,255,255,0.45)]">
+                            {new Date(event.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                          </span>
+                        </div>
+                        <p className="mt-1 text-[rgba(255,255,255,0.45)]">
+                          {event.category} {event.action ? `| ${event.action.replaceAll("_", " ")}` : ""}
+                          {event.sessionId ? ` | ${event.sessionId.slice(-8)}` : ""}
+                        </p>
+                        {event.data ? (
+                          <p className="mt-1 text-[rgba(255,255,255,0.55)]">
+                            audio {event.data.audioLevel?.toFixed(2) ?? "--"} | words {event.data.transcriptWords ?? event.data.words ?? 0}
+                            {typeof event.data.avgConfidence === "number"
+                              ? ` | avg conf ${event.data.avgConfidence.toFixed(2)}`
+                              : typeof event.data.transcriptConfidence === "number"
+                                ? ` | conf ${event.data.transcriptConfidence.toFixed(2)}`
+                                : ""}
+                            {typeof event.data.verdict === "boolean" ? ` | verdict ${event.data.verdict ? "record" : "wait"}` : ""}
+                          </p>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
         {loading ? (

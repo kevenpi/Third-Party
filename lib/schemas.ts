@@ -166,7 +166,52 @@ export const AwarenessSignalEventSchema = z.object({
   transcriptWords: z.number().int().min(0).max(200).optional(),
   transcriptConfidence: z.number().min(0).max(1).optional(),
   speakerHints: z.array(SpeakerHintSchema).max(8),
-  deviceId: z.string().optional()
+  deviceId: z.string().optional(),
+  faceIdentification: z
+    .object({
+      personId: z.string().min(1),
+      personName: z.string().min(1),
+      confidence: z.enum(["high", "medium", "low"])
+    })
+    .optional()
+});
+
+export const AwarenessDebugEventSchema = z.object({
+  id: z.string().min(1),
+  timestamp: z.string().datetime(),
+  category: z.enum(["listener", "ingest", "decision", "recording", "pipeline"]),
+  message: z.string().min(1).max(300),
+  level: z.enum(["info", "warn", "error"]).optional(),
+  sessionId: z.string().optional(),
+  action: z
+    .enum([
+      "idle",
+      "awaiting_conversation",
+      "start_recording",
+      "continue_recording",
+      "stop_recording"
+    ])
+    .optional(),
+  data: z
+    .object({
+      audioLevel: z.number().min(0).max(1).optional(),
+      transcriptWords: z.number().int().min(0).max(200).optional(),
+      transcriptConfidence: z.number().min(0).max(1).optional(),
+      transcriptText: z.string().max(500).optional(),
+      windowSamples: z.number().int().min(0).max(200).optional(),
+      windowDurationSec: z.number().min(0).max(30).optional(),
+      legibleFrames: z.number().int().min(0).max(200).optional(),
+      distinctSpeakers: z.number().int().min(0).max(20).optional(),
+      avgAudio: z.number().min(0).max(1).optional(),
+      avgConfidence: z.number().min(0).max(1).optional(),
+      words: z.number().int().min(0).max(10000).optional(),
+      transcriptStrong: z.boolean().optional(),
+      multiSpeakerStrong: z.boolean().optional(),
+      audioSpeechBlend: z.boolean().optional(),
+      verdict: z.boolean().optional(),
+      reason: z.string().max(200).optional()
+    })
+    .optional()
 });
 
 export const SpeakerWindowSchema = z.object({
@@ -221,7 +266,14 @@ export const IngestSignalRequestSchema = z.object({
   transcriptWords: z.number().int().min(0).max(200).optional(),
   transcriptConfidence: z.number().min(0).max(1).optional(),
   speakerHints: z.array(SpeakerHintSchema).optional(),
-  deviceId: z.string().optional()
+  deviceId: z.string().optional(),
+  faceIdentification: z
+    .object({
+      personId: z.string().min(1),
+      personName: z.string().min(1),
+      confidence: z.enum(["high", "medium", "low"])
+    })
+    .optional()
 });
 
 export const MetaGlassesSignalPayloadSchema = z.object({

@@ -19,8 +19,6 @@ interface BiometricChartProps {
   data: HRDataPoint[];
   messageCorrelations: MessageCorrelation[];
   baseline: { hr: number; hrv: number; stress: number };
-  selectedElapsed?: number | null;
-  onSpikeClick?: (correlation: MessageCorrelation) => void;
 }
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -55,60 +53,10 @@ const CustomTooltip = ({ active, payload }: any) => {
   );
 };
 
-// Custom dot component for clickable correlation dots
-function ClickableDot({
-  cx,
-  cy,
-  isSelected,
-  onClick,
-}: {
-  cx: number;
-  cy: number;
-  isSelected: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <g onClick={onClick} style={{ cursor: "pointer" }}>
-      {/* Pulse glow ring when selected */}
-      {isSelected && (
-        <circle
-          cx={cx}
-          cy={cy}
-          r={12}
-          fill="none"
-          stroke="#D4B07A"
-          strokeWidth={1.5}
-          opacity={0.5}
-        >
-          <animate attributeName="r" values="8;14;8" dur="2s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.6;0.1;0.6" dur="2s" repeatCount="indefinite" />
-        </circle>
-      )}
-      {/* Hit area (larger invisible circle for easier clicking) */}
-      <circle cx={cx} cy={cy} r={14} fill="transparent" />
-      {/* Visible dot */}
-      <circle
-        cx={cx}
-        cy={cy}
-        r={isSelected ? 7 : 5}
-        fill={isSelected ? "#E8C97A" : "#D4B07A"}
-        stroke="#1E1B18"
-        strokeWidth={2}
-        style={{
-          filter: isSelected ? "drop-shadow(0 0 6px rgba(212,176,122,0.6))" : "none",
-          transition: "r 0.2s ease, filter 0.2s ease",
-        }}
-      />
-    </g>
-  );
-}
-
 export default function BiometricChart({
   data,
   messageCorrelations,
   baseline,
-  selectedElapsed,
-  onSpikeClick,
 }: BiometricChartProps) {
   const maxHr = Math.max(...data.map((d) => d.hr));
   const maxStress = Math.max(...data.map((d) => d.stress));
@@ -119,6 +67,8 @@ export default function BiometricChart({
     d.stress > best.stress ? d : best,
     data[0]
   );
+
+  const correlationElapsed = new Set(messageCorrelations.map((c) => c.elapsed));
 
   return (
     <div style={{ position: "relative", zIndex: 1 }}>
@@ -163,15 +113,6 @@ export default function BiometricChart({
               stroke="rgba(255,255,255,0.1)"
               strokeDasharray="4 4"
             />
-            {/* Vertical highlight line at selected spike */}
-            {selectedElapsed != null && (
-              <ReferenceLine
-                x={selectedElapsed}
-                stroke="#D4B07A"
-                strokeWidth={1.5}
-                strokeOpacity={0.5}
-              />
-            )}
             <Area
               type="monotone"
               dataKey="hr"
@@ -184,21 +125,15 @@ export default function BiometricChart({
             {/* Message correlation dots */}
             {messageCorrelations.map((c) => {
               const point = data.find((d) => d.elapsed === c.elapsed) || data[0];
-              const isSelected = selectedElapsed === c.elapsed;
               return (
                 <ReferenceDot
                   key={c.elapsed}
                   x={c.elapsed}
                   y={point?.hr ?? c.hrAfter}
-                  r={isSelected ? 7 : 5}
-                  fill={isSelected ? "#E8C97A" : "#D4B07A"}
+                  r={5}
+                  fill="#D4B07A"
                   stroke="#1E1B18"
                   strokeWidth={2}
-                  onClick={() => onSpikeClick?.(c)}
-                  style={{
-                    cursor: onSpikeClick ? "pointer" : "default",
-                    filter: isSelected ? "drop-shadow(0 0 6px rgba(212,176,122,0.6))" : "none",
-                  }}
                 />
               );
             })}
@@ -266,15 +201,6 @@ export default function BiometricChart({
             <XAxis dataKey="elapsed" hide />
             <YAxis domain={[15, 70]} hide />
             <Tooltip content={<CustomTooltip />} cursor={{ stroke: "rgba(255,255,255,0.08)" }} />
-            {/* Vertical highlight line at selected spike */}
-            {selectedElapsed != null && (
-              <ReferenceLine
-                x={selectedElapsed}
-                stroke="#D4B07A"
-                strokeWidth={1.5}
-                strokeOpacity={0.5}
-              />
-            )}
             <Line
               type="monotone"
               dataKey="hrv"
@@ -285,21 +211,15 @@ export default function BiometricChart({
             />
             {messageCorrelations.map((c) => {
               const point = data.find((d) => d.elapsed === c.elapsed) || data[0];
-              const isSelected = selectedElapsed === c.elapsed;
               return (
                 <ReferenceDot
                   key={c.elapsed}
                   x={c.elapsed}
                   y={point?.hrv ?? c.hrvAfter}
-                  r={isSelected ? 6 : 4}
-                  fill={isSelected ? "#E8C97A" : "#D4B07A"}
+                  r={4}
+                  fill="#D4B07A"
                   stroke="#1E1B18"
                   strokeWidth={2}
-                  onClick={() => onSpikeClick?.(c)}
-                  style={{
-                    cursor: onSpikeClick ? "pointer" : "default",
-                    filter: isSelected ? "drop-shadow(0 0 6px rgba(212,176,122,0.6))" : "none",
-                  }}
                 />
               );
             })}
@@ -353,15 +273,6 @@ export default function BiometricChart({
             />
             <YAxis domain={[0, 100]} hide />
             <Tooltip content={<CustomTooltip />} cursor={{ stroke: "rgba(255,255,255,0.08)" }} />
-            {/* Vertical highlight line at selected spike */}
-            {selectedElapsed != null && (
-              <ReferenceLine
-                x={selectedElapsed}
-                stroke="#D4B07A"
-                strokeWidth={1.5}
-                strokeOpacity={0.5}
-              />
-            )}
             <Area
               type="monotone"
               dataKey="stress"
@@ -373,21 +284,15 @@ export default function BiometricChart({
             />
             {messageCorrelations.map((c) => {
               const point = data.find((d) => d.elapsed === c.elapsed) || data[0];
-              const isSelected = selectedElapsed === c.elapsed;
               return (
                 <ReferenceDot
                   key={c.elapsed}
                   x={c.elapsed}
                   y={point?.stress ?? c.stressAfter}
-                  r={isSelected ? 6 : 4}
-                  fill={isSelected ? "#E8C97A" : "#D4B07A"}
+                  r={4}
+                  fill="#D4B07A"
                   stroke="#1E1B18"
                   strokeWidth={2}
-                  onClick={() => onSpikeClick?.(c)}
-                  style={{
-                    cursor: onSpikeClick ? "pointer" : "default",
-                    filter: isSelected ? "drop-shadow(0 0 6px rgba(212,176,122,0.6))" : "none",
-                  }}
                 />
               );
             })}
