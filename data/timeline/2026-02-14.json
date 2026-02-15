@@ -1,0 +1,34 @@
+[
+  {
+    "sessionId": "seed_arthur_4",
+    "time": "9:30 AM",
+    "person": "Arthur",
+    "durationSec": 600,
+    "durationMin": 10,
+    "size": "medium",
+    "color": "#6AAAB4",
+    "colorName": "steady",
+    "date": "2026-02-14",
+    "score": 0.5,
+    "cortisol": 0.3,
+    "heartRate": 0.4,
+    "meaningfulness": 0.6,
+    "id": "bubble_seed_arthur_4"
+  },
+  {
+    "sessionId": "seed_arthur_5",
+    "time": "7:15 PM",
+    "person": "Arthur",
+    "durationSec": 1500,
+    "durationMin": 25,
+    "size": "large",
+    "color": "#D4B07A",
+    "colorName": "warm-amber",
+    "date": "2026-02-14",
+    "score": 0.7,
+    "cortisol": 0.5,
+    "heartRate": 0.55,
+    "meaningfulness": 0.7,
+    "id": "bubble_seed_arthur_5"
+  }
+]

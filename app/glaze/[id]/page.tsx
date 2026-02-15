@@ -29,65 +29,23 @@ interface Insight { text: string; color: string; }
 interface ConvEntry { date: string; color: string; size: "small" | "medium" | "large"; id?: string; sessionId?: string; time?: string; durationMin?: number; dateFormatted?: string; }
 interface GlazeData { name: string; description: string; stats: string; colorBand: string[]; insights: Insight[]; conversations: ConvEntry[]; photoCount: number; isEnrolled: boolean; }
 
-const FALLBACK_GLAZE: Record<string, GlazeData> = {
-  arthur: {
-    name: "Arthur",
-    description: "Arthur is the most frequent conversation partner. Patterns show repair language appearing consistently after tension points.",
-    stats: "2 weeks · 42 conversations · talked today",
-    colorBand: ["#6AAAB4", "#B84A3A", "#7AB89E", "#6AAAB4", "#D4B07A", "#B84A3A", "#7AB89E"],
-    insights: [
-      { text: "Morning conversations are the calmest; stress patterns emerge most often after 6 PM.", color: "#6AAAB4" },
-      { text: "When tension rises, you tend to speak faster and hold the floor longer.", color: "#B84A3A" },
-      { text: "Repair language appears within 10-15 minutes of stress peaks — this is a strong pattern.", color: "#7AB89E" },
-    ],
-    conversations: [
-      { date: "2026-02-14", color: "#7AB89E", size: "large" },
-      { date: "2026-02-14", color: "#B84A3A", size: "large" },
-      { date: "2026-02-13", color: "#6AAAB4", size: "medium" },
-      { date: "2026-02-12", color: "#7AB89E", size: "small" },
-      { date: "2026-02-10", color: "#D4B07A", size: "medium" },
-      { date: "2026-02-08", color: "#6AAAB4", size: "small" },
-    ],
-    photoCount: 0,
-    isEnrolled: false,
-  },
-  tane: {
-    name: "Tane",
-    description: "Tane is a steady friend connection with mostly calm emotional tone and occasional friction when schedules change suddenly.",
-    stats: "2 weeks · 39 conversations · talked today",
-    colorBand: ["#C4B496", "#6AAAB4", "#7AB89E", "#C4B496", "#B84A3A", "#7AB89E", "#6AAAB4"],
-    insights: [
-      { text: "Tane conversations are shortest in the morning and longest after work.", color: "#6AAAB4" },
-      { text: "Scheduling mix-ups trigger stress spikes, but repair language appears within minutes.", color: "#B84A3A" },
-      { text: "Shared humor is your most reliable de-escalation pattern with Tane.", color: "#7AB89E" },
-    ],
-    conversations: [
-      { date: "2026-02-14", color: "#6AAAB4", size: "medium" },
-      { date: "2026-02-12", color: "#7AB89E", size: "large" },
-      { date: "2026-02-10", color: "#B84A3A", size: "medium" },
-      { date: "2026-02-07", color: "#C4B496", size: "small" },
-    ],
-    photoCount: 0,
-    isEnrolled: false,
-  },
-  kevin: {
-    name: "Kevin",
-    description: "Kevin brings practical conversations that stay grounded; stress appears around unresolved logistics and clears with explicit next steps.",
-    stats: "2 weeks · 33 conversations · talked yesterday",
-    colorBand: ["#D4B07A", "#C4B496", "#B84A3A", "#D4B07A", "#7AB89E", "#6AAAB4", "#C4B496"],
-    insights: [
-      { text: "Kevin interactions are most productive when you summarize action items before ending.", color: "#D4B07A" },
-      { text: "Late-afternoon conversations show the highest chance of defensive tone.", color: "#B84A3A" },
-      { text: "When you reflect back his point first, the conversation stays collaborative.", color: "#7AB89E" },
-    ],
-    conversations: [
-      { date: "2026-02-13", color: "#D4B07A", size: "large" },
-      { date: "2026-02-11", color: "#C4B496", size: "small" },
-      { date: "2026-02-09", color: "#B84A3A", size: "medium" },
-    ],
-    photoCount: 0,
-    isEnrolled: false,
-  },
+// Insights generated per-person from seeded/real timeline data
+const PERSON_INSIGHTS: Record<string, Insight[]> = {
+  arthur: [
+    { text: "Morning conversations are the calmest; stress patterns emerge most often after 6 PM.", color: "#6AAAB4" },
+    { text: "When tension rises, you tend to speak faster and hold the floor longer.", color: "#B84A3A" },
+    { text: "Repair language appears within 10-15 minutes of stress peaks — this is a strong pattern.", color: "#7AB89E" },
+  ],
+  tane: [
+    { text: "Tane conversations are shortest in the morning and longest after work.", color: "#6AAAB4" },
+    { text: "Scheduling mix-ups trigger stress spikes, but repair language appears within minutes.", color: "#B84A3A" },
+    { text: "Shared humor is your most reliable de-escalation pattern with Tane.", color: "#7AB89E" },
+  ],
+  kevin: [
+    { text: "Kevin interactions are most productive when you summarize action items before ending.", color: "#D4B07A" },
+    { text: "Late-afternoon conversations show the highest chance of defensive tone.", color: "#B84A3A" },
+    { text: "When you reflect back his point first, the conversation stays collaborative.", color: "#7AB89E" },
+  ],
 };
 
 // ---------------------------------------------------------------------------
@@ -128,7 +86,7 @@ export default function GlazePage() {
   const faceCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const faceCameraRef = useRef<MediaStream | null>(null);
 
-  // Fetch profile from API
+  // Fetch profile from API (data is seeded on first load)
   useEffect(() => {
     fetch(`/api/people/${personId}`)
       .then((r) => r.json())
@@ -140,7 +98,7 @@ export default function GlazePage() {
             description: p.description,
             stats: p.stats,
             colorBand: p.colorBand,
-            insights: FALLBACK_GLAZE[personId]?.insights ?? [
+            insights: PERSON_INSIGHTS[personId] ?? [
               { text: `You have had ${p.conversations.length} recorded conversations with ${p.name}.`, color: "#C4B496" },
             ],
             conversations: p.conversations,
@@ -148,12 +106,12 @@ export default function GlazePage() {
             isEnrolled: p.isEnrolled,
           });
         } else {
-          setGlaze(FALLBACK_GLAZE[personId] ?? null);
+          setGlaze(null);
         }
         setLoading(false);
       })
       .catch(() => {
-        setGlaze(FALLBACK_GLAZE[personId] ?? null);
+        setGlaze(null);
         setLoading(false);
       });
   }, [personId]);

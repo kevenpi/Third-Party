@@ -1,0 +1,18 @@
+[
+  {
+    "sessionId": "seed_arthur_6",
+    "time": "6:45 PM",
+    "person": "Arthur",
+    "durationSec": 420,
+    "durationMin": 7,
+    "size": "small",
+    "color": "#7AB89E",
+    "colorName": "calm-sage",
+    "date": "2026-02-12",
+    "score": 0.4,
+    "cortisol": 0.2,
+    "heartRate": 0.35,
+    "meaningfulness": 0.65,
+    "id": "bubble_seed_arthur_6"
+  }
+]

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getEnrolledPerson } from "@/lib/faceRecognition";
-import { listTimelineDates, getBubblesForDate } from "@/lib/timelineStorage";
+import { listTimelineDates, getBubblesForDate, seedSampleConversations } from "@/lib/timelineStorage";
 import type { TimelineBubble } from "@/lib/timelineStorage";
 
 export const runtime = "nodejs";
@@ -17,9 +17,13 @@ export async function GET(
   try {
     const { id } = await params;
 
+    // Seed sample conversations if timeline is empty (first launch)
+    await seedSampleConversations();
+
     // Try to find enrolled person
     const enrolled = await getEnrolledPerson(id);
-    const personName = enrolled?.name ?? id.replace(/_/g, " ");
+    const rawName = id.replace(/_/g, " ");
+    const personName = enrolled?.name ?? rawName.replace(/\b\w/g, (c) => c.toUpperCase());
 
     // Gather conversations for this person from timeline
     const dates = await listTimelineDates();

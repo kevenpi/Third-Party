@@ -193,3 +193,93 @@ export async function getBubbleById(id: string): Promise<TimelineBubble | null> 
   }
   return null;
 }
+
+/**
+ * Write a list of bubbles directly for a given date (used by seeding).
+ * Merges with existing data by sessionId.
+ */
+export async function saveBubblesDirect(bubbles: TimelineBubble[]): Promise<void> {
+  await ensureTimelineDir();
+  // Group by date
+  const byDate = new Map<string, TimelineBubble[]>();
+  for (const b of bubbles) {
+    const list = byDate.get(b.date) ?? [];
+    list.push(b);
+    byDate.set(b.date, list);
+  }
+  for (const [date, newBubbles] of byDate) {
+    const filePath = bubblePath(date);
+    let existing: TimelineBubble[] = [];
+    try {
+      const raw = await fs.readFile(filePath, "utf8");
+      existing = JSON.parse(raw);
+    } catch { /* new file */ }
+    const existingIds = new Set(existing.map((b) => b.id));
+    const merged = [...existing, ...newBubbles.filter((b) => !existingIds.has(b.id))].slice(0, 50);
+    await fs.writeFile(filePath, JSON.stringify(merged, null, 2), "utf8");
+  }
+}
+
+/**
+ * Seed sample conversations for demo people so profiles have data.
+ * Only runs once — skips if timeline already has data.
+ */
+export async function seedSampleConversations(): Promise<boolean> {
+  const dates = await listTimelineDates();
+  if (dates.length > 0) {
+    // Check if there are actual bubbles (not just empty files)
+    for (const d of dates.slice(0, 3)) {
+      const bubbles = await getBubblesForDate(d);
+      if (bubbles.length > 0) return false; // already have data
+    }
+  }
+
+  const today = new Date();
+  const dateStr = (daysAgo: number) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - daysAgo);
+    return d.toISOString().slice(0, 10);
+  };
+
+  const SAMPLE_CONVOS: Omit<TimelineBubble, "id">[] = [
+    // Arthur — today
+    { sessionId: "seed_arthur_1", time: "7:08 AM", person: "Arthur", durationSec: 180, durationMin: 3, size: "small", color: "#7AB89E", colorName: "calm-sage", date: dateStr(0), score: 0.4, cortisol: 0.2, heartRate: 0.4, meaningfulness: 0.7 },
+    { sessionId: "seed_arthur_2", time: "12:45 PM", person: "Arthur", durationSec: 1080, durationMin: 18, size: "large", color: "#B84A3A", colorName: "stress-red", date: dateStr(0), score: 0.8, cortisol: 0.75, heartRate: 0.7, meaningfulness: 0.6 },
+    { sessionId: "seed_arthur_3", time: "8:00 PM", person: "Arthur", durationSec: 2100, durationMin: 35, size: "large", color: "#7AB89E", colorName: "repair-sage", date: dateStr(0), score: 0.9, cortisol: 0.3, heartRate: 0.45, meaningfulness: 0.85 },
+    // Arthur — yesterday
+    { sessionId: "seed_arthur_4", time: "9:30 AM", person: "Arthur", durationSec: 600, durationMin: 10, size: "medium", color: "#6AAAB4", colorName: "steady", date: dateStr(1), score: 0.5, cortisol: 0.3, heartRate: 0.4, meaningfulness: 0.6 },
+    { sessionId: "seed_arthur_5", time: "7:15 PM", person: "Arthur", durationSec: 1500, durationMin: 25, size: "large", color: "#D4B07A", colorName: "warm-amber", date: dateStr(1), score: 0.7, cortisol: 0.5, heartRate: 0.55, meaningfulness: 0.7 },
+    // Arthur — 3 days ago
+    { sessionId: "seed_arthur_6", time: "6:45 PM", person: "Arthur", durationSec: 420, durationMin: 7, size: "small", color: "#7AB89E", colorName: "calm-sage", date: dateStr(3), score: 0.4, cortisol: 0.2, heartRate: 0.35, meaningfulness: 0.65 },
+    // Arthur — 5 days ago
+    { sessionId: "seed_arthur_7", time: "10:00 AM", person: "Arthur", durationSec: 900, durationMin: 15, size: "medium", color: "#D4B07A", colorName: "warm-amber", date: dateStr(5), score: 0.6, cortisol: 0.45, heartRate: 0.5, meaningfulness: 0.55 },
+
+    // Tane — today
+    { sessionId: "seed_tane_1", time: "10:30 AM", person: "Tane", durationSec: 1320, durationMin: 22, size: "large", color: "#6AAAB4", colorName: "steady", date: dateStr(0), score: 0.7, cortisol: 0.25, heartRate: 0.4, meaningfulness: 0.8 },
+    // Tane — 2 days ago
+    { sessionId: "seed_tane_2", time: "3:00 PM", person: "Tane", durationSec: 1800, durationMin: 30, size: "large", color: "#7AB89E", colorName: "calm-sage", date: dateStr(2), score: 0.85, cortisol: 0.2, heartRate: 0.35, meaningfulness: 0.9 },
+    // Tane — 4 days ago
+    { sessionId: "seed_tane_3", time: "1:15 PM", person: "Tane", durationSec: 720, durationMin: 12, size: "medium", color: "#B84A3A", colorName: "stress-red", date: dateStr(4), score: 0.65, cortisol: 0.65, heartRate: 0.6, meaningfulness: 0.4 },
+    // Tane — 7 days ago
+    { sessionId: "seed_tane_4", time: "5:00 PM", person: "Tane", durationSec: 300, durationMin: 5, size: "small", color: "#C4B496", colorName: "neutral-sand", date: dateStr(7), score: 0.35, cortisol: 0.3, heartRate: 0.35, meaningfulness: 0.5 },
+
+    // Kevin — today
+    { sessionId: "seed_kevin_1", time: "9:12 AM", person: "Kevin", durationSec: 480, durationMin: 8, size: "medium", color: "#C4B496", colorName: "neutral-sand", date: dateStr(0), score: 0.45, cortisol: 0.3, heartRate: 0.4, meaningfulness: 0.5 },
+    { sessionId: "seed_kevin_2", time: "2:15 PM", person: "Kevin", durationSec: 120, durationMin: 2, size: "small", color: "#C4B496", colorName: "neutral-sand", date: dateStr(0), score: 0.25, cortisol: 0.2, heartRate: 0.35, meaningfulness: 0.3 },
+    { sessionId: "seed_kevin_3", time: "4:30 PM", person: "Kevin", durationSec: 840, durationMin: 14, size: "medium", color: "#D4B07A", colorName: "warm-amber", date: dateStr(0), score: 0.6, cortisol: 0.5, heartRate: 0.55, meaningfulness: 0.55 },
+    // Kevin — 2 days ago
+    { sessionId: "seed_kevin_4", time: "11:00 AM", person: "Kevin", durationSec: 960, durationMin: 16, size: "large", color: "#D4B07A", colorName: "warm-amber", date: dateStr(2), score: 0.7, cortisol: 0.55, heartRate: 0.5, meaningfulness: 0.6 },
+    // Kevin — 4 days ago
+    { sessionId: "seed_kevin_5", time: "3:30 PM", person: "Kevin", durationSec: 600, durationMin: 10, size: "medium", color: "#B84A3A", colorName: "stress-red", date: dateStr(4), score: 0.6, cortisol: 0.7, heartRate: 0.65, meaningfulness: 0.4 },
+    // Kevin — 6 days ago
+    { sessionId: "seed_kevin_6", time: "10:00 AM", person: "Kevin", durationSec: 360, durationMin: 6, size: "small", color: "#6AAAB4", colorName: "steady", date: dateStr(6), score: 0.4, cortisol: 0.25, heartRate: 0.4, meaningfulness: 0.55 },
+  ];
+
+  const bubbles: TimelineBubble[] = SAMPLE_CONVOS.map((c) => ({
+    ...c,
+    id: `bubble_${c.sessionId}`,
+  }));
+
+  await saveBubblesDirect(bubbles);
+  return true;
+}

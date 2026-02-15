@@ -534,37 +534,58 @@ export function ConversationListener() {
   if (!listening) return null;
 
   // Map audio level (0-1) to visual intensity
-  const intensity = Math.min(1, audioLevel * 3); // amplify for visual effect
-  const baseSize = 12;
-  const glowSize = baseSize + intensity * 8; // 12-20px
-  const glowOpacity = 0.3 + intensity * 0.7; // 0.3-1.0
-  const glowSpread = intensity * 20; // 0-20px
-  const color = isRecording ? "#EF4444" : "#7AB89E"; // red when recording, sage green when listening
+  const intensity = Math.min(1, audioLevel * 4);
+  const size = 16 + intensity * 16; // 16-32px
+  const color = isRecording ? "#EF4444" : "#7AB89E";
+  const spread = 4 + intensity * 24;
+  const opacity = 0.4 + intensity * 0.6;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 16,
-        right: 16,
-        zIndex: 9999,
-        display: "flex",
-        alignItems: "center",
-        gap: 8,
-        pointerEvents: "none",
-      }}
-    >
+    <>
+      <style>{`
+        @keyframes listener-pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.15); }
+        }
+      `}</style>
       <div
         style={{
-          width: glowSize,
-          height: glowSize,
-          borderRadius: "50%",
-          backgroundColor: color,
-          opacity: glowOpacity,
-          boxShadow: `0 0 ${glowSpread}px ${Math.round(glowSpread * 0.6)}px ${color}`,
-          transition: "all 0.15s ease-out",
+          position: "fixed",
+          bottom: 76,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 9999,
+          pointerEvents: "none",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 4,
         }}
-      />
-    </div>
+      >
+        <div
+          style={{
+            width: size,
+            height: size,
+            borderRadius: "50%",
+            backgroundColor: color,
+            opacity,
+            boxShadow: `0 0 ${spread}px ${Math.round(spread * 0.5)}px ${color}`,
+            transition: "width 0.15s ease-out, height 0.15s ease-out, opacity 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.3s ease",
+            animation: isRecording ? "listener-pulse 2s ease-in-out infinite" : "none",
+          }}
+        />
+        <span
+          style={{
+            fontSize: 9,
+            color: "rgba(255,255,255,0.4)",
+            fontFamily: "Plus Jakarta Sans, sans-serif",
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
+          }}
+        >
+          {isRecording ? "recording" : "listening"}
+        </span>
+      </div>
+    </>
   );
 }

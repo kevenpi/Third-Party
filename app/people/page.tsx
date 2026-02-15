@@ -14,36 +14,7 @@ interface PersonSummary {
   photoCount: number;
 }
 
-// Fallback for demo when no API data
-const FALLBACK_PEOPLE: PersonSummary[] = [
-  {
-    id: "arthur",
-    name: "Arthur",
-    conversationCount: 42,
-    totalDurationMin: 310,
-    lastTalked: new Date().toISOString().slice(0, 10),
-    dominantColors: ["#6AAAB4", "#B84A3A", "#7AB89E"],
-    photoCount: 0,
-  },
-  {
-    id: "tane",
-    name: "Tane",
-    conversationCount: 39,
-    totalDurationMin: 285,
-    lastTalked: new Date().toISOString().slice(0, 10),
-    dominantColors: ["#C4B496", "#6AAAB4", "#7AB89E"],
-    photoCount: 0,
-  },
-  {
-    id: "kevin",
-    name: "Kevin",
-    conversationCount: 33,
-    totalDurationMin: 198,
-    lastTalked: new Date(Date.now() - 86400000).toISOString().slice(0, 10),
-    dominantColors: ["#D4B07A", "#B84A3A", "#7AB89E"],
-    photoCount: 0,
-  },
-];
+// No hardcoded fallback — sample data is seeded into the timeline by the API.
 
 function getInitials(name: string): string {
   return name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2);
@@ -86,11 +57,11 @@ export default function PeoplePage() {
       .then((r) => r.json())
       .then((data) => {
         const apiPeople = data.people as PersonSummary[] | undefined;
-        setPeople(apiPeople && apiPeople.length > 0 ? apiPeople : FALLBACK_PEOPLE);
+        setPeople(apiPeople && apiPeople.length > 0 ? apiPeople : []);
         setLoading(false);
       })
       .catch(() => {
-        setPeople(FALLBACK_PEOPLE);
+        setPeople([]);
         setLoading(false);
       });
   }, []);

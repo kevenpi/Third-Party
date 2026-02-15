@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBubblesForDate, listTimelineDates } from "@/lib/timelineStorage";
+import { getBubblesForDate, listTimelineDates, seedSampleConversations } from "@/lib/timelineStorage";
 
 export const runtime = "nodejs";
 
@@ -11,6 +11,9 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(request: NextRequest) {
   try {
+    // Seed sample conversations on first launch
+    await seedSampleConversations();
+
     const { searchParams } = new URL(request.url);
     const list = searchParams.get("list");
     const date = searchParams.get("date");

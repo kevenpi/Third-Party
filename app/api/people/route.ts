@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { listEnrolledPeople } from "@/lib/faceRecognition";
-import { listTimelineDates, getBubblesForDate } from "@/lib/timelineStorage";
+import { listTimelineDates, getBubblesForDate, seedSampleConversations } from "@/lib/timelineStorage";
 import type { TimelineBubble } from "@/lib/timelineStorage";
 
 export const runtime = "nodejs";
@@ -22,6 +22,9 @@ interface PersonSummary {
  */
 export async function GET() {
   try {
+    // Seed sample conversations if timeline is empty (first launch)
+    await seedSampleConversations();
+
     // Gather all people from enrolled faces
     const enrolled = await listEnrolledPeople();
     const peopleMap = new Map<string, PersonSummary>();
