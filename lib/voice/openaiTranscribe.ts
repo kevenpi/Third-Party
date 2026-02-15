@@ -5,10 +5,11 @@
 
 import OpenAI, { toFile } from "openai";
 import type { DiarizedSegment } from "./types";
+import { getOpenAIApiKey } from "@/lib/openaiKey";
 
 function getClient(): OpenAI {
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) throw new Error("OPENAI_API_KEY is not set");
+  const key = getOpenAIApiKey();
+  if (!key) throw new Error("Missing OpenAI key (set OPENAI_API_KEY or CHATGPT_API_KEY)");
   return new OpenAI({ apiKey: key });
 }
 

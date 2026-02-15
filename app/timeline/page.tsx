@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Settings, Power } from "lucide-react";
 import { getStressColor } from "@/lib/biometrics";
@@ -77,6 +77,14 @@ function getRecentDates(count: number): string[] {
   return out;
 }
 
+function sortDatesTodayFirst(input: string[], todayStr: string): string[] {
+  return [...new Set(input)].sort((a, b) => {
+    if (a === todayStr && b !== todayStr) return -1;
+    if (b === todayStr && a !== todayStr) return 1;
+    return new Date(b + "T00:00:00").getTime() - new Date(a + "T00:00:00").getTime();
+  });
+}
+
 function getBubbleSize(size: "small" | "medium" | "large"): string {
   switch (size) {
     case "small": return "w-12 h-12";
@@ -135,6 +143,8 @@ export default function TimelinePage() {
   const [liveState, setLiveState] = useState<LiveAwarenessState | null>(null);
   const [recentEvents, setRecentEvents] = useState<LiveAwarenessEvent[]>([]);
   const [debugEvents, setDebugEvents] = useState<LiveDebugEvent[]>([]);
+  const [showLiveTranscript, setShowLiveTranscript] = useState(false);
+  const dateScrollerRef = useRef<HTMLDivElement | null>(null);
 
   const loadBubbles = useCallback(async (date: string) => {
     try {
@@ -173,11 +183,18 @@ export default function TimelinePage() {
       .then((data) => {
         const fromApi = (data.dates ?? []) as string[];
         const recent = getRecentDates(14);
-        const merged = [...new Set([...recent, ...fromApi])].sort((a, b) => b.localeCompare(a));
+        const merged = sortDatesTodayFirst([...recent, ...fromApi], today);
         setDates(merged.slice(0, 14));
       })
       .catch(() => {});
-  }, []);
+  }, [today]);
+
+  useEffect(() => {
+    if (selectedDate !== today) return;
+    if (dateScrollerRef.current) {
+      dateScrollerRef.current.scrollLeft = 0;
+    }
+  }, [dates, selectedDate, today]);
 
   useEffect(() => {
     let cancelled = false;
@@ -231,6 +248,13 @@ export default function TimelinePage() {
   const liveCoherent = latestEvent
     ? latestEvent.audioLevel >= 0.05 && ((latestEvent.transcriptWords ?? 0) >= 2)
     : false;
+  const hasLiveBubble =
+    isToday &&
+    !!(
+      liveState?.isRecording ||
+      liveState?.latestAction === "continue_recording" ||
+      transcriptStream.length > 0
+    );
 
   const handleBubbleClick = (conversation: Conversation) => {
     try { sessionStorage.setItem(`conv-person-${conversation.id}`, conversation.person); } catch {}
@@ -269,7 +293,7 @@ export default function TimelinePage() {
         </div>
 
         {/* Date Selector */}
-        <div className="px-4 pb-3 overflow-x-auto">
+        <div ref={dateScrollerRef} className="px-4 pb-3 overflow-x-auto">
           <div className="flex gap-2">
             {dates.map((date) => {
               const isSelected = date === selectedDate;
@@ -337,6 +361,63 @@ export default function TimelinePage() {
 
       {/* Timeline */}
       <div className="max-w-md mx-auto px-4 py-8 relative">
+        {hasLiveBubble && (
+          <div className="mb-5">
+            <button
+              type="button"
+              onClick={() => setShowLiveTranscript((v) => !v)}
+              className="w-full rounded-2xl border border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.03)] p-3 text-left"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div
+                    className={`w-4 h-4 rounded-full ${liveState?.isRecording ? "animate-pulse" : ""}`}
+                    style={{
+                      backgroundColor: liveState?.isRecording ? "#EF4444" : "#D4B07A",
+                      boxShadow: liveState?.isRecording
+                        ? "0 0 14px #EF4444, 0 0 26px rgba(239,68,68,0.7)"
+                        : "0 0 10px #D4B07A",
+                    }}
+                  />
+                  <p className="text-xs uppercase tracking-wider text-[rgba(255,255,255,0.72)]">
+                    {liveState?.isRecording ? "Live conversation bubble" : "Live transcript bubble"}
+                  </p>
+                </div>
+                <span className="text-[10px] text-[rgba(255,255,255,0.52)]">
+                  {showLiveTranscript ? "Hide" : "Open"}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-[rgba(255,255,255,0.86)] line-clamp-2">
+                {latestEvent?.transcriptText?.trim()
+                  ? latestEvent.transcriptText
+                  : liveState?.isRecording
+                    ? "Listening for live transcript..."
+                    : "Finalizing recording and deciding if this qualifies as a conversation."}
+              </p>
+            </button>
+            {showLiveTranscript && (
+              <div className="mt-2 rounded-xl border border-[rgba(255,255,255,0.1)] bg-[rgba(0,0,0,0.16)] p-3">
+                <p className="text-[11px] uppercase tracking-wider text-[rgba(255,255,255,0.54)] mb-2">
+                  Live transcription
+                </p>
+                {transcriptStream.length === 0 ? (
+                  <p className="text-xs text-[rgba(255,255,255,0.45)]">No transcript chunks yet</p>
+                ) : (
+                  <div className="space-y-1.5 max-h-44 overflow-auto pr-1">
+                    {transcriptStream.map((event) => (
+                      <div key={event.timestamp} className="text-xs text-[rgba(255,255,255,0.74)] bg-[rgba(255,255,255,0.03)] rounded px-2 py-1.5">
+                        <span className="text-[rgba(255,255,255,0.45)] mr-2">
+                          {new Date(event.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+                        </span>
+                        {event.transcriptText}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         {isToday && (
           <div className="mb-6 warm-card">
             <div className="flex items-center justify-between gap-2 mb-2">

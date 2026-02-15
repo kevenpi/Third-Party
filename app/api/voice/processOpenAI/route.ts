@@ -3,6 +3,7 @@ import { randomUUID } from "crypto";
 import * as storage from "@/lib/voice/speakerStorage";
 import { processConversation } from "@/lib/voice/processConversation";
 import { toWav16kMono } from "@/lib/voice/audioConvert";
+import { hasOpenAIApiKey } from "@/lib/openaiKey";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -16,9 +17,9 @@ const userId = "default";
  */
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.OPENAI_API_KEY) {
+    if (!hasOpenAIApiKey()) {
       return NextResponse.json(
-        { error: "OPENAI_API_KEY not set. Required for transcription + diarization." },
+        { error: "OpenAI key not set. Required for transcription + diarization." },
         { status: 503 }
       );
     }

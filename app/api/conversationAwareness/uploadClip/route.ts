@@ -7,6 +7,7 @@ import { processConversation } from "@/lib/voice/processConversation";
 import { toWav16kMono } from "@/lib/voice/audioConvert";
 import { randomUUID } from "crypto";
 import fs from "fs";
+import { hasOpenAIApiKey } from "@/lib/openaiKey";
 
 export async function POST(request: Request) {
   try {
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
     } | null = null;
     try {
       const latestClip = session.clipPaths[session.clipPaths.length - 1];
-      if (latestClip && process.env.OPENAI_API_KEY) {
+      if (latestClip && hasOpenAIApiKey()) {
         const clipAbs = resolveRecordedClipPath(latestClip);
         if (fs.existsSync(clipAbs)) {
           const raw = fs.readFileSync(clipAbs);
